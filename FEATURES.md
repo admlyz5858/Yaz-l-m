@@ -779,19 +779,22 @@ JSON, YAML, TOML, XML, INI, ENV, Dockerfile, Docker Compose, Makefile, CMakeList
 - [x] CompletionPopup, DiagnosticsPanel, OutlinePanel UI
 
 #### Faz 6 - Eklenti Sistemi
-- [ ] Eklenti API tasarımı
-- [ ] Eklenti yükleme/kaldırma mekanizması
-- [ ] Eklenti mağazası
-- [ ] Tema eklentileri
-- [ ] Dil eklentileri
+- [x] Eklenti API tasarımı (ExtensionManifest, Contributions, Lifecycle)
+- [x] Eklenti yükleme/kaldırma/etkinleştirme/devre dışı bırakma
+- [x] Eklenti mağazası UI (arama, kategori, yıldız, indirme sayısı)
+- [x] 10 tema eklentisi (Dark+, Monokai, Dracula, Nord, Tokyo Night vb.)
+- [x] 6 dil eklentisi (Python, JS/TS, Kotlin, Java, Go, Rust)
+- [x] 15 topluluk eklentisi (Vim, Emmet, GitLens, Prettier, ESLint vb.)
+- [x] 10 eklenti kategorisi
 
 #### Faz 7 - İleri Seviye
-- [ ] Uzaktan geliştirme (SSH)
-- [ ] Hata ayıklama (Debug)
-- [ ] İşbirliği (Real-time collaboration)
-- [ ] Agent modu
-- [ ] Bulut senkronizasyonu
-- [ ] Erişilebilirlik iyileştirmeleri
+- [x] Uzaktan geliştirme modelleri (SSH bağlantı, port forwarding)
+- [x] SSH bağlantı yönetimi UI (ekle, bağlan, kes, sil)
+- [x] İşbirliği modelleri (CollaborationSession, Participant, CursorPosition)
+- [x] Bulut senkronizasyonu modelleri (GitHub Gist, Google Drive)
+- [x] Dev Container yapılandırma modeli
+- [ ] Agent modu (AI otonom görev yürütme) - gelecek sürüm
+- [ ] Debug (DAP protokolü) - gelecek sürüm
 
 ---
 

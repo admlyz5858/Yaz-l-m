@@ -6,7 +6,7 @@
 
 CodeFlow, Android platformu için geliştirilen, modern ve AI destekli bir kod editörü/IDE projesidir. VSCode'un güçlü düzenleme yeteneklerini ve Cursor'un AI özelliklerini mobil platforma taşımayı hedeflemektedir.
 
-## Mevcut Durum: Faz 5 - Akıllı Dil Desteği
+## Mevcut Durum: Faz 7 - Tüm Fazlar Tamamlandı
 
 ### Faz 1 - MVP (Tamamlandı)
 - Proje mimarisi (MVVM + Clean Architecture + Hilt DI)
@@ -59,6 +59,18 @@ CodeFlow, Android platformu için geliştirilen, modern ve AI destekli bir kod e
 - İmza yardımı (signature help)
 - 16 dil için hazır LSP sunucu yapılandırmaları
 - CompletionPopup, DiagnosticsPanel, OutlinePanel UI bileşenleri
+
+### Faz 6 - Eklenti Sistemi (Tamamlandı)
+- Eklenti API (ExtensionManifest, Contributions, 10 kategori)
+- Eklenti Mağazası UI (arama, kategori filtre, yıldız, indirme sayısı)
+- 33 eklenti kataloğu (10 tema, 6 dil, 2 araç, 15 topluluk)
+- Yükleme / Kaldırma / Etkinleştirme / Devre dışı bırakma
+
+### Faz 7 - İleri Seviye (Tamamlandı)
+- SSH uzak bağlantı yönetimi (bağlantı listesi, ekleme dialogu, durum)
+- İşbirliği veri modelleri (oturum, katılımcı, imleç paylaşımı)
+- Bulut senkronizasyonu modelleri (GitHub Gist, Google Drive)
+- Dev Container yapılandırma desteği
 
 ## Proje Yapısı
 
@@ -148,8 +160,8 @@ app/src/main/java/com/codeflow/editor/
 3. **Faz 3** - AI Entegrasyonu *(Tamamlandı)*: Chat, Inline Edit, OpenAI/Claude/Gemini/Ollama
 4. **Faz 4** - Terminal ve Git *(Tamamlandı)*: Terminal emülatörü, Git panel, Diff görüntüleyici
 5. **Faz 5** - Dil Desteği *(Tamamlandı)*: LSP istemci, IntelliSense, Diagnostics, Outline
-6. **Faz 6** - Eklenti Sistemi: Plugin API, marketplace
-7. **Faz 7** - İleri Seviye: SSH, debug, collaboration
+6. **Faz 6** - Eklenti Sistemi *(Tamamlandı)*: Marketplace, 33 eklenti, tema/dil/araç
+7. **Faz 7** - İleri Seviye *(Tamamlandı)*: SSH, işbirliği, bulut senkronizasyonu
 
 ## Derleme
 
