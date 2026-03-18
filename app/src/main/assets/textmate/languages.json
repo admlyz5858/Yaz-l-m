@@ -1,0 +1,76 @@
+{
+  "languages": [
+    {
+      "name": "JavaScript",
+      "scopeName": "source.js",
+      "extensions": [".js", ".mjs", ".cjs"],
+      "grammar": "languages/javascript.tmLanguage.json"
+    },
+    {
+      "name": "TypeScript",
+      "scopeName": "source.ts",
+      "extensions": [".ts", ".mts", ".cts"],
+      "grammar": "languages/typescript.tmLanguage.json"
+    },
+    {
+      "name": "Python",
+      "scopeName": "source.python",
+      "extensions": [".py", ".pyw"],
+      "grammar": "languages/python.tmLanguage.json"
+    },
+    {
+      "name": "HTML",
+      "scopeName": "text.html.basic",
+      "extensions": [".html", ".htm"],
+      "grammar": "languages/html.tmLanguage.json"
+    },
+    {
+      "name": "CSS",
+      "scopeName": "source.css",
+      "extensions": [".css"],
+      "grammar": "languages/css.tmLanguage.json"
+    },
+    {
+      "name": "JSON",
+      "scopeName": "source.json",
+      "extensions": [".json"],
+      "grammar": "languages/json.tmLanguage.json"
+    },
+    {
+      "name": "Markdown",
+      "scopeName": "text.html.markdown",
+      "extensions": [".md", ".markdown"],
+      "grammar": "languages/markdown.tmLanguage.json"
+    },
+    {
+      "name": "Java",
+      "scopeName": "source.java",
+      "extensions": [".java"],
+      "grammar": "languages/java.tmLanguage.json"
+    },
+    {
+      "name": "Kotlin",
+      "scopeName": "source.kotlin",
+      "extensions": [".kt", ".kts"],
+      "grammar": "languages/kotlin.tmLanguage.json"
+    },
+    {
+      "name": "XML",
+      "scopeName": "text.xml",
+      "extensions": [".xml"],
+      "grammar": "languages/xml.tmLanguage.json"
+    },
+    {
+      "name": "YAML",
+      "scopeName": "source.yaml",
+      "extensions": [".yaml", ".yml"],
+      "grammar": "languages/yaml.tmLanguage.json"
+    },
+    {
+      "name": "Shell",
+      "scopeName": "source.shell",
+      "extensions": [".sh", ".bash", ".zsh"],
+      "grammar": "languages/shellscript.tmLanguage.json"
+    }
+  ]
+}

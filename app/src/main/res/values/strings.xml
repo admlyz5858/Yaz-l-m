@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CodeFlow</string>
+    <string name="new_file">Yeni Dosya</string>
+    <string name="new_folder">Yeni Klasör</string>
+    <string name="open_folder">Klasör Aç</string>
+    <string name="save">Kaydet</string>
+    <string name="save_as">Farklı Kaydet</string>
+    <string name="delete">Sil</string>
+    <string name="rename">Yeniden Adlandır</string>
+    <string name="close">Kapat</string>
+    <string name="close_all">Tümünü Kapat</string>
+    <string name="undo">Geri Al</string>
+    <string name="redo">Yinele</string>
+    <string name="search">Ara</string>
+    <string name="replace">Değiştir</string>
+    <string name="settings">Ayarlar</string>
+    <string name="file_explorer">Dosya Gezgini</string>
+    <string name="no_folder_open">Açık klasör yok</string>
+    <string name="unsaved_changes">Kaydedilmemiş değişiklikler var</string>
+    <string name="confirm_delete">Bu dosyayı silmek istediğinize emin misiniz?</string>
+    <string name="cancel">İptal</string>
+    <string name="ok">Tamam</string>
+    <string name="enter_name">İsim girin</string>
+    <string name="file_name">Dosya adı</string>
+    <string name="folder_name">Klasör adı</string>
+</resources>
