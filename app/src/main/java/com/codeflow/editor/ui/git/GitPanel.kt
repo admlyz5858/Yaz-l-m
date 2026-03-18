@@ -24,7 +24,7 @@ import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material.icons.filled.Undo
+import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -347,7 +347,7 @@ private fun GitFileItem(
         }
         if (onDiscard != null) {
             IconButton(onClick = onDiscard, modifier = Modifier.size(20.dp)) {
-                Icon(Icons.Default.Undo, "İptal", tint = colors.error, modifier = Modifier.size(14.dp))
+                Icon(Icons.AutoMirrored.Filled.Undo, "İptal", tint = colors.error, modifier = Modifier.size(14.dp))
             }
         }
     }

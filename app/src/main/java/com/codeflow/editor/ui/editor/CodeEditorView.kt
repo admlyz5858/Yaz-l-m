@@ -35,11 +35,11 @@ fun CodeEditorView(
     }
 
     DisposableEffect(Unit) {
-        val subscription = editor.subscribeEvent(ContentChangeEvent::class.java) { event, _ ->
+        val receipt = editor.subscribeEvent(ContentChangeEvent::class.java) { event, _ ->
             onContentChange(editor.text.toString())
         }
         onDispose {
-            subscription.dispose()
+            receipt.unsubscribe()
         }
     }
 

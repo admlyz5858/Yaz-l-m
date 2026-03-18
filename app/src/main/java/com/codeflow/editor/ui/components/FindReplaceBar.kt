@@ -20,8 +20,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FindReplace
-import androidx.compose.material.icons.filled.MatchCase
-import androidx.compose.material.icons.filled.UnfoldMore
+import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -107,7 +106,7 @@ fun FindReplaceBar(
                 ToggleIconButton(
                     active = isCaseSensitive,
                     onClick = onToggleCaseSensitive,
-                    icon = { Icon(Icons.Default.MatchCase, "Büyük/Küçük Harf", Modifier.size(14.dp)) }
+                    icon = { Icon(Icons.Default.TextFormat, "Büyük/Küçük Harf", Modifier.size(14.dp)) }
                 )
                 ToggleIconButton(
                     active = isWholeWord,

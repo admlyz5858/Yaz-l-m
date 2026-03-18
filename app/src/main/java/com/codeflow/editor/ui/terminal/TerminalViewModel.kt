@@ -2,6 +2,7 @@ package com.codeflow.editor.ui.terminal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.codeflow.editor.data.terminal.TerminalLine
 import com.codeflow.editor.data.terminal.TerminalSession
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class TerminalViewModel @Inject constructor() : ViewModel() {
 

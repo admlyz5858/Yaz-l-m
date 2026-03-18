@@ -30,7 +30,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.TextDecrease
 import androidx.compose.material.icons.filled.TextIncrease
-import androidx.compose.material.icons.filled.WrapText
+import androidx.compose.material.icons.automirrored.filled.WrapText
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -290,7 +290,7 @@ fun buildCommandList(
         Command(
             "toggle_wrap",
             if (wordWrap) "Word Wrap: Kapat" else "Word Wrap: Aç",
-            icon = Icons.Default.WrapText,
+            icon = Icons.AutoMirrored.Filled.WrapText,
             category = "Görünüm"
         ) { onToggleWordWrap() },
         Command(

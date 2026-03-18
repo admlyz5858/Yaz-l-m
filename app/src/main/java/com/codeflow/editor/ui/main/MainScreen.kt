@@ -28,7 +28,7 @@ import androidx.compose.material.icons.filled.Source
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.TextDecrease
 import androidx.compose.material.icons.filled.TextIncrease
-import androidx.compose.material.icons.filled.WrapText
+import androidx.compose.material.icons.automirrored.filled.WrapText
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -426,7 +426,7 @@ fun MainScreen(
                         )
                         DropdownMenuItem(
                             text = { Text(if (settings.wordWrap) "Word Wrap: Açık" else "Word Wrap: Kapalı") },
-                            leadingIcon = { Icon(Icons.Default.WrapText, null) },
+                            leadingIcon = { Icon(Icons.AutoMirrored.Filled.WrapText, null) },
                             onClick = {
                                 showOverflowMenu = false
                                 viewModel.toggleWordWrap()

@@ -1,5 +1,6 @@
 package com.codeflow.editor.ui.explorer
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -23,7 +24,7 @@ import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.FolderOpen
-import androidx.compose.material.icons.filled.NoteAdd
+import androidx.compose.material.icons.automirrored.filled.NoteAdd
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -87,7 +88,7 @@ fun FileExplorerPanel(
                     modifier = Modifier.size(24.dp)
                 ) {
                     Icon(
-                        Icons.Default.NoteAdd,
+                        Icons.AutoMirrored.Filled.NoteAdd,
                         contentDescription = "Yeni Dosya",
                         tint = colors.onSurfaceVariant,
                         modifier = Modifier.size(16.dp)
@@ -152,6 +153,7 @@ fun FileExplorerPanel(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FileTreeItem(
     node: FileNode,
