@@ -769,11 +769,14 @@ JSON, YAML, TOML, XML, INI, ENV, Dockerfile, Docker Compose, Makefile, CMakeList
 - [ ] Git blame (satır geçmişi) - ileri fazda
 
 #### Faz 5 - Akıllı Dil Desteği
-- [ ] LSP istemci implementasyonu
-- [ ] IntelliSense (tamamlama, hover, tanım)
-- [ ] Tanılama (hatalar, uyarılar)
-- [ ] Kod biçimlendirme
-- [ ] Sembol arama ve navigasyon
+- [x] LSP istemci (JSON-RPC 2.0, stdio transport, Content-Length)
+- [x] IntelliSense (completion, hover, definition, references, signature help)
+- [x] Tanılama (diagnostics - hata/uyarı/bilgi/ipucu)
+- [x] Kod biçimlendirme (formatting)
+- [x] Sembol arama ve belge yapısı (outline)
+- [x] 16 dil için hazır LSP sunucu yapılandırmaları
+- [x] Kod eylemleri (code actions)
+- [x] CompletionPopup, DiagnosticsPanel, OutlinePanel UI
 
 #### Faz 6 - Eklenti Sistemi
 - [ ] Eklenti API tasarımı

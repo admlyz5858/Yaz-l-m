@@ -6,7 +6,7 @@
 
 CodeFlow, Android platformu için geliştirilen, modern ve AI destekli bir kod editörü/IDE projesidir. VSCode'un güçlü düzenleme yeteneklerini ve Cursor'un AI özelliklerini mobil platforma taşımayı hedeflemektedir.
 
-## Mevcut Durum: Faz 4 - Terminal ve Git
+## Mevcut Durum: Faz 5 - Akıllı Dil Desteği
 
 ### Faz 1 - MVP (Tamamlandı)
 - Proje mimarisi (MVVM + Clean Architecture + Hilt DI)
@@ -49,6 +49,16 @@ CodeFlow, Android platformu için geliştirilen, modern ve AI destekli bir kod e
 - Satır bazlı diff görüntüleyici (yeşil=eklenen, kırmızı=silinen, satır numaraları)
 - Branch yönetimi (checkout, yeni branch oluşturma)
 - Git log (commit geçmişi, yazar, tarih)
+
+### Faz 5 - Akıllı Dil Desteği / LSP (Tamamlandı)
+- LSP istemci altyapısı (JSON-RPC 2.0, Content-Length header, stdio)
+- Kod tamamlama (completion), hover bilgi, tanıma gitme, referans bulma
+- Tanılama (diagnostics) - hata/uyarı sayacı ve gruplu liste
+- Kod biçimlendirme (formatting), kod eylemleri (code actions)
+- Belge yapısı (outline) - hiyerarşik sembol ağacı
+- İmza yardımı (signature help)
+- 16 dil için hazır LSP sunucu yapılandırmaları
+- CompletionPopup, DiagnosticsPanel, OutlinePanel UI bileşenleri
 
 ## Proje Yapısı
 
@@ -137,7 +147,7 @@ app/src/main/java/com/codeflow/editor/
 2. **Faz 2** - Gelişmiş Editör *(Tamamlandı)*: Bul/Değiştir, Komut Paleti, Arama, Snippet, Ayarlar
 3. **Faz 3** - AI Entegrasyonu *(Tamamlandı)*: Chat, Inline Edit, OpenAI/Claude/Gemini/Ollama
 4. **Faz 4** - Terminal ve Git *(Tamamlandı)*: Terminal emülatörü, Git panel, Diff görüntüleyici
-5. **Faz 5** - Dil Desteği: LSP, IntelliSense, diagnostics
+5. **Faz 5** - Dil Desteği *(Tamamlandı)*: LSP istemci, IntelliSense, Diagnostics, Outline
 6. **Faz 6** - Eklenti Sistemi: Plugin API, marketplace
 7. **Faz 7** - İleri Seviye: SSH, debug, collaboration
 
