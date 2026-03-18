@@ -6,7 +6,7 @@
 
 CodeFlow, Android platformu için geliştirilen, modern ve AI destekli bir kod editörü/IDE projesidir. VSCode'un güçlü düzenleme yeteneklerini ve Cursor'un AI özelliklerini mobil platforma taşımayı hedeflemektedir.
 
-## Mevcut Durum: Faz 2 - Gelişmiş Editör
+## Mevcut Durum: Faz 3 - AI Entegrasyonu
 
 ### Faz 1 - MVP (Tamamlandı)
 - Proje mimarisi (MVVM + Clean Architecture + Hilt DI)
@@ -25,12 +25,22 @@ CodeFlow, Android platformu için geliştirilen, modern ve AI destekli bir kod e
 ### Faz 2 - Gelişmiş Editör (Tamamlandı)
 - Bul ve Değiştir (büyük/küçük harf, tam kelime, regex, toplu değiştirme)
 - Proje geneli dosyalarda arama (debounce, gruplu sonuçlar, vurgulama)
-- Komut Paleti (14 yerleşik komut, fuzzy search)
+- Komut Paleti (16 yerleşik komut, fuzzy search)
 - Hızlı Dosya Açma (fuzzy match, 5000 dosya indeksleme)
 - Satıra Gitme (Go to Line)
 - Snippet sistemi (JS/TS/Python/Java/Kotlin/HTML/CSS - 75+ snippet)
 - Ayarlar ekranı (tema, font slider, tab boyutu, word wrap, auto-save)
 - Geri/İleri navigasyon geçmişi
+
+### Faz 3 - AI Entegrasyonu (Tamamlandı)
+- AI Chat paneli (sağ kenar paneli, Markdown/kod blok desteği)
+- 4 AI sağlayıcı: OpenAI (GPT-4o, 4o-mini, 3.5), Anthropic (Claude Sonnet 4, Haiku), Google Gemini (2.0 Flash, 1.5 Flash), Yerel Ollama
+- Satır içi AI düzenleme (Inline Edit + kabul/reddet diff önizleme)
+- Dosya/dil/seçili kod bağlamı ile sohbet
+- Hızlı AI eylemleri: Kodu açıkla, hataları düzelt, test yaz, dokümantasyon, optimize et
+- AI Ayarları ekranı (sağlayıcı, model, API key, sıcaklık slider)
+- Token kullanım takibi
+- Güvenli API key saklama (Android DataStore)
 
 ## Proje Yapısı
 
@@ -43,6 +53,10 @@ app/src/main/java/com/codeflow/editor/
 │   │   ├── EditorTab.kt              # Sekme + dil algılama
 │   │   ├── FileNode.kt               # Dosya ağacı modeli
 │   │   └── Snippet.kt                # Snippet veri modeli + 75+ yerleşik snippet
+│   ├── ai/
+│   │   ├── AIModels.kt               # AI veri modelleri ve yapılandırma
+│   │   ├── AIApiClient.kt            # OpenAI/Claude/Gemini/Ollama API istemcisi
+│   │   └── AIRepository.kt           # AI durum yönetimi ve mesajlaşma
 │   └── repository/
 │       ├── FileRepository.kt         # Dosya I/O + proje arama
 │       └── SettingsRepository.kt     # DataStore ayar yönetimi
@@ -67,6 +81,11 @@ app/src/main/java/com/codeflow/editor/
     │   ├── MainActivity.kt           # Ana Activity
     │   ├── MainScreen.kt             # Ana Compose ekranı
     │   └── MainViewModel.kt          # Durum yönetimi
+    ├── ai/
+    │   ├── AIChatPanel.kt            # AI sohbet paneli + Markdown renderer
+    │   ├── AIChatViewModel.kt        # AI durum yönetimi
+    │   ├── AISettingsSheet.kt        # AI ayarları ekranı
+    │   └── InlineEditDialog.kt       # Satır içi AI düzenleme dialogu
     ├── settings/
     │   └── SettingsScreen.kt         # Ayarlar ekranı
     └── theme/
@@ -96,7 +115,7 @@ app/src/main/java/com/codeflow/editor/
 
 1. **Faz 1** - MVP *(Tamamlandı)* : Temel editör, dosya gezgini, tema, sembol çubuğu
 2. **Faz 2** - Gelişmiş Editör *(Tamamlandı)*: Bul/Değiştir, Komut Paleti, Arama, Snippet, Ayarlar
-3. **Faz 3** - AI Entegrasyonu: Chat, kod tamamlama, inline edit
+3. **Faz 3** - AI Entegrasyonu *(Tamamlandı)*: Chat, Inline Edit, OpenAI/Claude/Gemini/Ollama
 4. **Faz 4** - Terminal ve Git: Dahili terminal, Git işlemleri
 5. **Faz 5** - Dil Desteği: LSP, IntelliSense, diagnostics
 6. **Faz 6** - Eklenti Sistemi: Plugin API, marketplace

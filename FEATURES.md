@@ -750,11 +750,14 @@ JSON, YAML, TOML, XML, INI, ENV, Dockerfile, Docker Compose, Makefile, CMakeList
 - [ ] Çoklu imleç
 
 #### Faz 3 - AI Entegrasyonu
-- [ ] AI Chat paneli
-- [ ] AI kod tamamlama (ghost text)
-- [ ] Satır içi AI düzenleme
-- [ ] Çoklu AI model desteği
-- [ ] Bağlam yönetimi (@file, @folder)
+- [x] AI Chat paneli (mesaj balonları, Markdown desteği, bağlam göstergesi)
+- [x] Satır içi AI düzenleme (Inline Edit + diff önizleme)
+- [x] Çoklu AI model desteği (OpenAI, Anthropic, Gemini, Ollama)
+- [x] Bağlam yönetimi (dosya, dil, seçili kod bağlamı)
+- [x] AI Ayarları (sağlayıcı, model, API key, sıcaklık)
+- [x] Hızlı AI eylemleri (açıkla, düzelt, test yaz, dokümantasyon, optimize)
+- [x] Token kullanım takibi
+- [ ] AI kod tamamlama (ghost text) - ileri fazda
 
 #### Faz 4 - Terminal ve Git
 - [ ] Dahili terminal emülatörü
