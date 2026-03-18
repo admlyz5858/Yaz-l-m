@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SmartToy
+import androidx.compose.material.icons.filled.Source
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.TextDecrease
 import androidx.compose.material.icons.filled.TextIncrease
@@ -71,6 +73,11 @@ import com.codeflow.editor.ui.ai.AIChatPanel
 import com.codeflow.editor.ui.ai.AIChatViewModel
 import com.codeflow.editor.ui.ai.AISettingsSheet
 import com.codeflow.editor.ui.ai.InlineEditDialog
+import com.codeflow.editor.ui.git.DiffView
+import com.codeflow.editor.ui.git.GitPanel
+import com.codeflow.editor.ui.git.GitViewModel
+import com.codeflow.editor.ui.terminal.TerminalPanel
+import com.codeflow.editor.ui.terminal.TerminalViewModel
 import com.codeflow.editor.ui.settings.SettingsScreen
 import com.codeflow.editor.ui.theme.EditorTheme
 import java.io.File
@@ -79,7 +86,9 @@ import java.io.File
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = hiltViewModel(),
-    aiViewModel: AIChatViewModel = hiltViewModel()
+    aiViewModel: AIChatViewModel = hiltViewModel(),
+    terminalViewModel: TerminalViewModel = hiltViewModel(),
+    gitViewModel: GitViewModel = hiltViewModel()
 ) {
     val colors = EditorTheme.colors
     val settings by viewModel.settings.collectAsState()
@@ -101,6 +110,20 @@ fun MainScreen(
     val aiTokens by aiViewModel.totalTokensUsed.collectAsState()
     val showAISettings by aiViewModel.showAISettings.collectAsState()
     val inlineEditResult by aiViewModel.inlineEditResult.collectAsState()
+
+    // Terminal states
+    val showTerminal by viewModel.showTerminal.collectAsState()
+    val terminalLines by terminalViewModel.lines.collectAsState()
+    val terminalDir by terminalViewModel.currentDir.collectAsState()
+    val terminalRunning by terminalViewModel.isRunning.collectAsState()
+    val terminalHistory by terminalViewModel.commandHistory.collectAsState()
+
+    // Git states
+    val showGitPanel by viewModel.showGitPanel.collectAsState()
+    val gitStatus by gitViewModel.gitStatus.collectAsState()
+    val isGitRepo by gitViewModel.isGitRepo.collectAsState()
+    val gitLoading by gitViewModel.isLoading.collectAsState()
+    val currentDiff by gitViewModel.currentDiff.collectAsState()
 
     // Phase 2 states
     val showFindReplace by viewModel.showFindReplace.collectAsState()
@@ -143,6 +166,20 @@ fun MainScreen(
 
     val activeTab = tabs.find { it.id == activeTabId }
     val lineCount = activeTab?.content?.lines()?.size ?: 0
+
+    // Sync rootDirectory to git/terminal
+    androidx.compose.runtime.LaunchedEffect(rootDirectory) {
+        gitViewModel.setRootDirectory(rootDirectory)
+    }
+
+    // Diff View Screen
+    if (currentDiff != null) {
+        DiffView(
+            diff = currentDiff,
+            onBack = { gitViewModel.closeDiff() }
+        )
+        return
+    }
 
     // AI Settings Screen
     if (showAISettings) {
@@ -251,12 +288,12 @@ fun MainScreen(
                             tint = if (showAIChat) colors.accent else colors.editorForeground
                         )
                     }
-                    // Command Palette
-                    IconButton(onClick = { viewModel.showCommandPalette() }) {
+                    // Git
+                    IconButton(onClick = { viewModel.toggleGitPanel() }) {
                         Icon(
-                            Icons.Default.Terminal,
-                            contentDescription = "Komut Paleti",
-                            tint = colors.editorForeground
+                            Icons.Default.Source,
+                            contentDescription = "Git",
+                            tint = if (showGitPanel) colors.accent else colors.editorForeground
                         )
                     }
                     IconButton(onClick = { showOverflowMenu = true }) {
@@ -290,6 +327,23 @@ fun MainScreen(
                             onClick = {
                                 showOverflowMenu = false
                                 viewModel.showGoToLine()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Komut Paleti") },
+                            onClick = {
+                                showOverflowMenu = false
+                                viewModel.showCommandPalette()
+                            }
+                        )
+                        HorizontalDivider()
+                        DropdownMenuItem(
+                            text = { Text(if (showTerminal) "Terminali Kapat" else "Terminal Aç") },
+                            leadingIcon = { Icon(Icons.Default.Terminal, null) },
+                            onClick = {
+                                showOverflowMenu = false
+                                viewModel.toggleTerminal()
+                                terminalViewModel.ensureSession(rootDirectory?.absolutePath ?: "/storage/emulated/0")
                             }
                         )
                         HorizontalDivider()
@@ -369,14 +423,31 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Sidebar - File Explorer or Search Files
+            // Sidebar - File Explorer, Search Files, or Git Panel
             AnimatedVisibility(
-                visible = isSidebarVisible || showSearchFiles,
+                visible = isSidebarVisible || showSearchFiles || showGitPanel,
                 enter = slideInHorizontally(),
                 exit = slideOutHorizontally(targetOffsetX = { -it })
             ) {
                 Row {
-                    if (showSearchFiles) {
+                    if (showGitPanel) {
+                        GitPanel(
+                            gitStatus = gitStatus,
+                            isLoading = gitLoading,
+                            isGitRepo = isGitRepo,
+                            onRefresh = { gitViewModel.refreshStatus() },
+                            onStageFile = { gitViewModel.stageFile(it) },
+                            onUnstageFile = { gitViewModel.unstageFile(it) },
+                            onStageAll = { gitViewModel.stageAll() },
+                            onCommit = { gitViewModel.commit(it) },
+                            onPull = { gitViewModel.pull() },
+                            onPush = { gitViewModel.push() },
+                            onDiscardChanges = { gitViewModel.discardChanges(it) },
+                            onViewDiff = { path, staged -> gitViewModel.viewDiff(path, staged) },
+                            onClose = { viewModel.hideGitPanel() },
+                            modifier = Modifier.width(280.dp)
+                        )
+                    } else if (showSearchFiles) {
                         SearchFilesPanel(
                             visible = true,
                             searchQuery = searchFilesQuery,
@@ -473,14 +544,32 @@ fun MainScreen(
                         onContentChange = { content ->
                             activeTabId?.let { viewModel.updateTabContent(it, content) }
                         },
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.weight(1f)
                     )
                 } else {
                     WelcomeView(
                         onOpenFolder = { folderPickerLauncher.launch(null) },
                         onOpenCommandPalette = { viewModel.showCommandPalette() },
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.weight(1f)
                     )
+                }
+
+                // Terminal Panel (bottom)
+                AnimatedVisibility(visible = showTerminal) {
+                    Column {
+                        HorizontalDivider(color = colors.border)
+                        TerminalPanel(
+                            lines = terminalLines,
+                            currentDir = terminalDir,
+                            isRunning = terminalRunning,
+                            commandHistory = terminalHistory,
+                            onExecuteCommand = { terminalViewModel.executeCommand(it) },
+                            onCancelProcess = { terminalViewModel.cancelProcess() },
+                            onClear = { terminalViewModel.clearTerminal() },
+                            onClose = { viewModel.hideTerminal() },
+                            modifier = Modifier.height(200.dp)
+                        )
+                    }
                 }
             }
 

@@ -130,6 +130,14 @@ class MainViewModel @Inject constructor(
     private val _showAIChat = MutableStateFlow(false)
     val showAIChat: StateFlow<Boolean> = _showAIChat.asStateFlow()
 
+    // --- Terminal ---
+    private val _showTerminal = MutableStateFlow(false)
+    val showTerminal: StateFlow<Boolean> = _showTerminal.asStateFlow()
+
+    // --- Git Panel ---
+    private val _showGitPanel = MutableStateFlow(false)
+    val showGitPanel: StateFlow<Boolean> = _showGitPanel.asStateFlow()
+
     // --- Navigation History ---
     private val _navigationHistory = MutableStateFlow<List<String>>(emptyList())
     private val _navigationIndex = MutableStateFlow(-1)
@@ -652,6 +660,27 @@ class MainViewModel @Inject constructor(
     fun showAIChat() { _showAIChat.value = true }
     fun hideAIChat() { _showAIChat.value = false }
     fun toggleAIChat() { _showAIChat.update { !it } }
+
+    // ===================
+    // Terminal
+    // ===================
+
+    fun showTerminal() { _showTerminal.value = true }
+    fun hideTerminal() { _showTerminal.value = false }
+    fun toggleTerminal() { _showTerminal.update { !it } }
+
+    // ===================
+    // Git Panel
+    // ===================
+
+    fun showGitPanel() {
+        _showGitPanel.value = true
+        _isSidebarVisible.value = false
+    }
+    fun hideGitPanel() { _showGitPanel.value = false }
+    fun toggleGitPanel() {
+        if (!_showGitPanel.value) showGitPanel() else hideGitPanel()
+    }
 
     // ===================
     // Navigation History

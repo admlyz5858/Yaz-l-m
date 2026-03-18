@@ -3,6 +3,7 @@ package com.codeflow.editor.di
 import android.content.Context
 import com.codeflow.editor.data.ai.AIApiClient
 import com.codeflow.editor.data.ai.AIRepository
+import com.codeflow.editor.data.git.GitRepository
 import com.codeflow.editor.data.repository.FileRepository
 import com.codeflow.editor.data.repository.SettingsRepository
 import dagger.Module
@@ -36,4 +37,8 @@ object AppModule {
         @ApplicationContext context: Context,
         apiClient: AIApiClient
     ): AIRepository = AIRepository(context, apiClient)
+
+    @Provides
+    @Singleton
+    fun provideGitRepository(): GitRepository = GitRepository()
 }
