@@ -6,7 +6,7 @@
 
 CodeFlow, Android platformu için geliştirilen, modern ve AI destekli bir kod editörü/IDE projesidir. VSCode'un güçlü düzenleme yeteneklerini ve Cursor'un AI özelliklerini mobil platforma taşımayı hedeflemektedir.
 
-## Mevcut Durum: Faz 3 - AI Entegrasyonu
+## Mevcut Durum: Faz 4 - Terminal ve Git
 
 ### Faz 1 - MVP (Tamamlandı)
 - Proje mimarisi (MVVM + Clean Architecture + Hilt DI)
@@ -42,6 +42,14 @@ CodeFlow, Android platformu için geliştirilen, modern ve AI destekli bir kod e
 - Token kullanım takibi
 - Güvenli API key saklama (Android DataStore)
 
+### Faz 4 - Terminal ve Git (Tamamlandı)
+- Dahili terminal emülatörü (sh komut çalıştırma, cd/pwd/clear yerleşik)
+- ANSI renk kodu temizleme, 5000 satır tampon, komut geçmişi
+- Git paneli (branch, ahead/behind, stage/unstage/discard, commit, pull, push)
+- Satır bazlı diff görüntüleyici (yeşil=eklenen, kırmızı=silinen, satır numaraları)
+- Branch yönetimi (checkout, yeni branch oluşturma)
+- Git log (commit geçmişi, yazar, tarih)
+
 ## Proje Yapısı
 
 ```
@@ -57,6 +65,11 @@ app/src/main/java/com/codeflow/editor/
 │   │   ├── AIModels.kt               # AI veri modelleri ve yapılandırma
 │   │   ├── AIApiClient.kt            # OpenAI/Claude/Gemini/Ollama API istemcisi
 │   │   └── AIRepository.kt           # AI durum yönetimi ve mesajlaşma
+│   ├── git/
+│   │   ├── GitModels.kt              # Git veri modelleri (status, branch, diff)
+│   │   └── GitRepository.kt          # Git CLI komut çalıştırma
+│   ├── terminal/
+│   │   └── TerminalSession.kt        # Terminal oturum yönetimi
 │   └── repository/
 │       ├── FileRepository.kt         # Dosya I/O + proje arama
 │       └── SettingsRepository.kt     # DataStore ayar yönetimi
@@ -86,6 +99,13 @@ app/src/main/java/com/codeflow/editor/
     │   ├── AIChatViewModel.kt        # AI durum yönetimi
     │   ├── AISettingsSheet.kt        # AI ayarları ekranı
     │   └── InlineEditDialog.kt       # Satır içi AI düzenleme dialogu
+    ├── git/
+    │   ├── GitPanel.kt               # Git kaynak kontrol paneli
+    │   ├── GitViewModel.kt           # Git durum yönetimi
+    │   └── DiffView.kt               # Diff görüntüleyici
+    ├── terminal/
+    │   ├── TerminalPanel.kt          # Terminal arayüzü
+    │   └── TerminalViewModel.kt      # Terminal oturum yönetimi
     ├── settings/
     │   └── SettingsScreen.kt         # Ayarlar ekranı
     └── theme/
@@ -116,7 +136,7 @@ app/src/main/java/com/codeflow/editor/
 1. **Faz 1** - MVP *(Tamamlandı)* : Temel editör, dosya gezgini, tema, sembol çubuğu
 2. **Faz 2** - Gelişmiş Editör *(Tamamlandı)*: Bul/Değiştir, Komut Paleti, Arama, Snippet, Ayarlar
 3. **Faz 3** - AI Entegrasyonu *(Tamamlandı)*: Chat, Inline Edit, OpenAI/Claude/Gemini/Ollama
-4. **Faz 4** - Terminal ve Git: Dahili terminal, Git işlemleri
+4. **Faz 4** - Terminal ve Git *(Tamamlandı)*: Terminal emülatörü, Git panel, Diff görüntüleyici
 5. **Faz 5** - Dil Desteği: LSP, IntelliSense, diagnostics
 6. **Faz 6** - Eklenti Sistemi: Plugin API, marketplace
 7. **Faz 7** - İleri Seviye: SSH, debug, collaboration

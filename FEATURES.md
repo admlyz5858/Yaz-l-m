@@ -760,11 +760,13 @@ JSON, YAML, TOML, XML, INI, ENV, Dockerfile, Docker Compose, Makefile, CMakeList
 - [ ] AI kod tamamlama (ghost text) - ileri fazda
 
 #### Faz 4 - Terminal ve Git
-- [ ] Dahili terminal emülatörü
-- [ ] Git temel işlemleri (commit, push, pull)
-- [ ] Diff görünümü
-- [ ] Branch yönetimi
-- [ ] Git blame ve log
+- [x] Dahili terminal emülatörü (komut çalıştırma, cd/pwd/clear, ANSI temizleme)
+- [x] Git temel işlemleri (stage, unstage, commit, pull, push)
+- [x] Diff görünümü (tam ekran, satır bazlı, renk kodlu)
+- [x] Branch yönetimi (checkout, oluşturma, ahead/behind)
+- [x] Git log (commit geçmişi)
+- [x] Stage/Unstage/Discard dosya bazında
+- [ ] Git blame (satır geçmişi) - ileri fazda
 
 #### Faz 5 - Akıllı Dil Desteği
 - [ ] LSP istemci implementasyonu
