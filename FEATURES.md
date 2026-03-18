@@ -737,14 +737,17 @@ JSON, YAML, TOML, XML, INI, ENV, Dockerfile, Docker Compose, Makefile, CMakeList
 - [ ] Dosya oluşturma/silme/yeniden adlandırma
 
 #### Faz 2 - Gelişmiş Editör
-- [ ] Kod katlama
+- [x] Bul ve Değiştir (dosya içi + proje geneli)
+- [x] Snippet desteği (JS/TS/Python/Java/Kotlin/HTML/CSS)
+- [x] Komut paleti (14 yerleşik komut)
+- [x] Ayarlar ekranı (tema, font, tab boyutu, auto-save)
+- [x] Proje geneli dosyalarda arama (SearchFilesPanel)
+- [x] Hızlı dosya açma (Quick Open + fuzzy match)
+- [x] Satıra gitme (Go to Line)
+- [x] Geri/ileri navigasyon geçmişi
+- [ ] Kod katlama (Sora Editor seviyesinde)
 - [ ] Minimap
 - [ ] Çoklu imleç
-- [ ] Bul ve Değiştir (dosya içi + proje geneli)
-- [ ] Snippet desteği
-- [ ] Otomatik girinti ve parantez tamamlama
-- [ ] Komut paleti
-- [ ] Ayarlar sistemi
 
 #### Faz 3 - AI Entegrasyonu
 - [ ] AI Chat paneli

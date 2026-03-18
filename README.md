@@ -6,9 +6,9 @@
 
 CodeFlow, Android platformu için geliştirilen, modern ve AI destekli bir kod editörü/IDE projesidir. VSCode'un güçlü düzenleme yeteneklerini ve Cursor'un AI özelliklerini mobil platforma taşımayı hedeflemektedir.
 
-## Mevcut Durum: Faz 1 - MVP
+## Mevcut Durum: Faz 2 - Gelişmiş Editör
 
-### Tamamlanan Özellikler
+### Faz 1 - MVP (Tamamlandı)
 - Proje mimarisi (MVVM + Clean Architecture + Hilt DI)
 - Sora Editor ile yüksek performanslı kod editörü
 - Dosya gezgini (ağaç yapısı, uzun basma ile bağlam menüsü)
@@ -22,6 +22,16 @@ CodeFlow, Android platformu için geliştirilen, modern ve AI destekli bir kod e
 - 60+ programlama dili algılama
 - Ayar kalıcılığı (DataStore)
 
+### Faz 2 - Gelişmiş Editör (Tamamlandı)
+- Bul ve Değiştir (büyük/küçük harf, tam kelime, regex, toplu değiştirme)
+- Proje geneli dosyalarda arama (debounce, gruplu sonuçlar, vurgulama)
+- Komut Paleti (14 yerleşik komut, fuzzy search)
+- Hızlı Dosya Açma (fuzzy match, 5000 dosya indeksleme)
+- Satıra Gitme (Go to Line)
+- Snippet sistemi (JS/TS/Python/Java/Kotlin/HTML/CSS - 75+ snippet)
+- Ayarlar ekranı (tema, font slider, tab boyutu, word wrap, auto-save)
+- Geri/İleri navigasyon geçmişi
+
 ## Proje Yapısı
 
 ```
@@ -31,16 +41,22 @@ app/src/main/java/com/codeflow/editor/
 │   ├── model/
 │   │   ├── AppSettings.kt            # Uygulama ayarları
 │   │   ├── EditorTab.kt              # Sekme + dil algılama
-│   │   └── FileNode.kt               # Dosya ağacı modeli
+│   │   ├── FileNode.kt               # Dosya ağacı modeli
+│   │   └── Snippet.kt                # Snippet veri modeli + 75+ yerleşik snippet
 │   └── repository/
-│       ├── FileRepository.kt         # Dosya I/O işlemleri
+│       ├── FileRepository.kt         # Dosya I/O + proje arama
 │       └── SettingsRepository.kt     # DataStore ayar yönetimi
 ├── di/
 │   └── AppModule.kt                  # Hilt DI modülü
 └── ui/
     ├── components/
+    │   ├── CommandPalette.kt          # VSCode benzeri komut paleti
     │   ├── Dialogs.kt                # Dosya dialog'ları
     │   ├── EditorTabBar.kt           # Sekme çubuğu
+    │   ├── FindReplaceBar.kt         # Bul ve Değiştir çubuğu
+    │   ├── GoToLineDialog.kt         # Satıra gitme dialog'u
+    │   ├── QuickOpenDialog.kt        # Hızlı dosya açma (fuzzy search)
+    │   ├── SearchFilesPanel.kt       # Proje geneli arama paneli
     │   ├── StatusBar.kt              # Durum çubuğu
     │   └── SymbolToolbar.kt          # Sembol araç çubuğu
     ├── editor/
@@ -51,6 +67,8 @@ app/src/main/java/com/codeflow/editor/
     │   ├── MainActivity.kt           # Ana Activity
     │   ├── MainScreen.kt             # Ana Compose ekranı
     │   └── MainViewModel.kt          # Durum yönetimi
+    ├── settings/
+    │   └── SettingsScreen.kt         # Ayarlar ekranı
     └── theme/
         ├── Color.kt                  # VSCode renk paleti
         ├── Theme.kt                  # Material 3 tema
@@ -76,8 +94,8 @@ app/src/main/java/com/codeflow/editor/
 
 ## Geliştirme Fazları
 
-1. **Faz 1** - MVP *(Aktif)* : Temel editör, dosya gezgini, tema, sembol çubuğu
-2. **Faz 2** - Gelişmiş Editör: Kod katlama, çoklu imleç, arama
+1. **Faz 1** - MVP *(Tamamlandı)* : Temel editör, dosya gezgini, tema, sembol çubuğu
+2. **Faz 2** - Gelişmiş Editör *(Tamamlandı)*: Bul/Değiştir, Komut Paleti, Arama, Snippet, Ayarlar
 3. **Faz 3** - AI Entegrasyonu: Chat, kod tamamlama, inline edit
 4. **Faz 4** - Terminal ve Git: Dahili terminal, Git işlemleri
 5. **Faz 5** - Dil Desteği: LSP, IntelliSense, diagnostics
