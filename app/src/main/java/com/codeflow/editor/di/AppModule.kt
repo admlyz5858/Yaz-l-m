@@ -3,6 +3,7 @@ package com.codeflow.editor.di
 import android.content.Context
 import com.codeflow.editor.data.ai.AIApiClient
 import com.codeflow.editor.data.ai.AIRepository
+import com.codeflow.editor.data.extension.ExtensionManager
 import com.codeflow.editor.data.git.GitRepository
 import com.codeflow.editor.data.lsp.LspClient
 import com.codeflow.editor.data.repository.FileRepository
@@ -46,4 +47,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideLspClient(): LspClient = LspClient()
+
+    @Provides
+    @Singleton
+    fun provideExtensionManager(
+        @ApplicationContext context: Context
+    ): ExtensionManager = ExtensionManager(context)
 }

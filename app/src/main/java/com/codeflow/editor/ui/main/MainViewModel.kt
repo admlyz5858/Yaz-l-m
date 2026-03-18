@@ -138,6 +138,14 @@ class MainViewModel @Inject constructor(
     private val _showGitPanel = MutableStateFlow(false)
     val showGitPanel: StateFlow<Boolean> = _showGitPanel.asStateFlow()
 
+    // --- Extensions ---
+    private val _showExtensions = MutableStateFlow(false)
+    val showExtensions: StateFlow<Boolean> = _showExtensions.asStateFlow()
+
+    // --- Remote ---
+    private val _showRemote = MutableStateFlow(false)
+    val showRemote: StateFlow<Boolean> = _showRemote.asStateFlow()
+
     // --- Navigation History ---
     private val _navigationHistory = MutableStateFlow<List<String>>(emptyList())
     private val _navigationIndex = MutableStateFlow(-1)
@@ -681,6 +689,20 @@ class MainViewModel @Inject constructor(
     fun toggleGitPanel() {
         if (!_showGitPanel.value) showGitPanel() else hideGitPanel()
     }
+
+    // ===================
+    // Extensions
+    // ===================
+
+    fun showExtensions() { _showExtensions.value = true }
+    fun hideExtensions() { _showExtensions.value = false }
+
+    // ===================
+    // Remote
+    // ===================
+
+    fun showRemote() { _showRemote.value = true }
+    fun hideRemote() { _showRemote.value = false }
 
     // ===================
     // Navigation History

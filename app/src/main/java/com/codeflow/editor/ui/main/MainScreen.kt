@@ -76,9 +76,14 @@ import com.codeflow.editor.ui.ai.InlineEditDialog
 import com.codeflow.editor.ui.git.DiffView
 import com.codeflow.editor.ui.git.GitPanel
 import com.codeflow.editor.ui.git.GitViewModel
+import com.codeflow.editor.data.extension.ExtensionManager
+import com.codeflow.editor.data.remote.SSHConnection
+import com.codeflow.editor.data.remote.SSHConnectionState
+import com.codeflow.editor.ui.extension.ExtensionMarketplace
 import com.codeflow.editor.ui.lsp.DiagnosticsPanel
 import com.codeflow.editor.ui.lsp.LspViewModel
 import com.codeflow.editor.ui.lsp.OutlinePanel
+import com.codeflow.editor.ui.remote.RemoteConnectionPanel
 import com.codeflow.editor.ui.terminal.TerminalPanel
 import com.codeflow.editor.ui.terminal.TerminalViewModel
 import com.codeflow.editor.ui.settings.SettingsScreen
@@ -136,6 +141,10 @@ fun MainScreen(
     val showDiagnostics by lspViewModel.showDiagnostics.collectAsState()
     val showOutline by lspViewModel.showOutline.collectAsState()
 
+    // Extension & Remote states
+    val showExtensions by viewModel.showExtensions.collectAsState()
+    val showRemote by viewModel.showRemote.collectAsState()
+
     // Phase 2 states
     val showFindReplace by viewModel.showFindReplace.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
@@ -181,6 +190,39 @@ fun MainScreen(
     // Sync rootDirectory to git/terminal
     androidx.compose.runtime.LaunchedEffect(rootDirectory) {
         gitViewModel.setRootDirectory(rootDirectory)
+    }
+
+    // Extensions Marketplace
+    if (showExtensions) {
+        val extensionManager = remember { ExtensionManager(context) }
+        val installed = extensionManager.installedExtensions.collectAsState()
+        val marketplace = extensionManager.marketplaceExtensions.collectAsState()
+        ExtensionMarketplace(
+            installedExtensions = installed.value,
+            marketplaceExtensions = marketplace.value,
+            onInstall = { extensionManager.installExtension(it) },
+            onUninstall = { extensionManager.uninstallExtension(it) },
+            onEnable = { extensionManager.enableExtension(it) },
+            onDisable = { extensionManager.disableExtension(it) },
+            onBack = { viewModel.hideExtensions() }
+        )
+        return
+    }
+
+    // Remote Connections
+    if (showRemote) {
+        val sshConnections = remember { mutableListOf<SSHConnection>() }
+        val connState = remember { mutableStateOf(SSHConnectionState()) }
+        RemoteConnectionPanel(
+            connections = sshConnections,
+            connectionState = connState.value,
+            onConnect = { connState.value = SSHConnectionState(it.id, com.codeflow.editor.data.remote.ConnectionStatus.CONNECTING) },
+            onDisconnect = { connState.value = SSHConnectionState() },
+            onAddConnection = { sshConnections.add(it) },
+            onDeleteConnection = { id -> sshConnections.removeAll { it.id == id } },
+            onBack = { viewModel.hideRemote() }
+        )
+        return
     }
 
     // Diff View Screen
@@ -391,6 +433,20 @@ fun MainScreen(
                             }
                         )
                         HorizontalDivider()
+                        DropdownMenuItem(
+                            text = { Text("Eklentiler") },
+                            onClick = {
+                                showOverflowMenu = false
+                                viewModel.showExtensions()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Uzak Bağlantılar") },
+                            onClick = {
+                                showOverflowMenu = false
+                                viewModel.showRemote()
+                            }
+                        )
                         DropdownMenuItem(
                             text = { Text("Ayarlar") },
                             onClick = {
