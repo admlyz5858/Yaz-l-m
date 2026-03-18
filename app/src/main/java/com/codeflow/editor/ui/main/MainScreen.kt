@@ -11,18 +11,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Undo
-import androidx.compose.material.icons.automirrored.filled.Redo
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.FindReplace
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.TextDecrease
 import androidx.compose.material.icons.filled.TextIncrease
 import androidx.compose.material.icons.filled.WrapText
@@ -35,6 +35,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -50,14 +51,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.codeflow.editor.ui.components.CommandPalette
 import com.codeflow.editor.ui.components.CreateFileDialog
 import com.codeflow.editor.ui.components.DeleteConfirmDialog
 import com.codeflow.editor.ui.components.EditorTabBar
+import com.codeflow.editor.ui.components.FindReplaceBar
+import com.codeflow.editor.ui.components.GoToLineDialog
+import com.codeflow.editor.ui.components.QuickOpenDialog
 import com.codeflow.editor.ui.components.RenameDialog
+import com.codeflow.editor.ui.components.SearchFilesPanel
+import com.codeflow.editor.ui.components.SearchResult
 import com.codeflow.editor.ui.components.StatusBar
 import com.codeflow.editor.ui.components.SymbolToolbar
+import com.codeflow.editor.ui.components.buildCommandList
 import com.codeflow.editor.ui.editor.CodeEditorView
 import com.codeflow.editor.ui.explorer.FileExplorerPanel
+import com.codeflow.editor.ui.settings.SettingsScreen
 import com.codeflow.editor.ui.theme.EditorTheme
 import java.io.File
 
@@ -77,6 +86,26 @@ fun MainScreen(
     val showRenameDialog by viewModel.showRenameDialog.collectAsState()
     val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
 
+    // Phase 2 states
+    val showFindReplace by viewModel.showFindReplace.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
+    val replaceQuery by viewModel.replaceQuery.collectAsState()
+    val matchCount by viewModel.matchCount.collectAsState()
+    val currentMatch by viewModel.currentMatch.collectAsState()
+    val isCaseSensitive by viewModel.isCaseSensitive.collectAsState()
+    val isWholeWord by viewModel.isWholeWord.collectAsState()
+    val isRegex by viewModel.isRegex.collectAsState()
+    val showReplaceRow by viewModel.showReplaceRow.collectAsState()
+    val showCommandPalette by viewModel.showCommandPalette.collectAsState()
+    val showSearchFiles by viewModel.showSearchFiles.collectAsState()
+    val searchFilesQuery by viewModel.searchFilesQuery.collectAsState()
+    val searchFileResults by viewModel.searchFileResults.collectAsState()
+    val isSearchingFiles by viewModel.isSearchingFiles.collectAsState()
+    val showQuickOpen by viewModel.showQuickOpen.collectAsState()
+    val allProjectFiles by viewModel.allProjectFiles.collectAsState()
+    val showGoToLine by viewModel.showGoToLine.collectAsState()
+    val showSettings by viewModel.showSettings.collectAsState()
+
     val context = LocalContext.current
     var showOverflowMenu by remember { mutableStateOf(false) }
 
@@ -89,7 +118,6 @@ fun MainScreen(
                 android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION or
                         android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION
             )
-            val docFile = DocumentFile.fromTreeUri(context, it)
             val path = getPathFromUri(context, it)
             if (path != null) {
                 viewModel.openDirectory(File(path))
@@ -99,6 +127,46 @@ fun MainScreen(
 
     val activeTab = tabs.find { it.id == activeTabId }
     val lineCount = activeTab?.content?.lines()?.size ?: 0
+
+    // Settings Screen
+    if (showSettings) {
+        SettingsScreen(
+            settings = settings,
+            onBack = { viewModel.hideSettings() },
+            onToggleDarkTheme = { viewModel.toggleDarkTheme() },
+            onFontSizeChange = { viewModel.setFontSize(it) },
+            onToggleLineNumbers = { viewModel.toggleLineNumbers() },
+            onToggleWordWrap = { viewModel.toggleWordWrap() },
+            onToggleAutoSave = { viewModel.toggleAutoSave() },
+            onTabSizeChange = { viewModel.setTabSize(it) },
+            onToggleAutoCloseBrackets = { viewModel.toggleAutoCloseBrackets() },
+            onToggleHighlightCurrentLine = { viewModel.toggleHighlightCurrentLine() }
+        )
+        return
+    }
+
+    // Command list for palette
+    val commands = remember(settings) {
+        buildCommandList(
+            onOpenFolder = { folderPickerLauncher.launch(null) },
+            onSaveFile = { viewModel.saveActiveTab() },
+            onToggleTheme = { viewModel.toggleDarkTheme() },
+            isDarkTheme = settings.isDarkTheme,
+            onToggleWordWrap = { viewModel.toggleWordWrap() },
+            wordWrap = settings.wordWrap,
+            onToggleLineNumbers = { viewModel.toggleLineNumbers() },
+            showLineNumbers = settings.showLineNumbers,
+            onFontIncrease = { viewModel.updateFontSize(1f) },
+            onFontDecrease = { viewModel.updateFontSize(-1f) },
+            onShowFindReplace = { viewModel.showFindReplace() },
+            onShowSearchFiles = { viewModel.showSearchFilesPanel() },
+            onGoToLine = { viewModel.showGoToLine() },
+            onShowSettings = { viewModel.showSettings() },
+            onCloseAllTabs = { viewModel.closeAllTabs() },
+            onToggleSidebar = { viewModel.toggleSidebar() },
+            onShowQuickOpen = { viewModel.showQuickOpen() }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -120,10 +188,35 @@ fun MainScreen(
                     }
                 },
                 actions = {
+                    // Find & Replace
+                    IconButton(onClick = { viewModel.showFindReplace() }) {
+                        Icon(
+                            Icons.Default.FindReplace,
+                            contentDescription = "Bul & Değiştir",
+                            tint = colors.editorForeground
+                        )
+                    }
+                    // Search in files
+                    IconButton(onClick = { viewModel.showSearchFilesPanel() }) {
+                        Icon(
+                            Icons.Default.Search,
+                            contentDescription = "Dosyalarda Ara",
+                            tint = colors.editorForeground
+                        )
+                    }
+                    // Save
                     IconButton(onClick = { viewModel.saveActiveTab() }) {
                         Icon(
                             Icons.Default.Save,
                             contentDescription = "Kaydet",
+                            tint = colors.editorForeground
+                        )
+                    }
+                    // Command Palette
+                    IconButton(onClick = { viewModel.showCommandPalette() }) {
+                        Icon(
+                            Icons.Default.Terminal,
+                            contentDescription = "Komut Paleti",
                             tint = colors.editorForeground
                         )
                     }
@@ -146,6 +239,20 @@ fun MainScreen(
                                 folderPickerLauncher.launch(null)
                             }
                         )
+                        DropdownMenuItem(
+                            text = { Text("Hızlı Dosya Aç") },
+                            onClick = {
+                                showOverflowMenu = false
+                                viewModel.showQuickOpen()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Satıra Git") },
+                            onClick = {
+                                showOverflowMenu = false
+                                viewModel.showGoToLine()
+                            }
+                        )
                         HorizontalDivider()
                         DropdownMenuItem(
                             text = { Text(if (settings.isDarkTheme) "Açık Tema" else "Koyu Tema") },
@@ -164,16 +271,12 @@ fun MainScreen(
                         DropdownMenuItem(
                             text = { Text("Yazı Büyüt") },
                             leadingIcon = { Icon(Icons.Default.TextIncrease, null) },
-                            onClick = {
-                                viewModel.updateFontSize(1f)
-                            }
+                            onClick = { viewModel.updateFontSize(1f) }
                         )
                         DropdownMenuItem(
                             text = { Text("Yazı Küçült") },
                             leadingIcon = { Icon(Icons.Default.TextDecrease, null) },
-                            onClick = {
-                                viewModel.updateFontSize(-1f)
-                            }
+                            onClick = { viewModel.updateFontSize(-1f) }
                         )
                         DropdownMenuItem(
                             text = { Text(if (settings.wordWrap) "Word Wrap: Açık" else "Word Wrap: Kapalı") },
@@ -184,6 +287,13 @@ fun MainScreen(
                             }
                         )
                         HorizontalDivider()
+                        DropdownMenuItem(
+                            text = { Text("Ayarlar") },
+                            onClick = {
+                                showOverflowMenu = false
+                                viewModel.showSettings()
+                            }
+                        )
                         DropdownMenuItem(
                             text = { Text("Tüm Sekmeleri Kapat") },
                             onClick = {
@@ -203,7 +313,7 @@ fun MainScreen(
                 if (activeTab != null) {
                     SymbolToolbar(
                         onSymbolClick = { symbol ->
-                            // Symbol insertion will be handled via editor reference
+                            // Symbol insertion handled via editor reference
                         }
                     )
                 }
@@ -220,26 +330,56 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Sidebar
+            // Sidebar - File Explorer or Search Files
             AnimatedVisibility(
-                visible = isSidebarVisible,
+                visible = isSidebarVisible || showSearchFiles,
                 enter = slideInHorizontally(),
                 exit = slideOutHorizontally(targetOffsetX = { -it })
             ) {
                 Row {
-                    FileExplorerPanel(
-                        fileTree = fileTree,
-                        rootDirectory = rootDirectory,
-                        onFileClick = { viewModel.openFile(it) },
-                        onToggleDirectory = { viewModel.toggleDirectory(it) },
-                        onCreateFile = { parent, isDir ->
-                            viewModel.requestCreateFile(parent, isDir)
-                        },
-                        onRename = { viewModel.requestRename(it) },
-                        onDelete = { viewModel.requestDelete(it) },
-                        onRefresh = { viewModel.refreshFileTree() }
-                    )
-                    // Sidebar border
+                    if (showSearchFiles) {
+                        SearchFilesPanel(
+                            visible = true,
+                            searchQuery = searchFilesQuery,
+                            results = searchFileResults.map { match ->
+                                SearchResult(
+                                    file = match.file,
+                                    lineNumber = match.lineNumber,
+                                    lineContent = match.lineContent,
+                                    matchStart = match.matchStart,
+                                    matchEnd = match.matchEnd
+                                )
+                            },
+                            isSearching = isSearchingFiles,
+                            onSearchQueryChange = { viewModel.updateSearchFilesQuery(it) },
+                            onResultClick = { result ->
+                                viewModel.onSearchResultClick(
+                                    com.codeflow.editor.data.repository.SearchMatch(
+                                        file = result.file,
+                                        lineNumber = result.lineNumber,
+                                        lineContent = result.lineContent,
+                                        matchStart = result.matchStart,
+                                        matchEnd = result.matchEnd
+                                    )
+                                )
+                            },
+                            onClose = { viewModel.hideSearchFilesPanel() },
+                            modifier = Modifier.width(280.dp)
+                        )
+                    } else {
+                        FileExplorerPanel(
+                            fileTree = fileTree,
+                            rootDirectory = rootDirectory,
+                            onFileClick = { viewModel.openFile(it) },
+                            onToggleDirectory = { viewModel.toggleDirectory(it) },
+                            onCreateFile = { parent, isDir ->
+                                viewModel.requestCreateFile(parent, isDir)
+                            },
+                            onRename = { viewModel.requestRename(it) },
+                            onDelete = { viewModel.requestDelete(it) },
+                            onRefresh = { viewModel.refreshFileTree() }
+                        )
+                    }
                     Box(
                         modifier = Modifier
                             .fillMaxHeight()
@@ -251,6 +391,31 @@ fun MainScreen(
 
             // Editor Area
             Column(modifier = Modifier.fillMaxSize()) {
+                // Find & Replace bar
+                FindReplaceBar(
+                    visible = showFindReplace,
+                    searchQuery = searchQuery,
+                    replaceQuery = replaceQuery,
+                    matchCount = matchCount,
+                    currentMatch = currentMatch,
+                    isCaseSensitive = isCaseSensitive,
+                    isWholeWord = isWholeWord,
+                    isRegex = isRegex,
+                    showReplace = showReplaceRow,
+                    onSearchQueryChange = { viewModel.updateSearchQuery(it) },
+                    onReplaceQueryChange = { viewModel.updateReplaceQuery(it) },
+                    onFindNext = { viewModel.findNext() },
+                    onFindPrevious = { viewModel.findPrevious() },
+                    onReplace = { viewModel.replaceCurrent() },
+                    onReplaceAll = { viewModel.replaceAll() },
+                    onToggleCaseSensitive = { viewModel.toggleCaseSensitive() },
+                    onToggleWholeWord = { viewModel.toggleWholeWord() },
+                    onToggleRegex = { viewModel.toggleRegex() },
+                    onToggleReplace = { viewModel.toggleShowReplace() },
+                    onClose = { viewModel.hideFindReplace() }
+                )
+
+                // Tab bar
                 if (tabs.isNotEmpty()) {
                     EditorTabBar(
                         tabs = tabs,
@@ -261,6 +426,7 @@ fun MainScreen(
                     HorizontalDivider(color = colors.border, thickness = 1.dp)
                 }
 
+                // Editor or Welcome
                 if (activeTab != null) {
                     CodeEditorView(
                         tab = activeTab!!,
@@ -273,6 +439,7 @@ fun MainScreen(
                 } else {
                     WelcomeView(
                         onOpenFolder = { folderPickerLauncher.launch(null) },
+                        onOpenCommandPalette = { viewModel.showCommandPalette() },
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -280,7 +447,8 @@ fun MainScreen(
         }
     }
 
-    // Dialogs
+    // ===== Dialogs =====
+
     showCreateFileDialog?.let { (parent, isDir) ->
         CreateFileDialog(
             isDirectory = isDir,
@@ -304,11 +472,35 @@ fun MainScreen(
             onDismiss = { viewModel.dismissDeleteDialog() }
         )
     }
+
+    // Command Palette
+    CommandPalette(
+        visible = showCommandPalette,
+        commands = commands,
+        onDismiss = { viewModel.hideCommandPalette() }
+    )
+
+    // Quick Open
+    QuickOpenDialog(
+        visible = showQuickOpen,
+        allFiles = allProjectFiles,
+        onFileSelected = { viewModel.openFile(it) },
+        onDismiss = { viewModel.hideQuickOpen() }
+    )
+
+    // Go To Line
+    GoToLineDialog(
+        visible = showGoToLine,
+        totalLines = lineCount,
+        onGoToLine = { viewModel.goToLine(it) },
+        onDismiss = { viewModel.hideGoToLine() }
+    )
 }
 
 @Composable
 private fun WelcomeView(
     onOpenFolder: () -> Unit,
+    onOpenCommandPalette: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val colors = EditorTheme.colors
@@ -330,31 +522,29 @@ private fun WelcomeView(
                 modifier = Modifier.padding(top = 8.dp)
             )
             Text(
-                text = "Başlamak için bir klasör açın\nveya soldaki dosya gezginini kullanın",
+                text = "Başlamak için bir klasör açın\nveya komut paletini kullanın",
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.onSurfaceVariant.copy(alpha = 0.7f),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 24.dp)
             )
-            androidx.compose.material3.TextButton(
-                onClick = onOpenFolder,
-                modifier = Modifier.padding(top = 16.dp)
-            ) {
-                Icon(Icons.Default.FolderOpen, contentDescription = null)
-                Text(
-                    text = "  Klasör Aç",
-                    style = MaterialTheme.typography.bodyLarge
-                )
+            Row(modifier = Modifier.padding(top = 16.dp)) {
+                TextButton(onClick = onOpenFolder) {
+                    Icon(Icons.Default.FolderOpen, contentDescription = null)
+                    Text("  Klasör Aç")
+                }
+                TextButton(onClick = onOpenCommandPalette) {
+                    Icon(Icons.Default.Terminal, contentDescription = null)
+                    Text("  Komut Paleti")
+                }
             }
         }
     }
 }
 
 private fun getPathFromUri(context: android.content.Context, uri: android.net.Uri): String? {
-    // Try to resolve the real file path from a tree URI
     val docId = DocumentFile.fromTreeUri(context, uri)?.uri?.lastPathSegment ?: return null
 
-    // Handle "primary:path" format
     if (docId.contains(":")) {
         val parts = docId.split(":")
         val type = parts[0]
@@ -363,10 +553,7 @@ private fun getPathFromUri(context: android.content.Context, uri: android.net.Ur
         return when (type) {
             "primary" -> "/storage/emulated/0/$relativePath"
             "home" -> "/storage/emulated/0/Documents/$relativePath"
-            else -> {
-                // External SD card or other storage
-                "/storage/$type/$relativePath"
-            }
+            else -> "/storage/$type/$relativePath"
         }
     }
     return null

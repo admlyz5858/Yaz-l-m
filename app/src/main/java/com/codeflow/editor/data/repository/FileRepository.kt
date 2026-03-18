@@ -9,6 +9,14 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
+data class SearchMatch(
+    val file: File,
+    val lineNumber: Int,
+    val lineContent: String,
+    val matchStart: Int,
+    val matchEnd: Int
+)
+
 @Singleton
 class FileRepository @Inject constructor() {
 
@@ -91,6 +99,85 @@ class FileRepository @Inject constructor() {
 
     fun buildFileTree(root: File, expandedPaths: Set<String>): FileNode {
         return root.toFileNode(depth = 0, expandedPaths = expandedPaths)
+    }
+
+    fun collectAllFiles(root: File): List<File> {
+        val result = mutableListOf<File>()
+        collectFilesRecursive(root, result, maxDepth = 8, maxFiles = 5000)
+        return result
+    }
+
+    private fun collectFilesRecursive(dir: File, result: MutableList<File>, maxDepth: Int, maxFiles: Int, depth: Int = 0) {
+        if (depth > maxDepth || result.size >= maxFiles) return
+        val children = dir.listFiles() ?: return
+        for (child in children.sortedBy { it.name.lowercase() }) {
+            if (child.name.startsWith(".")) continue
+            if (child.name == "node_modules" || child.name == "build" || child.name == "__pycache__") continue
+            if (child.isFile) {
+                result.add(child)
+            } else if (child.isDirectory) {
+                collectFilesRecursive(child, result, maxDepth, maxFiles, depth + 1)
+            }
+        }
+    }
+
+    suspend fun searchInFiles(
+        root: File,
+        query: String,
+        caseSensitive: Boolean = false,
+        maxResults: Int = 500
+    ): List<SearchMatch> = withContext(Dispatchers.IO) {
+        val results = mutableListOf<SearchMatch>()
+        searchFilesRecursive(root, query, caseSensitive, results, maxResults, maxDepth = 8)
+        results
+    }
+
+    private fun searchFilesRecursive(
+        dir: File,
+        query: String,
+        caseSensitive: Boolean,
+        results: MutableList<SearchMatch>,
+        maxResults: Int,
+        maxDepth: Int,
+        depth: Int = 0
+    ) {
+        if (depth > maxDepth || results.size >= maxResults) return
+        val children = dir.listFiles() ?: return
+        for (child in children) {
+            if (results.size >= maxResults) return
+            if (child.name.startsWith(".")) continue
+            if (child.name == "node_modules" || child.name == "build" || child.name == "__pycache__") continue
+
+            if (child.isDirectory) {
+                searchFilesRecursive(child, query, caseSensitive, results, maxResults, maxDepth, depth + 1)
+            } else if (child.isFile && child.length() < 1_000_000) {
+                try {
+                    val lines = child.readLines()
+                    val searchQuery = if (caseSensitive) query else query.lowercase()
+                    lines.forEachIndexed { index, line ->
+                        if (results.size >= maxResults) return
+                        val searchLine = if (caseSensitive) line else line.lowercase()
+                        var startPos = 0
+                        while (true) {
+                            val matchPos = searchLine.indexOf(searchQuery, startPos)
+                            if (matchPos == -1) break
+                            results.add(
+                                SearchMatch(
+                                    file = child,
+                                    lineNumber = index + 1,
+                                    lineContent = line,
+                                    matchStart = matchPos,
+                                    matchEnd = matchPos + query.length
+                                )
+                            )
+                            startPos = matchPos + 1
+                        }
+                    }
+                } catch (_: Exception) {
+                    // Skip unreadable files
+                }
+            }
+        }
     }
 
     fun getFileIcon(extension: String): String {
