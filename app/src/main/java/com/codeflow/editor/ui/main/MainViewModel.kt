@@ -126,6 +126,10 @@ class MainViewModel @Inject constructor(
     private val _showSettings = MutableStateFlow(false)
     val showSettings: StateFlow<Boolean> = _showSettings.asStateFlow()
 
+    // --- AI Chat Panel ---
+    private val _showAIChat = MutableStateFlow(false)
+    val showAIChat: StateFlow<Boolean> = _showAIChat.asStateFlow()
+
     // --- Navigation History ---
     private val _navigationHistory = MutableStateFlow<List<String>>(emptyList())
     private val _navigationIndex = MutableStateFlow(-1)
@@ -640,6 +644,14 @@ class MainViewModel @Inject constructor(
     fun hideSettings() {
         _showSettings.value = false
     }
+
+    // ===================
+    // AI Chat
+    // ===================
+
+    fun showAIChat() { _showAIChat.value = true }
+    fun hideAIChat() { _showAIChat.value = false }
+    fun toggleAIChat() { _showAIChat.update { !it } }
 
     // ===================
     // Navigation History

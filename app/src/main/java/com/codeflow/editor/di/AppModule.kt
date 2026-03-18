@@ -1,6 +1,8 @@
 package com.codeflow.editor.di
 
 import android.content.Context
+import com.codeflow.editor.data.ai.AIApiClient
+import com.codeflow.editor.data.ai.AIRepository
 import com.codeflow.editor.data.repository.FileRepository
 import com.codeflow.editor.data.repository.SettingsRepository
 import dagger.Module
@@ -23,4 +25,15 @@ object AppModule {
     fun provideSettingsRepository(
         @ApplicationContext context: Context
     ): SettingsRepository = SettingsRepository(context)
+
+    @Provides
+    @Singleton
+    fun provideAIApiClient(): AIApiClient = AIApiClient()
+
+    @Provides
+    @Singleton
+    fun provideAIRepository(
+        @ApplicationContext context: Context,
+        apiClient: AIApiClient
+    ): AIRepository = AIRepository(context, apiClient)
 }

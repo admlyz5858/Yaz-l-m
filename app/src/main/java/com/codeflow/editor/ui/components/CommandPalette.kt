@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Numbers
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.TextDecrease
 import androidx.compose.material.icons.filled.TextIncrease
 import androidx.compose.material.icons.filled.WrapText
@@ -265,9 +266,13 @@ fun buildCommandList(
     onShowSettings: () -> Unit,
     onCloseAllTabs: () -> Unit,
     onToggleSidebar: () -> Unit,
-    onShowQuickOpen: () -> Unit
+    onShowQuickOpen: () -> Unit,
+    onShowAIChat: () -> Unit = {},
+    onShowAISettings: () -> Unit = {}
 ): List<Command> {
     return listOf(
+        Command("ai_chat", "AI Asistan", icon = Icons.Default.SmartToy, category = "AI") { onShowAIChat() },
+        Command("ai_settings", "AI Ayarları", icon = Icons.Default.SmartToy, category = "AI") { onShowAISettings() },
         Command("open_folder", "Klasör Aç", icon = Icons.Default.FolderOpen, category = "Dosya") { onOpenFolder() },
         Command("save", "Kaydet", icon = Icons.Default.Save, category = "Dosya") { onSaveFile() },
         Command("find", "Bul ve Değiştir", icon = Icons.Default.FindReplace, category = "Düzenle") { onShowFindReplace() },

@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.TextDecrease
 import androidx.compose.material.icons.filled.TextIncrease
@@ -66,6 +67,10 @@ import com.codeflow.editor.ui.components.SymbolToolbar
 import com.codeflow.editor.ui.components.buildCommandList
 import com.codeflow.editor.ui.editor.CodeEditorView
 import com.codeflow.editor.ui.explorer.FileExplorerPanel
+import com.codeflow.editor.ui.ai.AIChatPanel
+import com.codeflow.editor.ui.ai.AIChatViewModel
+import com.codeflow.editor.ui.ai.AISettingsSheet
+import com.codeflow.editor.ui.ai.InlineEditDialog
 import com.codeflow.editor.ui.settings.SettingsScreen
 import com.codeflow.editor.ui.theme.EditorTheme
 import java.io.File
@@ -73,7 +78,8 @@ import java.io.File
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
+    aiViewModel: AIChatViewModel = hiltViewModel()
 ) {
     val colors = EditorTheme.colors
     val settings by viewModel.settings.collectAsState()
@@ -85,6 +91,16 @@ fun MainScreen(
     val showCreateFileDialog by viewModel.showCreateFileDialog.collectAsState()
     val showRenameDialog by viewModel.showRenameDialog.collectAsState()
     val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
+
+    // AI states
+    val showAIChat by viewModel.showAIChat.collectAsState()
+    val aiMessages by aiViewModel.messages.collectAsState()
+    val aiLoading by aiViewModel.isLoading.collectAsState()
+    val aiContext by aiViewModel.currentContext.collectAsState()
+    val aiConfig by aiViewModel.aiConfig.collectAsState()
+    val aiTokens by aiViewModel.totalTokensUsed.collectAsState()
+    val showAISettings by aiViewModel.showAISettings.collectAsState()
+    val inlineEditResult by aiViewModel.inlineEditResult.collectAsState()
 
     // Phase 2 states
     val showFindReplace by viewModel.showFindReplace.collectAsState()
@@ -128,6 +144,19 @@ fun MainScreen(
     val activeTab = tabs.find { it.id == activeTabId }
     val lineCount = activeTab?.content?.lines()?.size ?: 0
 
+    // AI Settings Screen
+    if (showAISettings) {
+        AISettingsSheet(
+            config = aiConfig,
+            onBack = { aiViewModel.hideAISettings() },
+            onProviderChange = { aiViewModel.updateProvider(it) },
+            onModelChange = { aiViewModel.updateModel(it) },
+            onApiKeyChange = { provider, key -> aiViewModel.updateApiKey(provider, key) },
+            onTemperatureChange = { aiViewModel.updateTemperature(it) }
+        )
+        return
+    }
+
     // Settings Screen
     if (showSettings) {
         SettingsScreen(
@@ -164,7 +193,9 @@ fun MainScreen(
             onShowSettings = { viewModel.showSettings() },
             onCloseAllTabs = { viewModel.closeAllTabs() },
             onToggleSidebar = { viewModel.toggleSidebar() },
-            onShowQuickOpen = { viewModel.showQuickOpen() }
+            onShowQuickOpen = { viewModel.showQuickOpen() },
+            onShowAIChat = { viewModel.showAIChat() },
+            onShowAISettings = { aiViewModel.showAISettings() }
         )
     }
 
@@ -210,6 +241,14 @@ fun MainScreen(
                             Icons.Default.Save,
                             contentDescription = "Kaydet",
                             tint = colors.editorForeground
+                        )
+                    }
+                    // AI Chat
+                    IconButton(onClick = { viewModel.toggleAIChat() }) {
+                        Icon(
+                            Icons.Default.SmartToy,
+                            contentDescription = "AI Asistan",
+                            tint = if (showAIChat) colors.accent else colors.editorForeground
                         )
                     }
                     // Command Palette
@@ -390,7 +429,7 @@ fun MainScreen(
             }
 
             // Editor Area
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.weight(1f)) {
                 // Find & Replace bar
                 FindReplaceBar(
                     visible = showFindReplace,
@@ -444,8 +483,44 @@ fun MainScreen(
                     )
                 }
             }
+
+            // AI Chat Panel (right side)
+            AnimatedVisibility(
+                visible = showAIChat,
+                enter = slideInHorizontally(initialOffsetX = { it }),
+                exit = slideOutHorizontally(targetOffsetX = { it })
+            ) {
+                Row {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(1.dp)
+                            .background(colors.border)
+                    )
+                    AIChatPanel(
+                        messages = aiMessages,
+                        isLoading = aiLoading,
+                        currentContext = aiContext,
+                        aiConfig = aiConfig,
+                        totalTokens = aiTokens,
+                        onSendMessage = { aiViewModel.sendMessage(it) },
+                        onClearChat = { aiViewModel.clearChat() },
+                        onClearContext = { aiViewModel.clearContext() },
+                        onShowSettings = { aiViewModel.showAISettings() },
+                        onClose = { viewModel.hideAIChat() },
+                        modifier = Modifier.width(300.dp)
+                    )
+                }
+            }
         }
     }
+
+    // Inline Edit Dialog
+    InlineEditDialog(
+        result = inlineEditResult,
+        onAccept = { aiViewModel.acceptInlineEdit() },
+        onReject = { aiViewModel.rejectInlineEdit() }
+    )
 
     // ===== Dialogs =====
 
