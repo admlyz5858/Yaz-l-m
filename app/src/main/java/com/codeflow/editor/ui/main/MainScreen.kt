@@ -76,6 +76,9 @@ import com.codeflow.editor.ui.ai.InlineEditDialog
 import com.codeflow.editor.ui.git.DiffView
 import com.codeflow.editor.ui.git.GitPanel
 import com.codeflow.editor.ui.git.GitViewModel
+import com.codeflow.editor.ui.lsp.DiagnosticsPanel
+import com.codeflow.editor.ui.lsp.LspViewModel
+import com.codeflow.editor.ui.lsp.OutlinePanel
 import com.codeflow.editor.ui.terminal.TerminalPanel
 import com.codeflow.editor.ui.terminal.TerminalViewModel
 import com.codeflow.editor.ui.settings.SettingsScreen
@@ -88,7 +91,8 @@ fun MainScreen(
     viewModel: MainViewModel = hiltViewModel(),
     aiViewModel: AIChatViewModel = hiltViewModel(),
     terminalViewModel: TerminalViewModel = hiltViewModel(),
-    gitViewModel: GitViewModel = hiltViewModel()
+    gitViewModel: GitViewModel = hiltViewModel(),
+    lspViewModel: LspViewModel = hiltViewModel()
 ) {
     val colors = EditorTheme.colors
     val settings by viewModel.settings.collectAsState()
@@ -124,6 +128,13 @@ fun MainScreen(
     val isGitRepo by gitViewModel.isGitRepo.collectAsState()
     val gitLoading by gitViewModel.isLoading.collectAsState()
     val currentDiff by gitViewModel.currentDiff.collectAsState()
+
+    // LSP states
+    val lspStatus by lspViewModel.serverStatus.collectAsState()
+    val lspDiagnostics by lspViewModel.diagnostics.collectAsState()
+    val lspSymbols by lspViewModel.documentSymbols.collectAsState()
+    val showDiagnostics by lspViewModel.showDiagnostics.collectAsState()
+    val showOutline by lspViewModel.showOutline.collectAsState()
 
     // Phase 2 states
     val showFindReplace by viewModel.showFindReplace.collectAsState()
@@ -552,6 +563,19 @@ fun MainScreen(
                         onOpenCommandPalette = { viewModel.showCommandPalette() },
                         modifier = Modifier.weight(1f)
                     )
+                }
+
+                // Diagnostics Panel (bottom)
+                AnimatedVisibility(visible = showDiagnostics) {
+                    Column {
+                        HorizontalDivider(color = colors.border)
+                        DiagnosticsPanel(
+                            diagnostics = lspDiagnostics,
+                            onDiagnosticClick = { _, _ -> },
+                            onClose = { lspViewModel.hideDiagnostics() },
+                            modifier = Modifier.height(180.dp)
+                        )
+                    }
                 }
 
                 // Terminal Panel (bottom)

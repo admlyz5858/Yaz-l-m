@@ -4,6 +4,7 @@ import android.content.Context
 import com.codeflow.editor.data.ai.AIApiClient
 import com.codeflow.editor.data.ai.AIRepository
 import com.codeflow.editor.data.git.GitRepository
+import com.codeflow.editor.data.lsp.LspClient
 import com.codeflow.editor.data.repository.FileRepository
 import com.codeflow.editor.data.repository.SettingsRepository
 import dagger.Module
@@ -41,4 +42,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideGitRepository(): GitRepository = GitRepository()
+
+    @Provides
+    @Singleton
+    fun provideLspClient(): LspClient = LspClient()
 }
