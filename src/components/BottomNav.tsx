@@ -1,10 +1,10 @@
 import { useStore, Tab } from '../store/useStore'
-import { Home, Timer, Trophy, Users, Award } from 'lucide-react'
+import { Home, Timer, BarChart2, Users, Award } from 'lucide-react'
 
 const tabs: { id: Tab; label: string; icon: typeof Home }[] = [
   { id: 'home', label: 'Ana Sayfa', icon: Home },
   { id: 'focus', label: 'Odaklan', icon: Timer },
-  { id: 'leaderboard', label: 'Sıralama', icon: Trophy },
+  { id: 'stats', label: 'İstatistik', icon: BarChart2 },
   { id: 'groups', label: 'Gruplar', icon: Users },
   { id: 'badges', label: 'Rozetler', icon: Award },
 ]

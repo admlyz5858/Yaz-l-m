@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-export type Tab = 'home' | 'focus' | 'leaderboard' | 'groups' | 'badges'
+export type Tab = 'home' | 'focus' | 'stats' | 'groups' | 'badges'
 
 export interface Badge {
   id: string
@@ -55,6 +55,34 @@ export interface LeaderboardEntry {
 }
 
 export type PetMood = 'sleeping' | 'sad' | 'neutral' | 'happy' | 'excited'
+export type AmbientSound = 'none' | 'lofi' | 'rain' | 'cafe' | 'nature'
+
+export interface Subject {
+  id: string
+  name: string
+  icon: string
+  color: string
+  totalMinutes: number
+  weeklyMinutes: number
+}
+
+export interface DayRecord {
+  date: string // YYYY-MM-DD
+  minutes: number
+  pomodoros: number
+}
+
+export interface Toast {
+  id: string
+  message: string
+  icon: string
+  type: 'success' | 'info' | 'achievement'
+}
+
+export interface Quote {
+  text: string
+  author: string
+}
 
 export interface AppState {
   // Navigation
@@ -71,6 +99,7 @@ export interface AppState {
   streak: number
   selectedTitle: string
   username: string
+  dailyGoalMinutes: number
 
   // Pomodoro
   pomodoroActive: boolean
@@ -80,6 +109,10 @@ export interface AppState {
   pomodoroCount: number
   todayPomodoros: number
   weeklyPomodoros: number
+  pomodoroDuration: number   // minutes
+  breakDuration: number      // minutes
+  activeSubjectId: string | null
+  ambientSound: AmbientSound
 
   // Gamification
   badges: Badge[]
@@ -96,6 +129,21 @@ export interface AppState {
   petMood: PetMood
   petName: string
 
+  // Subjects
+  subjects: Subject[]
+
+  // History
+  history: DayRecord[]
+
+  // Toasts
+  toasts: Toast[]
+
+  // Settings modal
+  settingsOpen: boolean
+
+  // Daily quote index
+  quoteIndex: number
+
   // Actions
   startPomodoro: () => void
   pausePomodoro: () => void
@@ -108,6 +156,20 @@ export interface AppState {
   selectTitle: (title: string) => void
   completeWeeklyTask: (id: string) => void
   updatePetMood: () => void
+  setAmbientSound: (sound: AmbientSound) => void
+  setActiveSubject: (id: string | null) => void
+  addSubject: (name: string, icon: string, color: string) => void
+  removeSubject: (id: string) => void
+  setPomodoroDuration: (minutes: number) => void
+  setBreakDuration: (minutes: number) => void
+  setUsername: (name: string) => void
+  setPetName: (name: string) => void
+  setDailyGoal: (minutes: number) => void
+  openSettings: () => void
+  closeSettings: () => void
+  dismissToast: (id: string) => void
+  addToast: (message: string, icon: string, type: Toast['type']) => void
+  nextQuote: () => void
 }
 
 export const LEVELS = [
@@ -121,6 +183,17 @@ export const LEVELS = [
   { level: 8, title: 'Büyük Üstad', xpRequired: 18000 },
   { level: 9, title: 'Efsane', xpRequired: 27000 },
   { level: 10, title: 'Şehit 🏆', xpRequired: 40000 },
+]
+
+export const QUOTES: Quote[] = [
+  { text: 'Başarı, her gün tekrarlanan küçük çabaların toplamıdır.', author: 'Robert Collier' },
+  { text: 'Bugün zor olan, yarın alışkanlık haline gelir.', author: 'Anonim' },
+  { text: 'Öğrenmek bir hazinedir, sahibini her yere taşır.', author: 'Çin Atasözü' },
+  { text: 'Disiplin, istekler ile başarılar arasındaki köprüdür.', author: 'Jim Rohn' },
+  { text: 'Zihni açık, kalemi hazır, azmi kuvvetli tut.', author: 'Anonim' },
+  { text: 'Her büyük yolculuk tek bir adımla başlar.', author: 'Lao Tzu' },
+  { text: 'Çalışmak ibadet, bilmek güçtür.', author: 'Francis Bacon' },
+  { text: 'Bugün yapabileceğini yarına bırakma.', author: 'Benjamin Franklin' },
 ]
 
 function getLevelInfo(xp: number) {
@@ -144,6 +217,10 @@ function getPetMood(todayMinutes: number, streak: number): PetMood {
   return 'excited'
 }
 
+function todayStr() {
+  return new Date().toISOString().slice(0, 10)
+}
+
 const initialBadges: Badge[] = [
   { id: 'first_pomodoro', name: 'İlk Adım', description: 'İlk Pomodoro\'nu tamamla', icon: '🍅', unlocked: false, premium: false },
   { id: 'streak_3', name: '3 Günlük Seri', description: '3 gün üst üste çalış', icon: '🔥', unlocked: false, premium: false },
@@ -157,12 +234,17 @@ const initialBadges: Badge[] = [
   { id: 'pomodoro_25', name: 'Pomodoro Ustası', description: '25 Pomodoro tamamla', icon: '🏅', unlocked: false, premium: false },
   { id: 'group_join', name: 'Takım Oyuncusu', description: 'Bir gruba katıl', icon: '🤝', unlocked: false, premium: false },
   { id: 'early_bird', name: 'Erken Kuş', description: '06:00\'dan önce çalış', icon: '🌅', unlocked: false, premium: false },
+  { id: 'night_owl', name: 'Gece Kuşu', description: '23:00\'dan sonra çalış', icon: '🦉', unlocked: false, premium: false },
+  { id: 'multi_subject', name: 'Çok Yönlü', description: '3 farklı ders çalış', icon: '📚', unlocked: false, premium: false },
+  { id: 'daily_goal', name: 'Hedef Avcısı', description: 'Günlük hedefini tamamla', icon: '🎯', unlocked: false, premium: false },
+  { id: 'power_user', name: 'Güçlendirici', description: 'Bir güçlendirme satın al', icon: '⚗️', unlocked: false, premium: false },
 ]
 
 const initialWeeklyTasks: WeeklyTask[] = [
   { id: 'hours_15', description: 'Bu hafta 15 saat çalış', target: 15, current: 0, unit: 'saat', xpReward: 500, completed: false },
   { id: 'pomodoro_12', description: '12 Pomodoro tamamla', target: 12, current: 0, unit: 'pomodoro', xpReward: 300, completed: false },
   { id: 'days_5', description: '5 farklı gün çalış', target: 5, current: 0, unit: 'gün', xpReward: 400, completed: false },
+  { id: 'streak_keep', description: '3 gün seri yap', target: 3, current: 0, unit: 'gün', xpReward: 250, completed: false },
 ]
 
 const initialGroups: StudyGroup[] = [
@@ -170,6 +252,7 @@ const initialGroups: StudyGroup[] = [
   { id: 'night_owls', name: 'Gece Kuşları', icon: '🦉', description: 'Gece çalışmayı sevenler', members: 1923, weeklyGoalHours: 20, currentHours: 0, joined: false },
   { id: 'early_birds', name: 'Sabah Erenleri', icon: '🌅', description: 'Sabah çalışmayı sevenler', members: 1456, weeklyGoalHours: 15, currentHours: 0, joined: false },
   { id: 'sprinters', name: 'Sprint Takımı', icon: '⚡', description: 'Kısa yoğun seanslar', members: 3102, weeklyGoalHours: 10, currentHours: 0, joined: false },
+  { id: 'bookworms', name: 'Kitap Kurdu', icon: '📖', description: 'Okuma odaklı çalışanlar', members: 987, weeklyGoalHours: 12, currentHours: 0, joined: false },
 ]
 
 const initialLeaderboard: LeaderboardEntry[] = [
@@ -181,6 +264,14 @@ const initialLeaderboard: LeaderboardEntry[] = [
   { rank: 6, name: 'Sen', avatar: '🧑‍💻', xp: 0, level: 1, streak: 0, isMe: true },
   { rank: 7, name: 'Emre S.', avatar: '👨‍🏫', xp: 5100, level: 5, streak: 8 },
   { rank: 8, name: 'Hande Y.', avatar: '👩‍🔬', xp: 4200, level: 5, streak: 6 },
+]
+
+const initialSubjects: Subject[] = [
+  { id: 'math', name: 'Matematik', icon: '📐', color: '#60a5fa', totalMinutes: 0, weeklyMinutes: 0 },
+  { id: 'science', name: 'Fen', icon: '🔬', color: '#4ade80', totalMinutes: 0, weeklyMinutes: 0 },
+  { id: 'history', name: 'Tarih', icon: '📜', color: '#fb923c', totalMinutes: 0, weeklyMinutes: 0 },
+  { id: 'language', name: 'Dil', icon: '🗣️', color: '#c084fc', totalMinutes: 0, weeklyMinutes: 0 },
+  { id: 'general', name: 'Genel', icon: '📚', color: '#818cf8', totalMinutes: 0, weeklyMinutes: 0 },
 ]
 
 export const useStore = create<AppState>()(
@@ -198,6 +289,7 @@ export const useStore = create<AppState>()(
       streak: 0,
       selectedTitle: 'Yeni Öğrenci',
       username: 'Sen',
+      dailyGoalMinutes: 120,
 
       pomodoroActive: false,
       pomodoroTimeLeft: 25 * 60,
@@ -206,6 +298,10 @@ export const useStore = create<AppState>()(
       pomodoroCount: 0,
       todayPomodoros: 0,
       weeklyPomodoros: 0,
+      pomodoroDuration: 25,
+      breakDuration: 5,
+      activeSubjectId: 'general',
+      ambientSound: 'none',
 
       badges: initialBadges,
       powerUps: [
@@ -222,11 +318,19 @@ export const useStore = create<AppState>()(
       petMood: 'sleeping',
       petName: 'Mochi',
 
+      subjects: initialSubjects,
+      history: [],
+      toasts: [],
+      settingsOpen: false,
+      quoteIndex: 0,
+
       startPomodoro: () => set({ pomodoroActive: true }),
       pausePomodoro: () => set({ pomodoroActive: false }),
       resetPomodoro: () => {
         const state = get()
-        const totalTime = state.pomodoroPhase === 'work' ? 25 * 60 : 5 * 60
+        const totalTime = state.pomodoroPhase === 'work'
+          ? state.pomodoroDuration * 60
+          : state.breakDuration * 60
         set({ pomodoroActive: false, pomodoroTimeLeft: totalTime, pomodoroTotalTime: totalTime })
       },
 
@@ -236,38 +340,80 @@ export const useStore = create<AppState>()(
 
         if (state.pomodoroTimeLeft <= 1) {
           if (state.pomodoroPhase === 'work') {
+            const studyMins = state.pomodoroDuration
             const newCount = state.pomodoroCount + 1
             const newToday = state.todayPomodoros + 1
             const newWeekly = state.weeklyPomodoros + 1
-            const studyMinutesEarned = 25
-            const newToday$ = state.todayStudyMinutes + studyMinutesEarned
-            const newWeekly$ = state.weeklyStudyMinutes + studyMinutesEarned
-            const newTotal = state.totalStudyMinutes + studyMinutesEarned
+            const newTodayMins = state.todayStudyMinutes + studyMins
+            const newWeeklyMins = state.weeklyStudyMinutes + studyMins
+            const newTotal = state.totalStudyMinutes + studyMins
 
-            // XP for pomodoro
+            // XP
             const multiplier = state.powerUps.find(p => p.id === 'xp_multiplier' && p.active) ? 2 : 1
-            const xpEarned = 50 * multiplier
+            const xpEarned = Math.round(studyMins * 2 * multiplier)
             const newXP = state.xp + xpEarned
             const { level: newLevel, xpToNextLevel } = getLevelInfo(newXP)
             const leveledUp = newLevel > state.level
 
             // Update leaderboard
-            const newLeaderboard = state.leaderboard.map(e =>
-              e.isMe ? { ...e, xp: newXP, level: newLevel, streak: state.streak } : e
-            ).sort((a, b) => b.xp - a.xp).map((e, i) => ({ ...e, rank: i + 1 }))
+            const newLeaderboard = state.leaderboard
+              .map(e => e.isMe ? { ...e, xp: newXP, level: newLevel, streak: state.streak } : e)
+              .sort((a, b) => b.xp - a.xp)
+              .map((e, i) => ({ ...e, rank: i + 1 }))
 
-            // Check badges
+            // Update subjects
+            const newSubjects = state.subjects.map(s =>
+              s.id === state.activeSubjectId
+                ? { ...s, totalMinutes: s.totalMinutes + studyMins, weeklyMinutes: s.weeklyMinutes + studyMins }
+                : s
+            )
+
+            // Update history
+            const today = todayStr()
+            const existingDay = state.history.find(d => d.date === today)
+            const newHistory: DayRecord[] = existingDay
+              ? state.history.map(d => d.date === today
+                  ? { ...d, minutes: d.minutes + studyMins, pomodoros: d.pomodoros + 1 }
+                  : d)
+              : [...state.history.slice(-29), { date: today, minutes: studyMins, pomodoros: 1 }]
+
+            // Hour & badge checks
+            const hour = new Date().getHours()
             const newBadges = state.badges.map(b => {
               if (b.unlocked) return b
               if (b.id === 'first_pomodoro' && newCount >= 1) return { ...b, unlocked: true, unlockedAt: Date.now() }
               if (b.id === 'pomodoro_25' && newCount >= 25) return { ...b, unlocked: true, unlockedAt: Date.now() }
               if (b.id === 'hours_10' && newTotal >= 600) return { ...b, unlocked: true, unlockedAt: Date.now() }
+              if (b.id === 'hours_50' && newTotal >= 3000) return { ...b, unlocked: true, unlockedAt: Date.now() }
+              if (b.id === 'hours_100' && newTotal >= 6000) return { ...b, unlocked: true, unlockedAt: Date.now() }
               if (b.id === 'level_5' && newLevel >= 5) return { ...b, unlocked: true, unlockedAt: Date.now() }
               if (b.id === 'level_9' && newLevel >= 9) return { ...b, unlocked: true, unlockedAt: Date.now() }
+              if (b.id === 'early_bird' && hour < 6) return { ...b, unlocked: true, unlockedAt: Date.now() }
+              if (b.id === 'night_owl' && hour >= 23) return { ...b, unlocked: true, unlockedAt: Date.now() }
+              if (b.id === 'daily_goal' && newTodayMins >= state.dailyGoalMinutes) return { ...b, unlocked: true, unlockedAt: Date.now() }
+              if (b.id === 'multi_subject' && newSubjects.filter(s => s.totalMinutes > 0).length >= 3) return { ...b, unlocked: true, unlockedAt: Date.now() }
               return b
             })
 
-            // Update weekly tasks
+            // New badge toasts
+            const justUnlocked = newBadges.filter((b, i) => b.unlocked && !state.badges[i].unlocked)
+            const newToasts: Toast[] = [
+              ...state.toasts,
+              ...justUnlocked.map(b => ({
+                id: `badge-${b.id}-${Date.now()}`,
+                message: `"${b.name}" rozeti kazandın!`,
+                icon: b.icon,
+                type: 'achievement' as const,
+              })),
+              {
+                id: `xp-${Date.now()}`,
+                message: `+${xpEarned} XP kazandın! 🎉`,
+                icon: '⚡',
+                type: 'success' as const,
+              },
+            ]
+
+            // Weekly tasks
             const newTasks = state.weeklyTasks.map(t => {
               if (t.completed) return t
               if (t.id === 'pomodoro_12') {
@@ -275,25 +421,24 @@ export const useStore = create<AppState>()(
                 return { ...updated, completed: updated.current >= updated.target }
               }
               if (t.id === 'hours_15') {
-                const newHours = newWeekly$ / 60
-                const updated = { ...t, current: Math.min(newHours, t.target) }
+                const updated = { ...t, current: Math.min(newWeeklyMins / 60, t.target) }
                 return { ...updated, completed: updated.current >= updated.target }
               }
               return t
             })
 
-            const petMood = getPetMood(newToday$, state.streak)
+            const petMood = getPetMood(newTodayMins, state.streak)
 
             set({
               pomodoroPhase: 'break',
-              pomodoroTimeLeft: 5 * 60,
-              pomodoroTotalTime: 5 * 60,
+              pomodoroTimeLeft: state.breakDuration * 60,
+              pomodoroTotalTime: state.breakDuration * 60,
               pomodoroActive: false,
               pomodoroCount: newCount,
               todayPomodoros: newToday,
               weeklyPomodoros: newWeekly,
-              todayStudyMinutes: newToday$,
-              weeklyStudyMinutes: newWeekly$,
+              todayStudyMinutes: newTodayMins,
+              weeklyStudyMinutes: newWeeklyMins,
               totalStudyMinutes: newTotal,
               xp: newXP,
               level: newLevel,
@@ -304,13 +449,16 @@ export const useStore = create<AppState>()(
               weeklyTasks: newTasks,
               leaderboard: newLeaderboard,
               petMood,
+              subjects: newSubjects,
+              history: newHistory,
+              toasts: newToasts,
               selectedTitle: leveledUp ? (LEVELS.find(l => l.level === newLevel)?.title ?? state.selectedTitle) : state.selectedTitle,
             })
           } else {
             set({
               pomodoroPhase: 'work',
-              pomodoroTimeLeft: 25 * 60,
-              pomodoroTotalTime: 25 * 60,
+              pomodoroTimeLeft: get().pomodoroDuration * 60,
+              pomodoroTotalTime: get().pomodoroDuration * 60,
               pomodoroActive: false,
             })
           }
@@ -324,13 +472,7 @@ export const useStore = create<AppState>()(
         const newXP = state.xp + amount
         const { level: newLevel, xpToNextLevel } = getLevelInfo(newXP)
         const leveledUp = newLevel > state.level
-        set({
-          xp: newXP,
-          level: newLevel,
-          xpToNextLevel,
-          levelUpModal: leveledUp,
-          newLevel: leveledUp ? newLevel : state.newLevel,
-        })
+        set({ xp: newXP, level: newLevel, xpToNextLevel, levelUpModal: leveledUp, newLevel: leveledUp ? newLevel : state.newLevel })
       },
 
       closeLevelUpModal: () => set({ levelUpModal: false }),
@@ -340,11 +482,15 @@ export const useStore = create<AppState>()(
         const powerUp = state.powerUps.find(p => p.id === id)
         if (!powerUp || state.xp < powerUp.cost) return
         const expiresAt = id === 'xp_multiplier' ? Date.now() + 60 * 60 * 1000 : undefined
+        const newBadges = state.badges.map(b =>
+          b.id === 'power_user' && !b.unlocked ? { ...b, unlocked: true, unlockedAt: Date.now() } : b
+        )
+        const toast: Toast = { id: `pu-${Date.now()}`, message: `${powerUp.name} aktifleştirildi!`, icon: powerUp.icon, type: 'success' }
         set({
           xp: state.xp - powerUp.cost,
-          powerUps: state.powerUps.map(p =>
-            p.id === id ? { ...p, active: true, expiresAt } : p
-          ),
+          powerUps: state.powerUps.map(p => p.id === id ? { ...p, active: true, expiresAt } : p),
+          badges: newBadges,
+          toasts: [...state.toasts, toast],
         })
       },
 
@@ -354,12 +500,12 @@ export const useStore = create<AppState>()(
         const newBadges = !alreadyJoined
           ? state.badges.map(b => b.id === 'group_join' ? { ...b, unlocked: true, unlockedAt: Date.now() } : b)
           : state.badges
-        set({
-          studyGroups: state.studyGroups.map(g =>
-            g.id === id ? { ...g, joined: !g.joined } : g
-          ),
-          badges: newBadges,
-        })
+        const newGroups = state.studyGroups.map(g => g.id === id ? { ...g, joined: !g.joined } : g)
+        const joinedNow = newGroups.find(g => g.id === id)?.joined
+        const toast: Toast = joinedNow
+          ? { id: `grp-${Date.now()}`, message: `Gruba katıldın!`, icon: '🤝', type: 'success' }
+          : { id: `grp-${Date.now()}`, message: `Gruptan ayrıldın`, icon: '👋', type: 'info' }
+        set({ studyGroups: newGroups, badges: newBadges, toasts: [...state.toasts, toast] })
       },
 
       selectTitle: (title) => set({ selectedTitle: title }),
@@ -368,11 +514,14 @@ export const useStore = create<AppState>()(
         const state = get()
         const task = state.weeklyTasks.find(t => t.id === id)
         if (!task || task.completed) return
-        state.addXP(task.xpReward)
+        const { level: newLevel, xpToNextLevel } = getLevelInfo(state.xp + task.xpReward)
+        const toast: Toast = { id: `task-${Date.now()}`, message: `Görev tamamlandı! +${task.xpReward} XP`, icon: '✅', type: 'achievement' }
         set({
-          weeklyTasks: state.weeklyTasks.map(t =>
-            t.id === id ? { ...t, completed: true } : t
-          ),
+          xp: state.xp + task.xpReward,
+          level: newLevel,
+          xpToNextLevel,
+          weeklyTasks: state.weeklyTasks.map(t => t.id === id ? { ...t, completed: true } : t),
+          toasts: [...state.toasts, toast],
         })
       },
 
@@ -380,29 +529,61 @@ export const useStore = create<AppState>()(
         const state = get()
         set({ petMood: getPetMood(state.todayStudyMinutes, state.streak) })
       },
+
+      setAmbientSound: (sound) => set({ ambientSound: sound }),
+      setActiveSubject: (id) => set({ activeSubjectId: id }),
+
+      addSubject: (name, icon, color) => {
+        const id = `custom-${Date.now()}`
+        set(s => ({ subjects: [...s.subjects, { id, name, icon, color, totalMinutes: 0, weeklyMinutes: 0 }] }))
+      },
+
+      removeSubject: (id) => {
+        set(s => ({ subjects: s.subjects.filter(sub => sub.id !== id) }))
+      },
+
+      setPomodoroDuration: (minutes) => {
+        set({ pomodoroDuration: minutes, pomodoroTimeLeft: minutes * 60, pomodoroTotalTime: minutes * 60, pomodoroActive: false })
+      },
+
+      setBreakDuration: (minutes) => {
+        set({ breakDuration: minutes })
+      },
+
+      setUsername: (name) => {
+        set(s => ({
+          username: name,
+          leaderboard: s.leaderboard.map(e => e.isMe ? { ...e, name } : e),
+        }))
+      },
+
+      setPetName: (name) => set({ petName: name }),
+      setDailyGoal: (minutes) => set({ dailyGoalMinutes: minutes }),
+      openSettings: () => set({ settingsOpen: true }),
+      closeSettings: () => set({ settingsOpen: false }),
+
+      dismissToast: (id) => set(s => ({ toasts: s.toasts.filter(t => t.id !== id) })),
+      addToast: (message, icon, type) => {
+        const toast: Toast = { id: `t-${Date.now()}`, message, icon, type }
+        set(s => ({ toasts: [...s.toasts, toast] }))
+      },
+
+      nextQuote: () => set(s => ({ quoteIndex: (s.quoteIndex + 1) % QUOTES.length })),
     }),
     {
-      name: 'study-assistant-storage',
-      partialize: (state) => ({
-        xp: state.xp,
-        level: state.level,
-        xpToNextLevel: state.xpToNextLevel,
-        totalStudyMinutes: state.totalStudyMinutes,
-        weeklyStudyMinutes: state.weeklyStudyMinutes,
-        todayStudyMinutes: state.todayStudyMinutes,
-        streak: state.streak,
-        selectedTitle: state.selectedTitle,
-        username: state.username,
-        badges: state.badges,
-        pomodoroCount: state.pomodoroCount,
-        todayPomodoros: state.todayPomodoros,
-        weeklyPomodoros: state.weeklyPomodoros,
-        studyGroups: state.studyGroups,
-        weeklyTasks: state.weeklyTasks,
-        powerUps: state.powerUps,
-        leaderboard: state.leaderboard,
-        petMood: state.petMood,
-        petName: state.petName,
+      name: 'study-assistant-v2',
+      partialize: (s) => ({
+        xp: s.xp, level: s.level, xpToNextLevel: s.xpToNextLevel,
+        totalStudyMinutes: s.totalStudyMinutes, weeklyStudyMinutes: s.weeklyStudyMinutes,
+        todayStudyMinutes: s.todayStudyMinutes, streak: s.streak,
+        selectedTitle: s.selectedTitle, username: s.username, dailyGoalMinutes: s.dailyGoalMinutes,
+        badges: s.badges, pomodoroCount: s.pomodoroCount,
+        todayPomodoros: s.todayPomodoros, weeklyPomodoros: s.weeklyPomodoros,
+        studyGroups: s.studyGroups, weeklyTasks: s.weeklyTasks, powerUps: s.powerUps,
+        leaderboard: s.leaderboard, petMood: s.petMood, petName: s.petName,
+        subjects: s.subjects, history: s.history, quoteIndex: s.quoteIndex,
+        pomodoroDuration: s.pomodoroDuration, breakDuration: s.breakDuration,
+        ambientSound: s.ambientSound, activeSubjectId: s.activeSubjectId,
       }),
     }
   )
