@@ -6,7 +6,20 @@ Bu depo, **ZekaAkademi** (Yapay Zeka Destekli Akıllı Eğitim Platformu) belges
 
 LGS • YKS • KPSS • ALES • DGS • ÖSYM sınavlarına yönelik, 15+ modül, 60+ ekran, 100+ özellik içeren kapsamlı mobil eğitim platformu.
 
-## Dosya Yapısı
+## Uygulama (zeka_akademi/)
+
+`zeka_akademi/` klasöründe **Expo (React Native)** ile geliştirilen mobil uygulama bulunur.
+
+**Çalıştırma:** `cd zeka_akademi && npm start` (veya `npm run web`)
+
+### Tamamlanan modüller
+- ✅ **Modül 1:** Splash (2.5 sn) + Karşılama (3 sayfa)
+- ✅ **Modül 2:** Kayıt/Giriş (E-posta, KVKK, Google/Apple/Telefon, Misafir)
+- ✅ **Modül 3:** Profil Step 1, Sınav Seçimi Step 2, Seviye Tespiti Step 3, Plan Oluşturma Step 4
+- ✅ **Modül 4:** Ana panel (Dashboard), 5 sekmeli Bottom Navigation
+- ⏳ **Sıradaki:** AI Planlama, Soru Çözme, Flash Kart, Pomodoro, Deneme Sınavı
+
+## Mimari Dokümanlar
 
 | Dosya | İçerik |
 |-------|--------|
