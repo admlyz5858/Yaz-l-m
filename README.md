@@ -18,7 +18,7 @@ Her push/PR sonrası otomatik APK derlenir:
 
 1. GitHub repo → **Actions** sekmesi → en son **Build Android APK** workflow'u
 2. Yeşil tikten sonra sayfanın altındaki **Artifacts** bölümünden **zeka-akademi-apk** indir
-3. İndirilen ZIP içindeki `app-debug.apk` dosyasını Android cihaza yükleyip kurun
+3. İndirilen ZIP içindeki `app-release.apk` dosyasını Android cihaza yükleyip kurun (JS paketi gömülü, Metro gerekmez)
 
 ### Tamamlanan modüller
 - ✅ **Modül 1:** Splash (2.5 sn) + Karşılama (3 sayfa)
