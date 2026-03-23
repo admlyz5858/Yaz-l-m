@@ -12,6 +12,14 @@ LGS • YKS • KPSS • ALES • DGS • ÖSYM sınavlarına yönelik, 15+ mod�
 
 **Çalıştırma:** `cd zeka_akademi && npm start` (veya `npm run web`)
 
+### APK indirme (GitHub Actions)
+
+Her push/PR sonrası otomatik APK derlenir:
+
+1. GitHub repo → **Actions** sekmesi → en son **Build Android APK** workflow'u
+2. Yeşil tikten sonra sayfanın altındaki **Artifacts** bölümünden **zeka-akademi-apk** indir
+3. İndirilen ZIP içindeki `app-debug.apk` dosyasını Android cihaza yükleyip kurun
+
 ### Tamamlanan modüller
 - ✅ **Modül 1:** Splash (2.5 sn) + Karşılama (3 sayfa)
 - ✅ **Modül 2:** Kayıt/Giriş (E-posta, KVKK, Google/Apple/Telefon, Misafir)
