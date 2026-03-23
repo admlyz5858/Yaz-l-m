@@ -6,6 +6,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeStackNavigator from './HomeStackNavigator';
+import StudyStackNavigator from './StudyStackNavigator';
+import ExamStackNavigator from './ExamStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,12 +33,12 @@ export default function MainTabNavigator() {
       />
       <Tab.Screen
         name="Study"
-        component={() => <PlaceholderScreen name="Çalış" />}
+        component={StudyStackNavigator}
         options={{ tabBarLabel: 'Çalış', tabBarIcon: ({ color }) => <MaterialCommunityIcons name="book-open" size={24} color={color} /> }}
       />
       <Tab.Screen
         name="Exam"
-        component={() => <PlaceholderScreen name="Sınav" />}
+        component={ExamStackNavigator}
         options={{ tabBarLabel: 'Sınav', tabBarIcon: ({ color }) => <MaterialCommunityIcons name="file-document" size={24} color={color} /> }}
       />
       <Tab.Screen

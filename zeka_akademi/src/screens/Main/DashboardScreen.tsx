@@ -8,12 +8,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const QUICK_ACTIONS = [
-  { id: 'ai-solve', label: 'AI Soru Çöz', icon: 'camera' as const, screen: null },
-  { id: 'flashcard', label: 'Flash Kart', icon: 'cards' as const, screen: null },
-  { id: 'exam', label: 'Deneme Sınavı', icon: 'file-document' as const, screen: null },
-  { id: 'plan', label: 'AI Plan Gör', icon: 'calendar' as const, screen: 'PlanView' as const },
-  { id: 'bank', label: 'Soru Bankası', icon: 'book-open-variant' as const, screen: null },
-  { id: 'quiz', label: 'Bilgi Yarışması', icon: 'trophy' as const, screen: null },
+  { id: 'ai-solve', label: 'AI Soru Çöz', icon: 'camera' as const, tab: 'Study' as const, screen: 'AISolveEntry' as const },
+  { id: 'flashcard', label: 'Flash Kart', icon: 'cards' as const, tab: null, screen: null },
+  { id: 'exam', label: 'Deneme Sınavı', icon: 'file-document' as const, tab: null, screen: null },
+  { id: 'plan', label: 'AI Plan Gör', icon: 'calendar' as const, tab: null, screen: 'PlanView' as const },
+  { id: 'bank', label: 'Soru Bankası', icon: 'book-open-variant' as const, tab: 'Exam' as const, screen: 'QuestionBank' as const },
+  { id: 'quiz', label: 'Bilgi Yarışması', icon: 'trophy' as const, tab: null, screen: null },
 ];
 
 interface DashboardScreenProps {
@@ -65,7 +65,13 @@ export default function DashboardScreen({ navigation }: DashboardScreenProps) {
             <TouchableOpacity
               key={a.id}
               style={styles.quickItem}
-              onPress={() => a.screen && navigation?.navigate(a.screen)}
+              onPress={() => {
+                if (a.tab && a.screen) {
+                  navigation?.getParent()?.navigate(a.tab, { screen: a.screen });
+                } else if (a.screen) {
+                  navigation?.navigate(a.screen);
+                }
+              }}
             >
               <MaterialCommunityIcons name={a.icon} size={28} color="#7c4dff" />
               <Text style={styles.quickLabel}>{a.label}</Text>
