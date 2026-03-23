@@ -36,6 +36,15 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-# generated native folders
+# generated native folders (iOS — EAS/prebuild ile üretilir)
 /ios
-/android
+
+# Android: Gradle projesi repoda tutulur; ağır çıktılar hariç
+/android/app/build
+/android/app/.cxx
+/android/build
+/android/.gradle
+/android/local.properties
+/android/.idea
+/android/*.iml
+/android/app/release
