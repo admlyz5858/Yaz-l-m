@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { InteractionManager } from 'react-native';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
@@ -16,7 +17,8 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
+  // Arka planda yükle; asla `return null` ile ağacı bloklama — release APK’da boş ekran yapıyordu.
+  const [, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
@@ -25,14 +27,16 @@ export default function RootLayout() {
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
+    const hide = () => {
+      void SplashScreen.hideAsync();
+    };
+    const interaction = InteractionManager.runAfterInteractions(hide);
+    const fallback = setTimeout(hide, 2500);
+    return () => {
+      interaction.cancel();
+      clearTimeout(fallback);
+    };
+  }, []);
 
   return <RootLayoutNav />;
 }
