@@ -12,15 +12,16 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const EXAMS = [
-  { id: 'yks', name: 'YKS (TYT + AYT)', emoji: '📐', date: 'Haziran 2025', duration: '12 ay' },
-  { id: 'lgs', name: 'LGS', emoji: '📚', date: 'Haziran 2025', duration: '10 ay' },
-  { id: 'kpss', name: 'KPSS', emoji: '📋', date: 'Temmuz 2025', duration: '8 ay' },
-  { id: 'ales', name: 'ALES', emoji: '🎓', date: 'Mayıs 2025', duration: '4 ay' },
-  { id: 'dgs', name: 'DGS', emoji: '📖', date: 'Temmuz 2025', duration: '4 ay' },
-  { id: 'university', name: 'Üniversite Dersleri', emoji: '🏫', date: '-', duration: '-' },
-  { id: 'other', name: 'Diğer', emoji: '✨', date: '-', duration: '-' },
+  { id: 'yks', name: 'YKS (TYT + AYT)', icon: 'math-compass' as const, date: 'Haziran 2025', duration: '12 ay' },
+  { id: 'lgs', name: 'LGS', icon: 'book-open' as const, date: 'Haziran 2025', duration: '10 ay' },
+  { id: 'kpss', name: 'KPSS', icon: 'clipboard-text' as const, date: 'Temmuz 2025', duration: '8 ay' },
+  { id: 'ales', name: 'ALES', icon: 'school' as const, date: 'Mayıs 2025', duration: '4 ay' },
+  { id: 'dgs', name: 'DGS', icon: 'book-open' as const, date: 'Temmuz 2025', duration: '4 ay' },
+  { id: 'university', name: 'Üniversite Dersleri', icon: 'domain' as const, date: '-', duration: '-' },
+  { id: 'other', name: 'Diğer', icon: 'star' as const, date: '-', duration: '-' },
 ];
 
 interface ExamSelectScreenProps {
@@ -58,7 +59,9 @@ export default function ExamSelectScreen({ navigation }: ExamSelectScreenProps) 
               style={[styles.card, selected.has(exam.id) && styles.cardSelected]}
               onPress={() => toggleExam(exam.id)}
             >
-              <Text style={styles.cardEmoji}>{exam.emoji}</Text>
+              <View style={styles.cardIcon}>
+                <MaterialCommunityIcons name={exam.icon} size={32} color="#fff" />
+              </View>
               <View style={styles.cardContent}>
                 <Text style={styles.cardTitle}>{exam.name}</Text>
                 <Text style={styles.cardMeta}>{exam.date} • {exam.duration}</Text>
@@ -123,7 +126,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#fff',
   },
-  cardEmoji: { fontSize: 32, marginRight: 16 },
+  cardIcon: { marginRight: 16 },
   cardContent: { flex: 1 },
   cardTitle: { fontSize: 16, fontWeight: '600', color: '#fff' },
   cardMeta: { fontSize: 12, color: 'rgba(255,255,255,0.8)', marginTop: 4 },

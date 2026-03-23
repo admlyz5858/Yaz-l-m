@@ -5,14 +5,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const QUICK_ACTIONS = [
-  { id: 'ai-solve', label: 'AI Soru Çöz', emoji: '📷' },
-  { id: 'flashcard', label: 'Flash Kart', emoji: '🃏' },
-  { id: 'exam', label: 'Deneme Sınavı', emoji: '📝' },
-  { id: 'plan', label: 'AI Plan Gör', emoji: '📅' },
-  { id: 'bank', label: 'Soru Bankası', emoji: '📚' },
-  { id: 'quiz', label: 'Bilgi Yarışması', emoji: '🏆' },
+  { id: 'ai-solve', label: 'AI Soru Çöz', icon: 'camera' as const },
+  { id: 'flashcard', label: 'Flash Kart', icon: 'cards' as const },
+  { id: 'exam', label: 'Deneme Sınavı', icon: 'file-document' as const },
+  { id: 'plan', label: 'AI Plan Gör', icon: 'calendar' as const },
+  { id: 'bank', label: 'Soru Bankası', icon: 'book-open-variant' as const },
+  { id: 'quiz', label: 'Bilgi Yarışması', icon: 'trophy' as const },
 ];
 
 export default function DashboardScreen() {
@@ -31,8 +32,8 @@ export default function DashboardScreen() {
             </View>
           </View>
           <View style={styles.icons}>
-            <Text style={styles.icon}>🔔</Text>
-            <Text style={styles.icon}>🔥</Text>
+            <MaterialCommunityIcons name="bell-outline" size={24} color="#1a1a1a" />
+            <MaterialCommunityIcons name="fire" size={24} color="#f59e0b" />
           </View>
         </View>
 
@@ -46,11 +47,11 @@ export default function DashboardScreen() {
         <Text style={styles.sectionTitle}>Bugünkü Görevler</Text>
         <View style={styles.taskCard}>
           <Text style={styles.taskText}>Matematik - Türev konusu (45 dk)</Text>
-          <Text style={styles.taskCheck}>☐</Text>
+          <MaterialCommunityIcons name="checkbox-blank-outline" size={24} color="#999" />
         </View>
         <View style={styles.taskCard}>
           <Text style={styles.taskText}>Türkçe - 20 soru çöz</Text>
-          <Text style={styles.taskCheck}>☐</Text>
+          <MaterialCommunityIcons name="checkbox-blank-outline" size={24} color="#999" />
         </View>
 
         {/* Quick Actions */}
@@ -58,7 +59,7 @@ export default function DashboardScreen() {
         <View style={styles.quickGrid}>
           {QUICK_ACTIONS.map((a) => (
             <TouchableOpacity key={a.id} style={styles.quickItem}>
-              <Text style={styles.quickEmoji}>{a.emoji}</Text>
+              <MaterialCommunityIcons name={a.icon} size={28} color="#7c4dff" />
               <Text style={styles.quickLabel}>{a.label}</Text>
             </TouchableOpacity>
           ))}
@@ -87,8 +88,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   progressFill: { height: '100%', backgroundColor: '#7c4dff', borderRadius: 3 },
-  icons: { flexDirection: 'row', gap: 16 },
-  icon: { fontSize: 24 },
+  icons: { flexDirection: 'row', gap: 16, alignItems: 'center' },
   countdownCard: {
     backgroundColor: '#fff',
     borderRadius: 16,
@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   taskText: { flex: 1, fontSize: 16 },
-  taskCheck: { fontSize: 24 },
   quickGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -122,6 +121,5 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
   },
-  quickEmoji: { fontSize: 28, marginBottom: 8 },
   quickLabel: { fontSize: 12, color: '#666', textAlign: 'center' },
 });

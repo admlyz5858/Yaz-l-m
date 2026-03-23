@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
@@ -22,7 +23,7 @@ interface WelcomePage {
   id: string;
   title: string;
   subtitle?: string;
-  emoji: string;
+  icon: 'target' | 'book-open-variant' | 'calendar-check';
 }
 
 const PAGES: WelcomePage[] = [
@@ -30,19 +31,19 @@ const PAGES: WelcomePage[] = [
     id: '1',
     title: 'Sınavına 90 Günün Var',
     subtitle: 'Her gün 45 dakika ile hedefe ulaş',
-    emoji: '🎯',
+    icon: 'target',
   },
   {
     id: '2',
     title: '1,000+ Soru Bankası + AI Çözüm',
     subtitle: 'Kamera ile soru çek, anında çözüm al',
-    emoji: '📚',
+    icon: 'book-open-variant',
   },
   {
     id: '3',
     title: 'Senin için Özelleştirilmiş Plan',
     subtitle: 'AI ile kişisel çalışma planı oluştur',
-    emoji: '📅',
+    icon: 'calendar-check',
   },
 ];
 
@@ -68,7 +69,9 @@ export default function WelcomeScreen({ onSignUp, onSignIn }: WelcomeScreenProps
 
   const renderItem = ({ item }: { item: WelcomePage }) => (
     <View style={styles.page}>
-      <Text style={styles.emoji}>{item.emoji}</Text>
+      <View style={styles.iconWrapper}>
+        <MaterialCommunityIcons name={item.icon} size={80} color="#fff" />
+      </View>
       <Text style={styles.title}>{item.title}</Text>
       {item.subtitle && <Text style={styles.subtitle}>{item.subtitle}</Text>}
     </View>
@@ -140,8 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  emoji: {
-    fontSize: 80,
+  iconWrapper: {
     marginBottom: 24,
   },
   title: {
