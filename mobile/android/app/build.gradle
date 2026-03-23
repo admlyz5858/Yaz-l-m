@@ -106,6 +106,8 @@ android {
         }
     }
     buildTypes {
+        // Debug: RN varsayılanı bundle’ı APK’ya koymaz → cihazda Metro gerekir.
+        // Tek başına yüklenebilir APK için: ./gradlew assembleRelease (veya npm run build:apk:release).
         debug {
             signingConfig signingConfigs.debug
         }

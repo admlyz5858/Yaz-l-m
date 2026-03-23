@@ -1,5 +1,6 @@
-# Debug APK Git'te tutulmaz; her push'ta derlenir ve Actions artifact olarak indirilebilir.
-name: Android debug APK
+# Standalone yükleme: JS + asset’ler APK içine gömülür (Metro gerekmez).
+# Debug (assembleDebug) varsayılan olarak bundle’ı atlar; cihazda Metro olmadan splash’te kalır.
+name: Android release APK
 
 on:
   push:
@@ -41,14 +42,14 @@ jobs:
       - name: Install JS dependencies
         run: npm ci
 
-      - name: Assemble debug APK
+      - name: Assemble release APK (embedded JS bundle)
         env:
-          NODE_ENV: development
-        run: cd android && chmod +x gradlew && ./gradlew assembleDebug --no-daemon --stacktrace
+          NODE_ENV: production
+        run: cd android && chmod +x gradlew && ./gradlew assembleRelease --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          name: app-release
+          path: mobile/android/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
