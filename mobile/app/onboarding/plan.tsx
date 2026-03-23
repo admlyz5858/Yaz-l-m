@@ -42,7 +42,7 @@ export default function PlanStepScreen() {
 
   const onStartPlan = () => {
     setCompleted(true);
-    router.replace('/(tabs)');
+    router.replace('/(drawer)/(tabs)');
   };
 
   if (planning) {

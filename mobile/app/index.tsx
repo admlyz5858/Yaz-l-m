@@ -49,7 +49,7 @@ export default function SplashRoute() {
 
         if (result.hasValidToken) {
           if (result.onboardingCompleted) {
-            router.replace('/(tabs)');
+            router.replace('/(drawer)/(tabs)');
           } else {
             router.replace('/onboarding/profile');
           }

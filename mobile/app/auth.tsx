@@ -22,7 +22,7 @@ export default function AuthScreen() {
 
   const continueAfterLogin = () => {
     if (completed) {
-      router.replace('/(tabs)');
+      router.replace('/(drawer)/(tabs)');
     } else {
       router.replace('/onboarding/profile');
     }
@@ -87,7 +87,7 @@ export default function AuthScreen() {
           onPress={() => {
             setToken('guest');
             setCompleted(true);
-            router.replace('/(tabs)');
+            router.replace('/(drawer)/(tabs)');
           }}>
           <Text style={styles.guestText}>Misafir: 3 deneme (stub)</Text>
         </Pressable>

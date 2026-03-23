@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -50,7 +51,7 @@ function RootLayoutNav() {
         <Stack.Screen name="index" />
         <Stack.Screen name="welcome" />
         <Stack.Screen name="auth" options={{ headerShown: true, title: 'Giriş / Kayıt' }} />
-        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="(drawer)" />
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Bilgi' }} />
       </Stack>
