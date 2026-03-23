@@ -8,15 +8,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const QUICK_ACTIONS = [
-  { id: 'ai-solve', label: 'AI Soru Çöz', icon: 'camera' as const },
-  { id: 'flashcard', label: 'Flash Kart', icon: 'cards' as const },
-  { id: 'exam', label: 'Deneme Sınavı', icon: 'file-document' as const },
-  { id: 'plan', label: 'AI Plan Gör', icon: 'calendar' as const },
-  { id: 'bank', label: 'Soru Bankası', icon: 'book-open-variant' as const },
-  { id: 'quiz', label: 'Bilgi Yarışması', icon: 'trophy' as const },
+  { id: 'ai-solve', label: 'AI Soru Çöz', icon: 'camera' as const, screen: null },
+  { id: 'flashcard', label: 'Flash Kart', icon: 'cards' as const, screen: null },
+  { id: 'exam', label: 'Deneme Sınavı', icon: 'file-document' as const, screen: null },
+  { id: 'plan', label: 'AI Plan Gör', icon: 'calendar' as const, screen: 'PlanView' as const },
+  { id: 'bank', label: 'Soru Bankası', icon: 'book-open-variant' as const, screen: null },
+  { id: 'quiz', label: 'Bilgi Yarışması', icon: 'trophy' as const, screen: null },
 ];
 
-export default function DashboardScreen() {
+interface DashboardScreenProps {
+  navigation?: any;
+}
+
+export default function DashboardScreen({ navigation }: DashboardScreenProps) {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Günaydın' : hour < 18 ? 'İyi günler' : 'İyi akşamlar';
 
@@ -58,7 +62,11 @@ export default function DashboardScreen() {
         <Text style={styles.sectionTitle}>Hızlı Erişim</Text>
         <View style={styles.quickGrid}>
           {QUICK_ACTIONS.map((a) => (
-            <TouchableOpacity key={a.id} style={styles.quickItem}>
+            <TouchableOpacity
+              key={a.id}
+              style={styles.quickItem}
+              onPress={() => a.screen && navigation?.navigate(a.screen)}
+            >
               <MaterialCommunityIcons name={a.icon} size={28} color="#7c4dff" />
               <Text style={styles.quickLabel}>{a.label}</Text>
             </TouchableOpacity>

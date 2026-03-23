@@ -5,7 +5,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import DashboardScreen from '../screens/Main/DashboardScreen';
+import HomeStackNavigator from './HomeStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +26,7 @@ export default function MainTabNavigator() {
     >
       <Tab.Screen
         name="Home"
-        component={DashboardScreen}
+        component={HomeStackNavigator}
         options={{ tabBarLabel: 'Ana Sayfa', tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" size={24} color={color} /> }}
       />
       <Tab.Screen

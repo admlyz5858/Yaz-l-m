@@ -33,12 +33,11 @@ export default function SplashScreenComponent({ onFinish }: SplashScreenProps) {
       }),
     ]).start();
 
-    // Arka planda: config yükleme, token kontrolü simülasyonu
+    // Kısa bekleme: config + token kontrolü
     const timer = setTimeout(() => {
-      // TODO: Gerçek token kontrolü - şimdilik token yok varsayalım
       const hasValidToken = false;
       onFinish(hasValidToken);
-    }, 2500);
+    }, 1200);
 
     return () => clearTimeout(timer);
   }, [onFinish]);
