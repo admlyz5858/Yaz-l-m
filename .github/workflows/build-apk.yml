@@ -1,4 +1,4 @@
-# ZekaAkademi - Android APK Build
+# LadeK Academy - Android APK Build
 # Her push/PR'da GitHub Actions ile APK derlenir.
 # APK: Actions sekmesi → Son workflow run → Artifacts → zeka-akademi-apk indir
 

@@ -82,7 +82,7 @@ export default function PomodoroScreen({ navigation }: PomodoroScreenProps) {
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backBtn}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="#0f766e" />
+          <MaterialCommunityIcons name="arrow-left" size={24} color="#0c1929" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Pomodoro</Text>
       </View>
@@ -105,7 +105,7 @@ export default function PomodoroScreen({ navigation }: PomodoroScreenProps) {
       )}
 
       <View style={styles.timerWrapper}>
-        <View style={[styles.timerRing, { borderColor: phase === 'work' ? '#0d9488' : '#f59e0b' }]}>
+        <View style={[styles.timerRing, { borderColor: phase === 'work' ? '#2563eb' : '#f59e0b' }]}>
           <Text style={styles.phaseLabel}>
             {phase === 'work' ? 'Çalışma' : phase === 'longBreak' ? 'Uzun Mola' : 'Mola'}
           </Text>
@@ -128,7 +128,7 @@ export default function PomodoroScreen({ navigation }: PomodoroScreenProps) {
       </View>
 
       <View style={styles.stats}>
-        <MaterialCommunityIcons name="check-circle" size={24} color="#0d9488" />
+        <MaterialCommunityIcons name="check-circle" size={24} color="#2563eb" />
         <Text style={styles.statsText}>Bugün: {pomodoroCount} pomodoro tamamlandı</Text>
       </View>
     </SafeAreaView>
@@ -136,7 +136,7 @@ export default function PomodoroScreen({ navigation }: PomodoroScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f0fdfa' },
+  container: { flex: 1, backgroundColor: '#f1f5f9' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e2e8f0',
   },
   backBtn: { padding: 4, marginRight: 8 },
-  headerTitle: { fontSize: 18, fontWeight: '600', color: '#0f766e' },
+  headerTitle: { fontSize: 18, fontWeight: '600', color: '#0c1929' },
   subjectRow: { padding: 16 },
   subjectLabel: { fontSize: 14, color: '#64748b', marginBottom: 8 },
   subjectChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#e2e8f0',
   },
-  chipActive: { backgroundColor: '#0d9488' },
+  chipActive: { backgroundColor: '#2563eb' },
   chipText: { fontSize: 14, color: '#64748b' },
   chipTextActive: { color: '#fff', fontWeight: '500' },
   timerWrapper: { flex: 1, justifyContent: 'center', alignItems: 'center' },
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   },
   phaseLabel: { fontSize: 14, color: '#64748b', marginBottom: 8 },
   timerText: { fontSize: 48, fontWeight: 'bold', color: '#0f172a' },
-  subjectText: { fontSize: 16, color: '#0d9488', marginTop: 8 },
+  subjectText: { fontSize: 16, color: '#2563eb', marginTop: 8 },
   controls: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: '#0d9488',
+    backgroundColor: '#2563eb',
     alignItems: 'center',
     justifyContent: 'center',
   },

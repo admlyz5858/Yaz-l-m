@@ -36,7 +36,7 @@ export default function ProfileStep1Screen({ navigation }: ProfileStep1ScreenPro
   };
 
   return (
-    <LinearGradient colors={['#0f766e', '#0d9488']} style={styles.container}>
+    <LinearGradient colors={['#0c1929', '#2563eb']} style={styles.container}>
       <SafeAreaView style={styles.safe}>
         <ScrollView contentContainerStyle={styles.scroll}>
           <Text style={styles.title}>Profil Oluştur</Text>
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   primaryBtnText: {
-    color: '#0f766e',
+    color: '#0c1929',
     fontSize: 16,
     fontWeight: 'bold',
   },

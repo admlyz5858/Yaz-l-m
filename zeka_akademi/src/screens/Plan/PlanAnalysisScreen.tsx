@@ -21,7 +21,7 @@ export default function PlanAnalysisScreen({ navigation }: PlanAnalysisScreenPro
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backBtn}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="#0f766e" />
+          <MaterialCommunityIcons name="arrow-left" size={24} color="#0c1929" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Plan Analizi</Text>
       </View>
@@ -85,7 +85,7 @@ export default function PlanAnalysisScreen({ navigation }: PlanAnalysisScreenPro
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f0fdfa' },
+  container: { flex: 1, backgroundColor: '#f1f5f9' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#0f766e',
+    color: '#0c1929',
   },
   scroll: { padding: 16, paddingBottom: 32 },
   title: {
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   ringValue: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#0f766e',
+    color: '#0c1929',
     minWidth: 50,
   },
   comparison: {
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   },
   barFill: {
     height: '100%',
-    backgroundColor: '#0d9488',
+    backgroundColor: '#2563eb',
     borderRadius: 4,
   },
   streakRow: {

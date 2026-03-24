@@ -1,5 +1,5 @@
 /**
- * ZekaAkademi - Ana Navigator
+ * LadeK Academy - Ana Navigator
  * Splash → Welcome → Auth → Onboarding → Main
  */
 import React, { useState, useEffect } from 'react';

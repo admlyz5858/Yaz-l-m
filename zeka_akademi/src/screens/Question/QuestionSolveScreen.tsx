@@ -60,7 +60,7 @@ export default function QuestionSolveScreen({ navigation, route }: QuestionSolve
       <SafeAreaView style={styles.container} edges={['top']}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backBtn}>
-            <MaterialCommunityIcons name="arrow-left" size={24} color="#0f766e" />
+            <MaterialCommunityIcons name="arrow-left" size={24} color="#0c1929" />
           </TouchableOpacity>
         </View>
         <Text style={styles.empty}>Soru bulunamadı.</Text>
@@ -83,7 +83,7 @@ export default function QuestionSolveScreen({ navigation, route }: QuestionSolve
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backBtn}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="#0f766e" />
+          <MaterialCommunityIcons name="arrow-left" size={24} color="#0c1929" />
         </TouchableOpacity>
         {thinkModeLock && (
           <Text style={styles.timer}>Önce düşün: {secondsLeft} sn</Text>
@@ -142,7 +142,7 @@ export default function QuestionSolveScreen({ navigation, route }: QuestionSolve
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f0fdfa' },
+  container: { flex: 1, backgroundColor: '#f1f5f9' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   scrollContent: { padding: 16, paddingBottom: 32 },
   topicBadge: {
     fontSize: 13,
-    color: '#0d9488',
+    color: '#2563eb',
     fontWeight: '600',
     marginBottom: 8,
   },
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   nextBtn: {
-    backgroundColor: '#0d9488',
+    backgroundColor: '#2563eb',
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',

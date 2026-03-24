@@ -28,7 +28,7 @@ export default function FlashcardDeckListScreen({ navigation }: FlashcardDeckLis
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backBtn}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="#0f766e" />
+          <MaterialCommunityIcons name="arrow-left" size={24} color="#0c1929" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Flash Kart</Text>
       </View>
@@ -41,7 +41,7 @@ export default function FlashcardDeckListScreen({ navigation }: FlashcardDeckLis
             onPress={() => navigation?.navigate('FlashcardStudy', { deckId: deck.id, deckName: deck.name })}
           >
             <View style={styles.deckIcon}>
-              <MaterialCommunityIcons name="cards" size={28} color="#0d9488" />
+              <MaterialCommunityIcons name="cards" size={28} color="#2563eb" />
             </View>
             <View style={styles.deckContent}>
               <Text style={styles.deckName}>{deck.name}</Text>
@@ -57,7 +57,7 @@ export default function FlashcardDeckListScreen({ navigation }: FlashcardDeckLis
         ))}
 
         <TouchableOpacity style={styles.addDeck}>
-          <MaterialCommunityIcons name="plus-circle-outline" size={32} color="#0d9488" />
+          <MaterialCommunityIcons name="plus-circle-outline" size={32} color="#2563eb" />
           <Text style={styles.addDeckText}>Yeni Deste Oluştur</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -66,7 +66,7 @@ export default function FlashcardDeckListScreen({ navigation }: FlashcardDeckLis
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f0fdfa' },
+  container: { flex: 1, backgroundColor: '#f1f5f9' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eee',
   },
   backBtn: { padding: 4, marginRight: 8 },
-  headerTitle: { fontSize: 18, fontWeight: '600', color: '#0f766e' },
+  headerTitle: { fontSize: 18, fontWeight: '600', color: '#0c1929' },
   scroll: { padding: 16, paddingBottom: 32 },
   deckCard: {
     flexDirection: 'row',
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   deckMeta: { fontSize: 13, color: '#666', marginTop: 4 },
   dueBadge: {
     fontSize: 12,
-    color: '#0d9488',
+    color: '#2563eb',
     marginTop: 4,
     fontWeight: '500',
   },
@@ -117,5 +117,5 @@ const styles = StyleSheet.create({
     borderColor: '#e0e0e0',
     borderStyle: 'dashed',
   },
-  addDeckText: { fontSize: 16, color: '#0d9488', fontWeight: '500' },
+  addDeckText: { fontSize: 16, color: '#2563eb', fontWeight: '500' },
 });

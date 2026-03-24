@@ -47,7 +47,7 @@ export default function ExamSelectScreen({ navigation }: ExamSelectScreenProps) 
   const isYksSelected = selected.has('yks');
 
   return (
-    <LinearGradient colors={['#0f766e', '#0d9488']} style={styles.container}>
+    <LinearGradient colors={['#0c1929', '#2563eb']} style={styles.container}>
       <SafeAreaView style={styles.safe}>
         <ScrollView contentContainerStyle={styles.scroll}>
           <Text style={styles.title}>Hedef Sınavını Seç</Text>
@@ -153,5 +153,5 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
   },
-  primaryBtnText: { color: '#0f766e', fontSize: 16, fontWeight: 'bold' },
+  primaryBtnText: { color: '#0c1929', fontSize: 16, fontWeight: 'bold' },
 });

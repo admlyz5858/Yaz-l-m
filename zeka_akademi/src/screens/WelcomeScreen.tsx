@@ -1,12 +1,12 @@
 /**
- * EKRAN 2 — Karşılama Ekranı (Welcome Screen)
- * Tek sayfa, Hemen Başla / Giriş Yap
+ * Karşılama — LadeK Academy
  */
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import BrandLogo from '../components/BrandLogo';
+import { brand } from '../theme/colors';
 
 interface WelcomeScreenProps {
   onSignUp: () => void;
@@ -16,18 +16,13 @@ interface WelcomeScreenProps {
 export default function WelcomeScreen({ onSignUp, onSignIn }: WelcomeScreenProps) {
   return (
     <LinearGradient
-      colors={['#0f766e', '#0d9488']}
+      colors={['#0a1628', '#1e40af']}
       style={styles.container}
     >
       <SafeAreaView style={styles.safe}>
         <View style={styles.content}>
-          <View style={styles.iconWrapper}>
-            <MaterialCommunityIcons name="school" size={80} color="#fff" />
-          </View>
-          <Text style={styles.title}>ZekaAkademi</Text>
-          <Text style={styles.subtitle}>
-            Akıllı sınav hazırlık platformu. AI destekli soru çözümü, flash kartlar ve kişisel planlama.
-          </Text>
+          <BrandLogo variant="light" size="large" />
+          <Text style={styles.subtitle}>{brand.tagline}</Text>
         </View>
 
         <View style={styles.buttons}>
@@ -55,19 +50,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  iconWrapper: { marginBottom: 24 },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
-    textAlign: 'center',
-  },
   subtitle: {
     fontSize: 16,
     color: 'rgba(255,255,255,0.9)',
     textAlign: 'center',
-    marginTop: 12,
+    marginTop: 20,
     lineHeight: 24,
+    paddingHorizontal: 8,
   },
   buttons: { paddingBottom: 32 },
   primaryButton: {
@@ -78,7 +67,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   primaryText: {
-    color: '#0f766e',
+    color: '#0c1929',
     fontSize: 16,
     fontWeight: 'bold',
   },

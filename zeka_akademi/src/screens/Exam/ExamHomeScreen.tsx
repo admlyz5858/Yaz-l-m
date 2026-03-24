@@ -28,7 +28,7 @@ export default function ExamHomeScreen({ navigation }: ExamHomeScreenProps) {
             onPress={() => item.screen && navigation?.navigate(item.screen)}
             disabled={!item.ready}
           >
-            <MaterialCommunityIcons name={item.icon} size={40} color="#0d9488" />
+            <MaterialCommunityIcons name={item.icon} size={40} color="#2563eb" />
             <View style={styles.cardContent}>
               <Text style={styles.cardLabel}>{item.label}</Text>
               <Text style={styles.cardDesc}>
@@ -46,7 +46,7 @@ export default function ExamHomeScreen({ navigation }: ExamHomeScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f0fdfa' },
+  container: { flex: 1, backgroundColor: '#f1f5f9' },
   scroll: { padding: 16, paddingTop: 24 },
   title: { fontSize: 24, fontWeight: 'bold', color: '#1a1a1a', marginBottom: 20 },
   card: {

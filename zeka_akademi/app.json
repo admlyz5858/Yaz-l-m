@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "zeka_akademi",
-    "slug": "zeka_akademi",
+    "name": "LadeK Academy",
+    "slug": "ladek-academy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,15 +9,15 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#0f766e"
+      "backgroundColor": "#0a1628"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "package": "com.zekaakademi.app",
+      "package": "com.ladekacademy.app",
       "adaptiveIcon": {
-        "backgroundColor": "#ccfbf1",
+        "backgroundColor": "#0a1628",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"

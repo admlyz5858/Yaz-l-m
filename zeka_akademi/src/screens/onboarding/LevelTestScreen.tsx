@@ -47,7 +47,7 @@ export default function LevelTestScreen({ navigation }: LevelTestScreenProps) {
   const q = SAMPLE_QUESTIONS[currentIndex];
 
   return (
-    <LinearGradient colors={['#0f766e', '#0d9488']} style={styles.container}>
+    <LinearGradient colors={['#0c1929', '#2563eb']} style={styles.container}>
       <SafeAreaView style={styles.safe}>
         <View style={styles.header}>
           <Text style={styles.progress}>Soru {currentIndex + 1}/{SAMPLE_QUESTIONS.length}</Text>

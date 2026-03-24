@@ -36,7 +36,7 @@ export default function PlanCreateScreen({ navigation }: PlanCreateScreenProps) 
 
   if (phase === 'generating') {
     return (
-      <LinearGradient colors={['#0f766e', '#0d9488']} style={styles.container}>
+      <LinearGradient colors={['#0c1929', '#2563eb']} style={styles.container}>
         <SafeAreaView style={styles.safe}>
           <ActivityIndicator size="large" color="#fff" />
           <Text style={styles.generatingText}>Planın hazırlanıyor...</Text>
@@ -47,7 +47,7 @@ export default function PlanCreateScreen({ navigation }: PlanCreateScreenProps) 
 
   if (phase === 'ready') {
     return (
-      <LinearGradient colors={['#0f766e', '#0d9488']} style={styles.container}>
+      <LinearGradient colors={['#0c1929', '#2563eb']} style={styles.container}>
         <SafeAreaView style={styles.safe}>
           <Text style={styles.readyTitle}>Planın Hazır!</Text>
           <Text style={styles.readySubtitle}>Haftalık görünüm</Text>
@@ -60,7 +60,7 @@ export default function PlanCreateScreen({ navigation }: PlanCreateScreenProps) 
   }
 
   return (
-    <LinearGradient colors={['#0f766e', '#0d9488']} style={styles.container}>
+    <LinearGradient colors={['#0c1929', '#2563eb']} style={styles.container}>
       <SafeAreaView style={styles.safe}>
         <Text style={styles.title}>Plan Oluştur</Text>
         <Text style={styles.subtitle}>Step 4/4</Text>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginTop: 24,
   },
-  generateBtnText: { color: '#0f766e', fontWeight: 'bold' },
+  generateBtnText: { color: '#0c1929', fontWeight: 'bold' },
   generatingText: { marginTop: 16, color: '#fff', fontSize: 16 },
   readyTitle: { fontSize: 28, fontWeight: 'bold', color: '#fff', marginBottom: 8 },
   readySubtitle: { fontSize: 16, color: 'rgba(255,255,255,0.9)', marginBottom: 32 },
@@ -97,5 +97,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 48,
     borderRadius: 12,
   },
-  startBtnText: { color: '#0f766e', fontWeight: 'bold', fontSize: 16 },
+  startBtnText: { color: '#0c1929', fontWeight: 'bold', fontSize: 16 },
 });

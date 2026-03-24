@@ -39,7 +39,7 @@ export default function AISolutionScreen({ navigation, route }: AISolutionScreen
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backBtn}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="#0f766e" />
+          <MaterialCommunityIcons name="arrow-left" size={24} color="#0c1929" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Çözüm</Text>
       </View>
@@ -86,11 +86,11 @@ export default function AISolutionScreen({ navigation, route }: AISolutionScreen
 
         {/* Aksiyonlar */}
         <TouchableOpacity style={styles.actionBtn}>
-          <MaterialCommunityIcons name="cards" size={20} color="#0d9488" />
+          <MaterialCommunityIcons name="cards" size={20} color="#2563eb" />
           <Text style={styles.actionBtnText}>Bu soruyu soru bankasına ekle</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionBtn}>
-          <MaterialCommunityIcons name="format-list-numbered" size={20} color="#0d9488" />
+          <MaterialCommunityIcons name="format-list-numbered" size={20} color="#2563eb" />
           <Text style={styles.actionBtnText}>Benzer 5 Soru Çöz</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -99,7 +99,7 @@ export default function AISolutionScreen({ navigation, route }: AISolutionScreen
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f0fdfa' },
+  container: { flex: 1, backgroundColor: '#f1f5f9' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eee',
   },
   backBtn: { padding: 4, marginRight: 8 },
-  headerTitle: { fontSize: 18, fontWeight: '600', color: '#0f766e' },
+  headerTitle: { fontSize: 18, fontWeight: '600', color: '#0c1929' },
   scroll: { flex: 1 },
   scrollContent: { padding: 16, paddingBottom: 32 },
   questionCard: {
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 16,
     borderLeftWidth: 4,
-    borderLeftColor: '#0d9488',
+    borderLeftColor: '#2563eb',
   },
   questionLabel: { fontSize: 12, color: '#666', marginBottom: 4 },
   questionText: { fontSize: 16, color: '#1a1a1a', lineHeight: 24 },
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   stepHint: {
     fontSize: 13,
-    color: '#0d9488',
+    color: '#2563eb',
     marginTop: 8,
   },
   actionBtn: {
@@ -168,5 +168,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e0e0e0',
   },
-  actionBtnText: { fontSize: 15, color: '#0d9488', fontWeight: '500' },
+  actionBtnText: { fontSize: 15, color: '#2563eb', fontWeight: '500' },
 });

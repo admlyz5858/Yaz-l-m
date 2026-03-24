@@ -6,11 +6,13 @@ Bu depo, **ZekaAkademi** (Yapay Zeka Destekli Akıllı Eğitim Platformu) belges
 
 LGS • YKS • KPSS • ALES • DGS • ÖSYM sınavlarına yönelik, 15+ modül, 60+ ekran, 100+ özellik içeren kapsamlı mobil eğitim platformu.
 
-## Uygulama (zeka_akademi/)
+## Mobil uygulama: LadeK Academy (`zeka_akademi/`)
 
-`zeka_akademi/` klasöründe **Expo (React Native)** ile geliştirilen mobil uygulama bulunur.
+`zeka_akademi/` içinde **LadeK Academy** markasıyla Expo (React Native) uygulaması bulunur (lacivert–elektrik mavisi tema, `com.ladekacademy.app`).
 
 **Çalıştırma:** `cd zeka_akademi && npm start` (veya `npm run web`)
+
+**Özel ikon görselleri:** Tasarım PNG’lerini `zeka_akademi/assets/icon.png`, `splash-icon.png` ve Android adaptive görsellerine koyup `npx expo prebuild` ile yeniden üretin.
 
 ### APK indirme (GitHub Actions)
 

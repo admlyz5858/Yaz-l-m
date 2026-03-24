@@ -65,14 +65,14 @@ export default function PlanViewScreen({ navigation }: PlanViewScreenProps) {
           style={styles.backBtn}
           onPress={() => navigation?.goBack()}
         >
-          <MaterialCommunityIcons name="arrow-left" size={24} color="#0f766e" />
+          <MaterialCommunityIcons name="arrow-left" size={24} color="#0c1929" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Haftalık Plan</Text>
         <TouchableOpacity
           style={styles.analysisBtn}
           onPress={() => navigation?.navigate('PlanAnalysis')}
         >
-          <MaterialCommunityIcons name="chart-pie" size={22} color="#0f766e" />
+          <MaterialCommunityIcons name="chart-pie" size={22} color="#0c1929" />
         </TouchableOpacity>
       </View>
       {/* Üst araç çubuğu */}
@@ -81,14 +81,14 @@ export default function PlanViewScreen({ navigation }: PlanViewScreenProps) {
           style={styles.weekNav}
           onPress={() => setWeekOffset(weekOffset - 1)}
         >
-          <MaterialCommunityIcons name="chevron-left" size={28} color="#0f766e" />
+          <MaterialCommunityIcons name="chevron-left" size={28} color="#0c1929" />
         </TouchableOpacity>
         <Text style={styles.weekLabel}>{week.label}</Text>
         <TouchableOpacity
           style={styles.weekNav}
           onPress={() => setWeekOffset(weekOffset + 1)}
         >
-          <MaterialCommunityIcons name="chevron-right" size={28} color="#0f766e" />
+          <MaterialCommunityIcons name="chevron-right" size={28} color="#0c1929" />
         </TouchableOpacity>
       </View>
 
@@ -117,7 +117,7 @@ export default function PlanViewScreen({ navigation }: PlanViewScreenProps) {
                   key={task.id}
                   style={[
                     styles.taskCard,
-                    { borderLeftColor: SUBJECT_COLORS[task.subject] || '#0d9488' },
+                    { borderLeftColor: SUBJECT_COLORS[task.subject] || '#2563eb' },
                   ]}
                 >
                   <Text style={styles.taskSubject}>{task.subject}</Text>
@@ -154,7 +154,7 @@ export default function PlanViewScreen({ navigation }: PlanViewScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f0fdfa' },
+  container: { flex: 1, backgroundColor: '#f1f5f9' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#0f766e',
+    color: '#0c1929',
   },
   analysisBtn: { padding: 4 },
   toolbar: {
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   weekLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#0f766e',
+    color: '#0c1929',
   },
   viewToggle: {
     flexDirection: 'row',
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   toggleText: { fontSize: 14, color: '#666' },
-  toggleTextActive: { color: '#0f766e', fontWeight: '600' },
+  toggleTextActive: { color: '#0c1929', fontWeight: '600' },
   scroll: { flex: 1 },
   scrollContent: {
     flexDirection: 'row',
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#0d9488',
+    backgroundColor: '#2563eb',
     paddingVertical: 14,
     borderRadius: 12,
   },
