@@ -1,6 +1,11 @@
 /**
  * Örnek soru havuzu — PDF Bölüm 5.2.1 alanlarına uyumlu (MVP stub).
+ *
+ * LGS Türkçe 1000 soru: `lgsTurkce1000.generated.json` (yenilemek için:
+ * `node scripts/generate-lgs-turkce-1000.mjs`).
  */
+import lgsTurkce1000 from './lgsTurkce1000.generated.json';
+
 export type ExamCategory = 'YKS_TYT' | 'YKS_AYT' | 'LGS' | 'KPSS_GY';
 
 export type QuestionType = 'MCQ' | 'open' | 'gap';
@@ -125,6 +130,8 @@ export const QUESTION_BANK: BankQuestion[] = [
   // --- YKS TYT Türkçe (kullanıcı setleri) ---
   ...buildTytTurkceSet1(),
   ...buildTytTurkceSet2(),
+  // --- LGS Türkçe (1000 üretilmiş soru) ---
+  ...(lgsTurkce1000 as BankQuestion[]),
 ];
 
 function letterToIndex(letter: string): number {
