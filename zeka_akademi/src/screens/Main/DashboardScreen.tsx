@@ -9,7 +9,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const QUICK_ACTIONS = [
   { id: 'ai-solve', label: 'AI Soru Çöz', icon: 'camera' as const, tab: 'Study' as const, screen: 'AISolveEntry' as const },
-  { id: 'flashcard', label: 'Flash Kart', icon: 'cards' as const, tab: null, screen: null },
+  { id: 'flashcard', label: 'Flash Kart', icon: 'cards' as const, tab: 'Study' as const, screen: 'FlashcardDeckList' as const },
   { id: 'exam', label: 'Deneme Sınavı', icon: 'file-document' as const, tab: null, screen: null },
   { id: 'plan', label: 'AI Plan Gör', icon: 'calendar' as const, tab: null, screen: 'PlanView' as const },
   { id: 'bank', label: 'Soru Bankası', icon: 'book-open-variant' as const, tab: 'Exam' as const, screen: 'QuestionBank' as const },
