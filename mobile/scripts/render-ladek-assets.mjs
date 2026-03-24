@@ -1,5 +1,6 @@
 /**
- * Ladek ACADEMY — app icon / splash / favicon PNG üretimi (sharp + SVG).
+ * LadeK Academy — app icon / splash / favicon PNG (sharp + SVG).
+ * Tasarım: koyu lacivert zemin, cyan→navy dijital ağaç, açık kitap, üst parıltı.
  * node scripts/render-ladek-assets.mjs
  */
 import sharp from 'sharp';
@@ -10,85 +11,149 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ASSETS = join(__dirname, '../assets/images');
 
-const iconSvg = (size) => `<?xml version="1.0" encoding="UTF-8"?>
+const NAVY = '#002B5B';
+const CYAN = '#00E5FF';
+const CYAN_DIM = '#06b6d4';
+const WHITE = '#ffffff';
+
+/** Merkez (cx,cy), ölçek size — kitap + PCB ağaç + düğümler */
+function emblemSvg(size, { pad = 0 } = {}) {
+  const s = size - pad * 2;
+  const cx = size / 2;
+  const cy = size * 0.52;
+  const sc = s / 420;
+  return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0a1628"/>
-      <stop offset="100%" style="stop-color:#0f2744"/>
+      <stop offset="0%" style="stop-color:${NAVY}"/>
+      <stop offset="100%" style="stop-color:#0a2540"/>
     </linearGradient>
-    <linearGradient id="line" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#67e8f9"/>
-      <stop offset="100%" style="stop-color:#22d3ee"/>
+    <linearGradient id="tree" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" style="stop-color:${CYAN}"/>
+      <stop offset="55%" style="stop-color:${CYAN_DIM}"/>
+      <stop offset="100%" style="stop-color:${NAVY}"/>
     </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="22%" r="45%">
-      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9"/>
-      <stop offset="50%" style="stop-color:#a7f3d0;stop-opacity:0.5"/>
-      <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:0"/>
+    <linearGradient id="cover" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:${CYAN}"/>
+      <stop offset="50%" style="stop-color:#2563eb"/>
+      <stop offset="100%" style="stop-color:${NAVY}"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="28%" r="50%">
+      <stop offset="0%" style="stop-color:${CYAN};stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:${NAVY};stop-opacity:0"/>
+    </radialGradient>
+    <radialGradient id="star" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:${WHITE};stop-opacity:1"/>
+      <stop offset="40%" style="stop-color:#a7f3d0;stop-opacity:0.85"/>
+      <stop offset="100%" style="stop-color:${CYAN};stop-opacity:0"/>
     </radialGradient>
   </defs>
   <rect width="${size}" height="${size}" rx="${size * 0.22}" fill="url(#bg)"/>
-  <g transform="translate(${size * 0.5}, ${size * 0.52})">
-    <path d="M ${-size * 0.22} ${-size * 0.08} L ${-size * 0.26} ${size * 0.2} L ${size * 0.26} ${size * 0.2} L ${size * 0.22} ${-size * 0.08} Z" fill="#f8fafc" stroke="#06b6d4" stroke-width="${size * 0.008}"/>
-    <line x1="0" y1="${-size * 0.08}" x2="0" y2="${size * 0.2}" stroke="#152a45" stroke-width="${size * 0.004}" opacity="0.35"/>
-    <path d="M 0 ${-size * 0.08} L 0 ${-size * 0.38} M 0 ${-size * 0.22} L ${-size * 0.14} ${-size * 0.32} M 0 ${-size * 0.22} L ${size * 0.14} ${-size * 0.32} M 0 ${-size * 0.12} L ${-size * 0.17} ${-size * 0.16} M 0 ${-size * 0.12} L ${size * 0.17} ${-size * 0.16}" stroke="url(#line)" stroke-width="${size * 0.014}" stroke-linecap="round" fill="none"/>
-    <circle cx="0" cy="${-size * 0.42}" r="${size * 0.028}" fill="#22d3ee" stroke="#fff" stroke-width="${size * 0.004}"/>
-    <circle cx="${-size * 0.14}" cy="${-size * 0.32}" r="${size * 0.028}" fill="#22d3ee" stroke="#fff" stroke-width="${size * 0.004}"/>
-    <circle cx="${size * 0.14}" cy="${-size * 0.32}" r="${size * 0.028}" fill="#22d3ee" stroke="#fff" stroke-width="${size * 0.004}"/>
-    <circle cx="${-size * 0.17}" cy="${-size * 0.16}" r="${size * 0.028}" fill="#22d3ee" stroke="#fff" stroke-width="${size * 0.004}"/>
-    <circle cx="${size * 0.17}" cy="${-size * 0.16}" r="${size * 0.028}" fill="#22d3ee" stroke="#fff" stroke-width="${size * 0.004}"/>
-    <circle cx="0" cy="${-size * 0.38}" r="${size * 0.1}" fill="url(#glow)"/>
+  <circle cx="${cx}" cy="${size * 0.33}" r="${size * 0.38}" fill="url(#halo)"/>
+  <g transform="translate(${cx}, ${cy}) scale(${sc})">
+    <path d="M -8 -35 L -125 -20 L -130 95 L -8 88 Z" fill="#f8fafc" stroke="${CYAN_DIM}" stroke-width="3"/>
+    <path d="M 8 -35 L 125 -20 L 130 95 L 8 88 Z" fill="#e0f2fe" stroke="${CYAN_DIM}" stroke-width="3"/>
+    <path d="M -8 -35 L 8 -35 L 8 88 L -8 88 Z" fill="url(#cover)"/>
+    <line x1="0" y1="-35" x2="0" y2="88" stroke="${WHITE}" stroke-width="2" opacity="0.35"/>
+    <g stroke="url(#tree)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 0 -38 L 0 -195" stroke-width="10"/>
+      <path d="M 0 -120 L -85 -155 M 0 -120 L 85 -155" stroke-width="8"/>
+      <path d="M 0 -85 L -100 -95 M 0 -85 L 100 -95" stroke-width="7"/>
+      <path d="M 0 -55 L -75 -45 M 0 -55 L 75 -45" stroke-width="6"/>
+      <path d="M -85 -155 L -120 -185 M 85 -155 L 120 -185" stroke-width="6"/>
+      <path d="M -100 -95 L -135 -125 M 100 -95 L 135 -125" stroke-width="5"/>
+    </g>
+    <circle cx="0" cy="-205" r="12" fill="${CYAN}" stroke="${WHITE}" stroke-width="3"/>
+    <circle cx="-120" cy="-185" r="10" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="120" cy="-185" r="10" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="-85" cy="-155" r="10" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="85" cy="-155" r="10" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="-100" cy="-95" r="9" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="100" cy="-95" r="9" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="-75" cy="-45" r="8" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="75" cy="-45" r="8" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="-135" cy="-125" r="8" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="135" cy="-125" r="8" fill="${CYAN}" stroke="${CYAN}" stroke-width="2"/>
+    <circle cx="0" cy="-198" r="42" fill="url(#star)"/>
+  </g>
+</svg>`;
+}
+
+const fgOnlySvg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="tree" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" style="stop-color:${CYAN}"/>
+      <stop offset="55%" style="stop-color:${CYAN_DIM}"/>
+      <stop offset="100%" style="stop-color:${NAVY}"/>
+    </linearGradient>
+    <linearGradient id="cover" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:${CYAN}"/>
+      <stop offset="50%" style="stop-color:#2563eb"/>
+      <stop offset="100%" style="stop-color:${NAVY}"/>
+    </linearGradient>
+    <radialGradient id="star" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:${WHITE};stop-opacity:1"/>
+      <stop offset="40%" style="stop-color:#a7f3d0;stop-opacity:0.85"/>
+      <stop offset="100%" style="stop-color:${CYAN};stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <g transform="translate(512, 540) scale(1.15)">
+    <path d="M -8 -35 L -125 -20 L -130 95 L -8 88 Z" fill="#f8fafc" stroke="${CYAN_DIM}" stroke-width="3"/>
+    <path d="M 8 -35 L 125 -20 L 130 95 L 8 88 Z" fill="#e0f2fe" stroke="${CYAN_DIM}" stroke-width="3"/>
+    <path d="M -8 -35 L 8 -35 L 8 88 L -8 88 Z" fill="url(#cover)"/>
+    <line x1="0" y1="-35" x2="0" y2="88" stroke="${WHITE}" stroke-width="2" opacity="0.35"/>
+    <g stroke="url(#tree)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 0 -38 L 0 -195" stroke-width="10"/>
+      <path d="M 0 -120 L -85 -155 M 0 -120 L 85 -155" stroke-width="8"/>
+      <path d="M 0 -85 L -100 -95 M 0 -85 L 100 -95" stroke-width="7"/>
+      <path d="M 0 -55 L -75 -45 M 0 -55 L 75 -45" stroke-width="6"/>
+      <path d="M -85 -155 L -120 -185 M 85 -155 L 120 -185" stroke-width="6"/>
+      <path d="M -100 -95 L -135 -125 M 100 -95 L 135 -125" stroke-width="5"/>
+    </g>
+    <circle cx="0" cy="-205" r="12" fill="${CYAN}" stroke="${WHITE}" stroke-width="3"/>
+    <circle cx="-120" cy="-185" r="10" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="120" cy="-185" r="10" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="-85" cy="-155" r="10" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="85" cy="-155" r="10" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="-100" cy="-95" r="9" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="100" cy="-95" r="9" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="-75" cy="-45" r="8" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="75" cy="-45" r="8" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="-135" cy="-125" r="8" fill="${CYAN}" stroke="${WHITE}" stroke-width="2"/>
+    <circle cx="135" cy="-125" r="8" fill="${CYAN}" stroke="${CYAN}" stroke-width="2"/>
+    <circle cx="0" cy="-198" r="42" fill="url(#star)"/>
   </g>
 </svg>`;
 
 async function main() {
-  const buf1024 = await sharp(Buffer.from(iconSvg(1024))).png().toBuffer();
+  const buf1024 = await sharp(Buffer.from(emblemSvg(1024))).png().toBuffer();
   writeFileSync(join(ASSETS, 'icon.png'), buf1024);
   writeFileSync(join(ASSETS, 'splash-icon.png'), buf1024);
 
-  const buf48 = await sharp(Buffer.from(iconSvg(48))).png().toBuffer();
+  const buf48 = await sharp(Buffer.from(emblemSvg(48))).png().toBuffer();
   writeFileSync(join(ASSETS, 'favicon.png'), buf48);
 
-  // Android adaptive: ön plan şeffaf arka planlı (sadece logo, güvenli alan)
-  const fgSvg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
-  <defs>
-    <linearGradient id="line" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#67e8f9"/>
-      <stop offset="100%" style="stop-color:#22d3ee"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="35%" r="40%">
-      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.95"/>
-      <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:0"/>
-    </radialGradient>
-  </defs>
-  <g transform="translate(512, 520)">
-    <path d="M -220 -40 L -260 200 L 260 200 L 220 -40 Z" fill="#f8fafc" stroke="#06b6d4" stroke-width="8"/>
-    <line x1="0" y1="-40" x2="0" y2="200" stroke="#152a45" stroke-width="4" opacity="0.35"/>
-    <path d="M 0 -40 L 0 -400 M 0 -220 L -140 -320 M 0 -220 L 140 -320 M 0 -120 L -170 -160 M 0 -120 L 170 -160" stroke="url(#line)" stroke-width="14" stroke-linecap="round" fill="none"/>
-    <circle cx="0" cy="-430" r="28" fill="#22d3ee" stroke="#fff" stroke-width="4"/>
-    <circle cx="-140" cy="-320" r="28" fill="#22d3ee" stroke="#fff" stroke-width="4"/>
-    <circle cx="140" cy="-320" r="28" fill="#22d3ee" stroke="#fff" stroke-width="4"/>
-    <circle cx="-170" cy="-160" r="28" fill="#22d3ee" stroke="#fff" stroke-width="4"/>
-    <circle cx="170" cy="-160" r="28" fill="#22d3ee" stroke="#fff" stroke-width="4"/>
-    <circle cx="0" cy="-400" r="100" fill="url(#glow)"/>
-  </g>
-</svg>`;
-  const fgBuf = await sharp(Buffer.from(fgSvg)).png().toBuffer();
+  const fgBuf = await sharp(Buffer.from(fgOnlySvg)).png().toBuffer();
   writeFileSync(join(ASSETS, 'android-icon-foreground.png'), fgBuf);
 
-  // Arka plan: düz lacivert (adaptive)
   const bgBuf = await sharp({
-    create: { width: 1024, height: 1024, channels: 4, background: { r: 10, g: 22, b: 40, alpha: 1 } },
+    create: {
+      width: 1024,
+      height: 1024,
+      channels: 4,
+      background: { r: 0, g: 43, b: 91, alpha: 1 },
+    },
   })
     .png()
     .toBuffer();
   writeFileSync(join(ASSETS, 'android-icon-background.png'), bgBuf);
 
-  const monoBuf = await sharp(Buffer.from(fgSvg)).greyscale().png().toBuffer();
+  const monoBuf = await sharp(Buffer.from(fgOnlySvg)).greyscale().png().toBuffer();
   writeFileSync(join(ASSETS, 'android-icon-monochrome.png'), monoBuf);
 
-  console.log('Ladek görselleri yazıldı:', ASSETS);
+  console.log('LadeK Academy görselleri yazıldı:', ASSETS);
 }
 
 main().catch((e) => {

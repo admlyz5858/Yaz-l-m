@@ -1,32 +1,34 @@
 /**
- * Ladek ACADEMY — marka renkleri (koyu lacivert, elektrik mavisi, cyan vurgu).
+ * LadeK Academy — marka (koyu lacivert, elektrik cyan #00E5FF, beyaz tipografi).
  */
 export const Brand = {
-  /** Ana arka plan */
-  navy: '#0a1628',
-  navyMid: '#0f2744',
+  navy: '#002B5B',
+  navyDeep: '#001a35',
+  navyMid: '#0a2540',
   navyLight: '#152a45',
-  /** Elektrik mavisi / vurgu */
-  electric: '#22d3ee',
+  /** Marka birincil cyan */
+  electric: '#00E5FF',
   electricDim: '#06b6d4',
-  /** Ağaç / devre parıltısı */
+  royal: '#2563eb',
   glow: '#67e8f9',
   glowTop: '#a7f3d0',
   accent: '#38bdf8',
   success: '#22c55e',
   warning: '#f97316',
   danger: '#ef4444',
-  /** Eski mor tonları — bazı ekranlarda geçiş için */
   purple: '#6b21a8',
   purpleLight: '#a855f7',
 } as const;
 
+/** Görünen isimler — “LadeK” içinde büyük K */
 export const BrandStrings = {
-  appName: 'Ladek',
-  appNameFull: 'Ladek ACADEMY',
+  appName: 'LadeK',
+  appNameFull: 'LadeK ACADEMY',
+  /** Cümle içi / mağaza adı */
+  appNameSentence: 'LadeK Academy',
   tagline: 'Akıllı sınav hazırlığı',
 } as const;
 
 export const Splash = {
-  durationMs: 3200,
+  durationMs: 3400,
 } as const;

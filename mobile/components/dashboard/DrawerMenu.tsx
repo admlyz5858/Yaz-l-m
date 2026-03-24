@@ -70,6 +70,15 @@ export function DrawerMenu({ onClose }: { onClose: () => void }) {
       },
     },
     {
+      key: 'mock',
+      label: 'Zamanlı Deneme',
+      icon: 'timer-outline',
+      onPress: () => {
+        onClose();
+        router.push('/mock-exam');
+      },
+    },
+    {
       key: 'flash',
       label: 'Flash Kartlar',
       icon: 'albums-outline',
@@ -113,7 +122,7 @@ export function DrawerMenu({ onClose }: { onClose: () => void }) {
   return (
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
-        <Text style={styles.brand}>Ladek ACADEMY</Text>
+        <Text style={styles.brand}>LadeK ACADEMY</Text>
         <Text style={styles.sub}>Menü</Text>
       </View>
       {items.map((item) => (
