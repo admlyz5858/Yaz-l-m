@@ -29,6 +29,8 @@ type DashboardState = {
   leaderboardRankToday: number;
   setTaskDone: (id: string, done: boolean) => void;
   toggleTask: (id: string) => void;
+  /** AI plan üretildiğinde görev listesini değiştirir */
+  replaceTasksFromPlan: (tasks: DashboardTask[]) => void;
   seedFromOnboarding: (examTypes: ExamType[], fullName?: string) => void;
 };
 
@@ -119,6 +121,11 @@ export const useDashboardStore = create<DashboardState>()(
       toggleTask: (id) => {
         const t = get().tasks.find((x) => x.id === id);
         if (t) get().setTaskDone(id, !t.done);
+      },
+      replaceTasksFromPlan: (tasks) => {
+        const dailyGoalPercent =
+          tasks.length === 0 ? 0 : Math.round((tasks.filter((t) => t.done).length / tasks.length) * 100);
+        set({ tasks, dailyGoalPercent });
       },
       seedFromOnboarding: (examTypes, _fullName) => {
         if (get().tasks.length > 0) return;

@@ -43,6 +43,15 @@ export function DrawerMenu({ onClose }: { onClose: () => void }) {
       onPress: () => onClose(),
     },
     {
+      key: 'plan',
+      label: 'AI Çalışma Planı',
+      icon: 'calendar-outline',
+      onPress: () => {
+        onClose();
+        router.push('/plan');
+      },
+    },
+    {
       key: 'offline',
       label: 'İndirilen İçerikler (Offline)',
       icon: 'cloud-download-outline',

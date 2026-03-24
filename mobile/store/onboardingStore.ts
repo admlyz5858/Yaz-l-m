@@ -6,6 +6,8 @@ export type ExamType = 'YKS' | 'LGS' | 'KPSS' | 'ALES' | 'DGS' | 'UNIVERSITY' | 
 
 export type YksField = 'SAY' | 'EA' | 'SOZ' | 'DIL';
 
+export type StudySlotPref = 'MORNING' | 'NOON' | 'EVENING' | 'NIGHT';
+
 export type OnboardingDraft = {
   fullName: string;
   examTypes: ExamType[];
@@ -16,8 +18,11 @@ export type OnboardingDraft = {
 type OnboardingState = {
   completed: boolean;
   draft: OnboardingDraft;
+  /** AI plan tercihleri (PDF Bölüm 2.7 / 4) */
+  planningPreferences: { capacityMin: number; slots: StudySlotPref[] } | null;
   setCompleted: (v: boolean) => void;
   setDraft: (patch: Partial<OnboardingDraft>) => void;
+  setPlanningPreferences: (p: { capacityMin: number; slots: StudySlotPref[] }) => void;
   resetDraft: () => void;
 };
 
@@ -31,17 +36,23 @@ export const useOnboardingStore = create<OnboardingState>()(
     (set) => ({
       completed: false,
       draft: emptyDraft(),
+      planningPreferences: null,
       setCompleted: (completed) => set({ completed }),
       setDraft: (patch) =>
         set((s) => ({
           draft: { ...s.draft, ...patch },
         })),
-      resetDraft: () => set({ draft: emptyDraft() }),
+      setPlanningPreferences: (planningPreferences) => set({ planningPreferences }),
+      resetDraft: () => set({ draft: emptyDraft(), planningPreferences: null }),
     }),
     {
       name: 'zeka-akademi-onboarding',
       storage: createJSONStorage(() => AsyncStorage),
-      partialize: (s) => ({ completed: s.completed, draft: s.draft }),
+      partialize: (s) => ({
+        completed: s.completed,
+        draft: s.draft,
+        planningPreferences: s.planningPreferences,
+      }),
     },
   ),
 );

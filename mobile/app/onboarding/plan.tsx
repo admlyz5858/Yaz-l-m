@@ -4,6 +4,7 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from
 
 import { Brand } from '@/constants/theme';
 import { useOnboardingStore } from '@/store/onboardingStore';
+import { usePlanningStore } from '@/store/planningStore';
 
 const CAPACITY_MIN = 30;
 const CAPACITY_MAX = 8 * 60;
@@ -23,6 +24,9 @@ const SLOTS: { id: StudySlot; label: string }[] = [
 export default function PlanStepScreen() {
   const router = useRouter();
   const setCompleted = useOnboardingStore((s) => s.setCompleted);
+  const setPlanningPreferences = useOnboardingStore((s) => s.setPlanningPreferences);
+  const draft = useOnboardingStore((s) => s.draft);
+  const generatePlanFromPreferences = usePlanningStore((s) => s.generatePlanFromPreferences);
 
   const [capacityMin, setCapacityMin] = useState(45);
   const [slots, setSlots] = useState<StudySlot[]>(['EVENING']);
@@ -41,6 +45,12 @@ export default function PlanStepScreen() {
   };
 
   const onStartPlan = () => {
+    setPlanningPreferences({ capacityMin, slots });
+    generatePlanFromPreferences({
+      capacityMin,
+      slots: slots.map((s) => SLOTS.find((x) => x.id === s)?.label ?? s),
+      examTypes: draft.examTypes.length ? draft.examTypes : ['YKS'],
+    });
     setCompleted(true);
     router.replace('/(drawer)/(tabs)');
   };
