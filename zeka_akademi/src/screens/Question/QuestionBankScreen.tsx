@@ -14,17 +14,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-const SAMPLE_QUESTIONS = [
-  { id: '1', subject: 'Matematik', topic: 'Türev', difficulty: 3, exam: 'YKS-TYT', preview: 'f(x)=x²+1 fonksiyonunun x=2 noktasındaki türevi...' },
-  { id: '2', subject: 'Türkçe', topic: 'Paragraf', difficulty: 2, exam: 'YKS-TYT', preview: 'Aşağıdaki parçada asıl anlatılmak istenen...' },
-  { id: '3', subject: 'Fen', topic: 'Kimya', difficulty: 4, exam: 'YKS-AYT', preview: '0,2 mol X gazı 4,48 L hacim kaplıyorsa...' },
-  { id: '4', subject: 'Matematik', topic: 'Olasılık', difficulty: 2, exam: 'YKS-TYT', preview: 'Bir torbada 3 kırmızı, 5 mavi top vardır...' },
-  { id: '5', subject: 'Tarih', topic: 'Osmanlı', difficulty: 3, exam: 'YKS-AYT', preview: 'II. Mehmet\'in İstanbul\'u fethi hangi yılda...' },
-];
+import { TURKISH_QUESTIONS } from '../../data/turkishQuestions';
 
 const EXAMS = ['Tümü', 'YKS-TYT', 'YKS-AYT', 'LGS', 'KPSS'];
-const SUBJECTS = ['Tümü', 'Matematik', 'Türkçe', 'Fen', 'Tarih'];
+const SUBJECTS = ['Tümü', 'Türkçe'];
+const TOPICS = ['Tümü', 'Paragraf', 'Cümlede Anlam', 'Fiilimsiler', 'Sözcükte Anlam'];
 
 interface QuestionBankScreenProps {
   navigation?: any;
@@ -35,15 +29,18 @@ export default function QuestionBankScreen({ navigation }: QuestionBankScreenPro
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedExam, setSelectedExam] = useState('Tümü');
   const [selectedSubject, setSelectedSubject] = useState('Tümü');
+  const [selectedTopic, setSelectedTopic] = useState('Tümü');
 
-  const filtered = SAMPLE_QUESTIONS.filter((q) => {
-    const matchSearch = !search || q.preview.toLowerCase().includes(search.toLowerCase());
+  const filtered = TURKISH_QUESTIONS.filter((q) => {
+    const hay = `${q.preview} ${q.question} ${q.topic}`.toLowerCase();
+    const matchSearch = !search || hay.includes(search.toLowerCase());
     const matchExam = selectedExam === 'Tümü' || q.exam === selectedExam;
     const matchSubject = selectedSubject === 'Tümü' || q.subject === selectedSubject;
-    return matchSearch && matchExam && matchSubject;
+    const matchTopic = selectedTopic === 'Tümü' || q.topic === selectedTopic;
+    return matchSearch && matchExam && matchSubject && matchTopic;
   });
 
-  const renderItem = ({ item }: { item: typeof SAMPLE_QUESTIONS[0] }) => (
+  const renderItem = ({ item }: { item: (typeof TURKISH_QUESTIONS)[0] }) => (
     <TouchableOpacity
       style={styles.questionCard}
       onPress={() => navigation?.navigate('QuestionSolve', { questionId: item.id })}
@@ -55,7 +52,7 @@ export default function QuestionBankScreen({ navigation }: QuestionBankScreenPro
         </View>
       </View>
       <Text style={styles.cardTopic}>{item.topic} • {item.exam}</Text>
-      <Text style={styles.cardPreview} numberOfLines={2}>{item.preview}</Text>
+      <Text style={styles.cardPreview} numberOfLines={3}>{item.preview}</Text>
     </TouchableOpacity>
   );
 
@@ -68,13 +65,12 @@ export default function QuestionBankScreen({ navigation }: QuestionBankScreenPro
         <Text style={styles.headerTitle}>Soru Bankası</Text>
       </View>
 
-      {/* Arama */}
       <View style={styles.searchRow}>
         <View style={styles.searchBox}>
           <MaterialCommunityIcons name="magnify" size={22} color="#999" />
           <TextInput
             style={styles.searchInput}
-            placeholder="YKS TYT olasılık zor sorular..."
+            placeholder="Paragraf, fiilimsi, soru ara..."
             placeholderTextColor="#999"
             value={search}
             onChangeText={setSearch}
@@ -88,7 +84,6 @@ export default function QuestionBankScreen({ navigation }: QuestionBankScreenPro
         </TouchableOpacity>
       </View>
 
-      {/* Filtre paneli */}
       {filterOpen && (
         <View style={styles.filterPanel}>
           <Text style={styles.filterLabel}>Sınav Türü</Text>
@@ -112,6 +107,18 @@ export default function QuestionBankScreen({ navigation }: QuestionBankScreenPro
                 onPress={() => setSelectedSubject(s)}
               >
                 <Text style={[styles.chipText, selectedSubject === s && styles.chipTextActive]}>{s}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+          <Text style={styles.filterLabel}>Konu</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterRow}>
+            {TOPICS.map((t) => (
+              <TouchableOpacity
+                key={t}
+                style={[styles.chip, selectedTopic === t && styles.chipActive]}
+                onPress={() => setSelectedTopic(t)}
+              >
+                <Text style={[styles.chipText, selectedTopic === t && styles.chipTextActive]}>{t}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>

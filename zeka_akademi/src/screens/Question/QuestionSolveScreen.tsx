@@ -12,14 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-const SAMPLE_QUESTION = {
-  id: '1',
-  question: 'x² - 4 = 0 denkleminin çözüm kümesi aşağıdakilerden hangisidir?',
-  options: ['{-2}', '{2}', '{-2, 2}', '∅'],
-  correctIndex: 2,
-  explanation: 'x² = 4 olduğunda x = ±2 olur. Çözüm kümesi {-2, 2} şeklindedir.',
-};
+import { getTurkishQuestionById, getNextTurkishQuestionId } from '../../data/turkishQuestions';
 
 interface QuestionSolveScreenProps {
   navigation?: any;
@@ -27,10 +20,20 @@ interface QuestionSolveScreenProps {
 }
 
 export default function QuestionSolveScreen({ navigation, route }: QuestionSolveScreenProps) {
+  const questionId = route?.params?.questionId ?? '';
+  const q = getTurkishQuestionById(questionId);
+
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [thinkModeLock, setThinkModeLock] = useState(true);
   const [secondsLeft, setSecondsLeft] = useState(30);
+
+  useEffect(() => {
+    setSelectedIndex(null);
+    setShowFeedback(false);
+    setThinkModeLock(true);
+    setSecondsLeft(30);
+  }, [questionId]);
 
   useEffect(() => {
     if (!thinkModeLock) return;
@@ -47,12 +50,34 @@ export default function QuestionSolveScreen({ navigation, route }: QuestionSolve
   }, [thinkModeLock]);
 
   const handleSelect = (index: number) => {
-    if (thinkModeLock) return;
+    if (thinkModeLock || !q) return;
     setSelectedIndex(index);
     setShowFeedback(true);
   };
 
-  const isCorrect = selectedIndex === SAMPLE_QUESTION.correctIndex;
+  if (!q) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backBtn}>
+            <MaterialCommunityIcons name="arrow-left" size={24} color="#0f766e" />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.empty}>Soru bulunamadı.</Text>
+      </SafeAreaView>
+    );
+  }
+
+  const isCorrect = selectedIndex === q.correctIndex;
+  const nextId = getNextTurkishQuestionId(questionId);
+
+  const goNext = () => {
+    if (nextId) {
+      navigation?.replace('QuestionSolve', { questionId: nextId });
+    } else {
+      navigation?.goBack();
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -66,15 +91,16 @@ export default function QuestionSolveScreen({ navigation, route }: QuestionSolve
       </View>
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
+        <Text style={styles.topicBadge}>{q.topic} • {q.exam}</Text>
         <View style={styles.questionCard}>
-          <Text style={styles.questionText}>{SAMPLE_QUESTION.question}</Text>
+          <Text style={styles.questionText}>{q.question}</Text>
         </View>
 
-        {SAMPLE_QUESTION.options.map((opt, i) => {
+        {q.options.map((opt, i) => {
           let optionStyle = styles.option;
           if (showFeedback && selectedIndex === i) {
             optionStyle = isCorrect ? styles.optionCorrect : styles.optionWrong;
-          } else if (showFeedback && i === SAMPLE_QUESTION.correctIndex) {
+          } else if (showFeedback && i === q.correctIndex) {
             optionStyle = styles.optionCorrect;
           }
           return (
@@ -102,12 +128,11 @@ export default function QuestionSolveScreen({ navigation, route }: QuestionSolve
             <Text style={styles.feedbackTitle}>
               {isCorrect ? 'Doğru!' : 'Yanlış'}
             </Text>
-            <Text style={styles.feedbackText}>{SAMPLE_QUESTION.explanation}</Text>
-            <TouchableOpacity
-              style={styles.nextBtn}
-              onPress={() => navigation?.goBack()}
-            >
-              <Text style={styles.nextBtnText}>Sonraki Soru</Text>
+            <Text style={styles.feedbackText}>{q.explanation}</Text>
+            <TouchableOpacity style={styles.nextBtn} onPress={goNext}>
+              <Text style={styles.nextBtnText}>
+                {nextId ? 'Sonraki Soru' : 'Soru Bankasına Dön'}
+              </Text>
             </TouchableOpacity>
           </View>
         )}
@@ -131,6 +156,12 @@ const styles = StyleSheet.create({
   timer: { fontSize: 14, color: '#f59e0b', fontWeight: '600' },
   scroll: { flex: 1 },
   scrollContent: { padding: 16, paddingBottom: 32 },
+  topicBadge: {
+    fontSize: 13,
+    color: '#0d9488',
+    fontWeight: '600',
+    marginBottom: 8,
+  },
   questionCard: {
     backgroundColor: '#fff',
     borderRadius: 12,
@@ -216,4 +247,5 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   nextBtnText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  empty: { padding: 24, fontSize: 16, color: '#666' },
 });
