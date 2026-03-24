@@ -16,7 +16,7 @@ const QUICK_ACTIONS: { label: string; href: string; icon: keyof typeof Ionicons.
   { label: 'AI Soru Çöz', href: '/solve', icon: 'camera-outline' },
   { label: 'Flash Kart', href: '/flashcards', icon: 'albums-outline' },
   { label: 'Pomodoro', href: '/pomodoro', icon: 'hourglass-outline' },
-  { label: 'Deneme Sınavı', href: '/(drawer)/(tabs)/exam', icon: 'document-text-outline' },
+  { label: 'Deneme Sınavı', href: '/mock-exam', icon: 'document-text-outline' },
   { label: 'AI Plan Gör', href: '/plan', icon: 'calendar-outline' },
   { label: 'Soru Bankası', href: '/question-bank', icon: 'library-outline' },
   { label: 'Bilgi Yarışması', href: '', icon: 'trophy-outline', disabled: true },

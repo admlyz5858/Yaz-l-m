@@ -5,16 +5,26 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Brand } from '@/constants/theme';
 
 /**
- * Sınav sekmesi: deneme, soru bankası, yarışma (PDF Bölüm 3.2).
+ * Sınav sekmesi: zamanlı deneme + soru bankası (PDF Bölüm 3.2 / deneme modülü).
  */
 export default function ExamTabScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sınav</Text>
-      <Text style={styles.body}>Deneme ve yarışma yakında; soru bankası hazır.</Text>
+      <Text style={styles.body}>Zamanlı deneme ve soru bankası; yarışma yakında.</Text>
+      <Link href="/mock-exam" asChild>
+        <Pressable style={styles.card}>
+          <Ionicons name="timer-outline" size={24} color={Brand.electricDim} />
+          <View style={styles.cardText}>
+            <Text style={styles.cardTitle}>Zamanlı deneme</Text>
+            <Text style={styles.cardSub}>LGS / TYT Türkçe, süre ve otomatik bitiş</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color="#94a3b8" />
+        </Pressable>
+      </Link>
       <Link href="/question-bank" asChild>
         <Pressable style={styles.card}>
-          <Ionicons name="library-outline" size={24} color={Brand.purple} />
+          <Ionicons name="library-outline" size={24} color={Brand.electricDim} />
           <View style={styles.cardText}>
             <Text style={styles.cardTitle}>Soru bankası</Text>
             <Text style={styles.cardSub}>Filtrele, çöz, ilerleme kaydı</Text>
@@ -23,9 +33,9 @@ export default function ExamTabScreen() {
         </Pressable>
       </Link>
       <View style={[styles.card, styles.muted]}>
-        <Ionicons name="timer-outline" size={24} color="#94a3b8" />
+        <Ionicons name="trophy-outline" size={24} color="#94a3b8" />
         <View style={styles.cardText}>
-          <Text style={styles.cardTitle}>Zamanlı deneme</Text>
+          <Text style={styles.cardTitle}>Bilgi yarışması</Text>
           <Text style={styles.cardSub}>Yakında</Text>
         </View>
       </View>
