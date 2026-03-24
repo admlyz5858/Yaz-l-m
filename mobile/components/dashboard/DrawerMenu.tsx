@@ -52,6 +52,24 @@ export function DrawerMenu({ onClose }: { onClose: () => void }) {
       },
     },
     {
+      key: 'solve',
+      label: 'AI Soru Çöz',
+      icon: 'bulb-outline',
+      onPress: () => {
+        onClose();
+        router.push('/solve');
+      },
+    },
+    {
+      key: 'bank',
+      label: 'Soru Bankası',
+      icon: 'library-outline',
+      onPress: () => {
+        onClose();
+        router.push('/question-bank');
+      },
+    },
+    {
       key: 'offline',
       label: 'İndirilen İçerikler (Offline)',
       icon: 'cloud-download-outline',

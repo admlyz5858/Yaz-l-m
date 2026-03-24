@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Brand } from '@/constants/theme';
 
 const CARDS = [
-  { title: 'AI Soru Çöz', subtitle: 'Kamera / metin', href: '/(drawer)/(tabs)/study', soon: true },
+  { title: 'AI Soru Çöz', subtitle: 'Metin + stub çözüm', href: '/solve', soon: false },
   { title: 'Flash Kart', subtitle: 'FSRS tekrar', href: '/(drawer)/(tabs)/study', soon: true },
   { title: 'Pomodoro', subtitle: 'Odaklanma', href: '/(drawer)/(tabs)/study', soon: true },
   {

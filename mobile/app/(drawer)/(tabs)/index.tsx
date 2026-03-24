@@ -13,11 +13,11 @@ import {
 import { useOnboardingStore } from '@/store/onboardingStore';
 
 const QUICK_ACTIONS: { label: string; href: string; icon: keyof typeof Ionicons.glyphMap; disabled?: boolean }[] = [
-  { label: 'AI Soru Çöz', href: '/(drawer)/(tabs)/study', icon: 'camera-outline' },
+  { label: 'AI Soru Çöz', href: '/solve', icon: 'camera-outline' },
   { label: 'Flash Kart', href: '/(drawer)/(tabs)/study', icon: 'albums-outline' },
   { label: 'Deneme Sınavı', href: '/(drawer)/(tabs)/exam', icon: 'timer-outline' },
   { label: 'AI Plan Gör', href: '/plan', icon: 'calendar-outline' },
-  { label: 'Soru Bankası', href: '/(drawer)/(tabs)/exam', icon: 'library-outline' },
+  { label: 'Soru Bankası', href: '/question-bank', icon: 'library-outline' },
   { label: 'Bilgi Yarışması', href: '', icon: 'trophy-outline', disabled: true },
 ];
 
