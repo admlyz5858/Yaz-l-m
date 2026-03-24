@@ -8,6 +8,7 @@ import AISolveEntryScreen from '../screens/Question/AISolveEntryScreen';
 import AISolutionScreen from '../screens/Question/AISolutionScreen';
 import FlashcardDeckListScreen from '../screens/Flashcard/FlashcardDeckListScreen';
 import FlashcardStudyScreen from '../screens/Flashcard/FlashcardStudyScreen';
+import PomodoroScreen from '../screens/Pomodoro/PomodoroScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ export default function StudyStackNavigator() {
       <Stack.Screen name="AISolution" component={AISolutionScreen} />
       <Stack.Screen name="FlashcardDeckList" component={FlashcardDeckListScreen} />
       <Stack.Screen name="FlashcardStudy" component={FlashcardStudyScreen} />
+      <Stack.Screen name="Pomodoro" component={PomodoroScreen} />
     </Stack.Navigator>
   );
 }

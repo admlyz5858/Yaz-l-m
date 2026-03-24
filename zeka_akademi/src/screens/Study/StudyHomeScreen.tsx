@@ -13,7 +13,7 @@ interface StudyHomeScreenProps {
 const ITEMS = [
   { id: 'ai-solve', label: 'AI Soru Çöz', icon: 'camera' as const, screen: 'AISolveEntry' as const, ready: true },
   { id: 'flashcard', label: 'Flash Kart', icon: 'cards' as const, screen: 'FlashcardDeckList' as const, ready: true },
-  { id: 'pomodoro', label: 'Pomodoro', icon: 'timer-sand' as const, screen: null, ready: false },
+  { id: 'pomodoro', label: 'Pomodoro', icon: 'timer-sand' as const, screen: 'Pomodoro' as const, ready: true },
 ];
 
 export default function StudyHomeScreen({ navigation }: StudyHomeScreenProps) {
