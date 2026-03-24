@@ -79,6 +79,15 @@ export function DrawerMenu({ onClose }: { onClose: () => void }) {
       },
     },
     {
+      key: 'pomodoro',
+      label: 'Pomodoro',
+      icon: 'timer-outline',
+      onPress: () => {
+        onClose();
+        router.push('/pomodoro');
+      },
+    },
+    {
       key: 'offline',
       label: 'İndirilen İçerikler (Offline)',
       icon: 'cloud-download-outline',

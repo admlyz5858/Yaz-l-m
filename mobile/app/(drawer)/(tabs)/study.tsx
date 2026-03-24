@@ -9,7 +9,7 @@ import { useFlashcardStore } from '@/store/flashcardStore';
 const CARDS = [
   { title: 'AI Soru Çöz', subtitle: 'Metin + stub çözüm', href: '/solve', soon: false },
   { title: 'Flash Kart', subtitle: 'FSRS tekrar', href: '/flashcards', soon: false },
-  { title: 'Pomodoro', subtitle: 'Odaklanma', href: '/(drawer)/(tabs)/study', soon: true },
+  { title: 'Pomodoro', subtitle: 'Odaklanma', href: '/pomodoro', soon: false },
   {
     title: 'AI Plan',
     subtitle: 'Haftalık çalışma',
@@ -44,9 +44,17 @@ export default function StudyTabScreen() {
           <Link key={c.title} href={c.href as any} asChild>
             <Pressable style={styles.card}>
               <Ionicons
-                name={c.title === 'Flash Kart' ? 'albums-outline' : 'calendar-outline'}
+                name={
+                  c.title === 'Flash Kart'
+                    ? 'albums-outline'
+                    : c.title === 'Pomodoro'
+                      ? 'timer-outline'
+                      : c.title === 'AI Soru Çöz'
+                        ? 'bulb-outline'
+                        : 'calendar-outline'
+                }
                 size={22}
-                color={Brand.purple}
+                color={Brand.electricDim}
               />
               <View style={styles.cardText}>
                 <Text style={styles.cardTitle}>{c.title}</Text>
