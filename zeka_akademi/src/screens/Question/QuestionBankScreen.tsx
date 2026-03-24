@@ -63,7 +63,7 @@ export default function QuestionBankScreen({ navigation }: QuestionBankScreenPro
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backBtn}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="#1a237e" />
+          <MaterialCommunityIcons name="arrow-left" size={24} color="#0f766e" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Soru Bankası</Text>
       </View>
@@ -84,7 +84,7 @@ export default function QuestionBankScreen({ navigation }: QuestionBankScreenPro
           style={[styles.filterBtn, filterOpen && styles.filterBtnActive]}
           onPress={() => setFilterOpen(!filterOpen)}
         >
-          <MaterialCommunityIcons name="filter-variant" size={24} color={filterOpen ? '#fff' : '#1a237e'} />
+          <MaterialCommunityIcons name="filter-variant" size={24} color={filterOpen ? '#fff' : '#0f766e'} />
         </TouchableOpacity>
       </View>
 
@@ -132,7 +132,7 @@ export default function QuestionBankScreen({ navigation }: QuestionBankScreenPro
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f5f7' },
+  container: { flex: 1, backgroundColor: '#f0fdfa' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eee',
   },
   backBtn: { padding: 4, marginRight: 8 },
-  headerTitle: { fontSize: 18, fontWeight: '600', color: '#1a237e' },
+  headerTitle: { fontSize: 18, fontWeight: '600', color: '#0f766e' },
   searchRow: {
     flexDirection: 'row',
     padding: 16,
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  filterBtnActive: { backgroundColor: '#7c4dff' },
+  filterBtnActive: { backgroundColor: '#0d9488' },
   filterPanel: {
     backgroundColor: '#fff',
     padding: 16,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     marginRight: 8,
   },
-  chipActive: { backgroundColor: '#7c4dff' },
+  chipActive: { backgroundColor: '#0d9488' },
   chipText: { fontSize: 14, color: '#666' },
   chipTextActive: { color: '#fff', fontWeight: '500' },
   list: { padding: 16, paddingBottom: 32 },
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  cardSubject: { fontSize: 14, fontWeight: '600', color: '#7c4dff' },
+  cardSubject: { fontSize: 14, fontWeight: '600', color: '#0d9488' },
   difficultyBadge: {
     backgroundColor: '#f0f0f0',
     paddingHorizontal: 8,

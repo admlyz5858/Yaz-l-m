@@ -38,7 +38,7 @@ export default function AuthScreen({ navigation, route }: AuthScreenProps) {
   };
 
   return (
-    <LinearGradient colors={['#1a237e', '#7c4dff']} style={styles.container}>
+    <LinearGradient colors={['#0f766e', '#0d9488']} style={styles.container}>
       <SafeAreaView style={styles.safe}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   primaryBtnText: {
-    color: '#1a237e',
+    color: '#0f766e',
     fontSize: 16,
     fontWeight: 'bold',
   },

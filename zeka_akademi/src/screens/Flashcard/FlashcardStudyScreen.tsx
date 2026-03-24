@@ -44,7 +44,7 @@ export default function FlashcardStudyScreen({ navigation, route }: FlashcardStu
 
   const flip = () => setShowBack(!showBack);
 
-  const handleRating = (rating: Rating) => {
+  const handleRating = (_rating: Rating) => {
     if (currentIndex < total - 1) {
       setCurrentIndex(currentIndex + 1);
       setShowBack(false);
@@ -59,7 +59,7 @@ export default function FlashcardStudyScreen({ navigation, route }: FlashcardStu
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backBtn}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="#1a237e" />
+          <MaterialCommunityIcons name="arrow-left" size={24} color="#0f766e" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{deckName}</Text>
       </View>
@@ -117,7 +117,7 @@ export default function FlashcardStudyScreen({ navigation, route }: FlashcardStu
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f5f7' },
+  container: { flex: 1, backgroundColor: '#f0fdfa' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eee',
   },
   backBtn: { padding: 4, marginRight: 8 },
-  headerTitle: { fontSize: 18, fontWeight: '600', color: '#1a237e' },
+  headerTitle: { fontSize: 18, fontWeight: '600', color: '#0f766e' },
   progressRow: { paddingHorizontal: 16, paddingVertical: 12 },
   progressText: { fontSize: 14, color: '#666', marginBottom: 4 },
   progressBar: {
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#7c4dff',
+    backgroundColor: '#0d9488',
     borderRadius: 2,
   },
   cardWrapper: {
@@ -164,9 +164,9 @@ const styles = StyleSheet.create({
     backfaceVisibility: 'hidden',
   },
   cardBack: {
-    backgroundColor: '#f8f5ff',
+    backgroundColor: '#f0fdfa',
     borderWidth: 2,
-    borderColor: '#7c4dff',
+    borderColor: '#0d9488',
   },
   cardFrontText: {
     fontSize: 20,

@@ -65,8 +65,8 @@ export default function SplashScreenComponent({ onFinish }: SplashScreenProps) {
 }
 
 const colors = {
-  gradientStart: '#1a237e',
-  gradientEnd: '#7c4dff',
+  gradientStart: '#0f766e',
+  gradientEnd: '#0d9488',
 };
 
 const styles = StyleSheet.create({

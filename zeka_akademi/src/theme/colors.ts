@@ -1,30 +1,30 @@
 /**
  * ZekaAkademi - Tema Renkleri
- * Belgeye uygun: Gradient lacivert → mor
+ * Teal & Amber - Sıcak, modern, eğitim odaklı
  */
 
 export const colors = {
   // Ana palette
-  primary: '#1a237e',      // Lacivert
-  primaryDark: '#0d1347',
-  secondary: '#7c4dff',    // Mor
-  secondaryLight: '#b47cff',
+  primary: '#0d9488',       // Teal 600
+  primaryDark: '#0f766e',   // Teal 700
+  secondary: '#f59e0b',     // Amber 500
+  secondaryLight: '#fbbf24',
 
-  // Gradient
-  gradientStart: '#1a237e',
-  gradientEnd: '#7c4dff',
+  // Gradient (Splash, Onboarding, Auth)
+  gradientStart: '#0f766e',
+  gradientEnd: '#0d9488',
 
   // UI
   white: '#ffffff',
-  black: '#000000',
-  background: '#f5f5f7',
+  black: '#0f172a',
+  background: '#f0fdfa',    // Teal 50
   surface: '#ffffff',
-  text: '#1a1a1a',
-  textSecondary: '#666666',
+  text: '#0f172a',
+  textSecondary: '#64748b',
 
   // Durum
-  success: '#4caf50',
-  error: '#f44336',
-  warning: '#ff9800',
-  info: '#2196f3',
+  success: '#10b981',
+  error: '#ef4444',
+  warning: '#f59e0b',
+  info: '#0ea5e9',
 } as const;

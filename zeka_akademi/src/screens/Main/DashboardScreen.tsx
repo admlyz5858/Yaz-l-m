@@ -73,7 +73,7 @@ export default function DashboardScreen({ navigation }: DashboardScreenProps) {
                 }
               }}
             >
-              <MaterialCommunityIcons name={a.icon} size={28} color="#7c4dff" />
+              <MaterialCommunityIcons name={a.icon} size={28} color="#0d9488" />
               <Text style={styles.quickLabel}>{a.label}</Text>
             </TouchableOpacity>
           ))}
@@ -84,7 +84,7 @@ export default function DashboardScreen({ navigation }: DashboardScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f5f7' },
+  container: { flex: 1, backgroundColor: '#f0fdfa' },
   scroll: { padding: 16, paddingBottom: 100 },
   header: {
     flexDirection: 'row',
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     overflow: 'hidden',
   },
-  progressFill: { height: '100%', backgroundColor: '#7c4dff', borderRadius: 3 },
+  progressFill: { height: '100%', backgroundColor: '#0d9488', borderRadius: 3 },
   icons: { flexDirection: 'row', gap: 16, alignItems: 'center' },
   countdownCard: {
     backgroundColor: '#fff',
@@ -109,9 +109,9 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 24,
     borderLeftWidth: 4,
-    borderLeftColor: '#7c4dff',
+    borderLeftColor: '#0d9488',
   },
-  countdownTitle: { fontSize: 18, fontWeight: 'bold', color: '#1a237e' },
+  countdownTitle: { fontSize: 18, fontWeight: 'bold', color: '#0f766e' },
   countdownSub: { fontSize: 14, color: '#666', marginTop: 4 },
   sectionTitle: { fontSize: 16, fontWeight: '600', color: '#1a1a1a', marginBottom: 12 },
   taskCard: {

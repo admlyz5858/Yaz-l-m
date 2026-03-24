@@ -16,7 +16,7 @@ interface WelcomeScreenProps {
 export default function WelcomeScreen({ onSignUp, onSignIn }: WelcomeScreenProps) {
   return (
     <LinearGradient
-      colors={['#1a237e', '#7c4dff']}
+      colors={['#0f766e', '#0d9488']}
       style={styles.container}
     >
       <SafeAreaView style={styles.safe}>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   primaryText: {
-    color: '#1a237e',
+    color: '#0f766e',
     fontSize: 16,
     fontWeight: 'bold',
   },
