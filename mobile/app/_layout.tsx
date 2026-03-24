@@ -55,6 +55,7 @@ function RootLayoutNav() {
         <Stack.Screen name="plan" />
         <Stack.Screen name="solve" />
         <Stack.Screen name="question-bank" />
+        <Stack.Screen name="flashcards" />
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Bilgi' }} />
       </Stack>

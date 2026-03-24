@@ -70,6 +70,15 @@ export function DrawerMenu({ onClose }: { onClose: () => void }) {
       },
     },
     {
+      key: 'flash',
+      label: 'Flash Kartlar',
+      icon: 'albums-outline',
+      onPress: () => {
+        onClose();
+        router.push('/flashcards');
+      },
+    },
+    {
       key: 'offline',
       label: 'İndirilen İçerikler (Offline)',
       icon: 'cloud-download-outline',

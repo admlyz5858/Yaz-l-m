@@ -1,12 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
+import { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Brand } from '@/constants/theme';
+import { useFlashcardStore } from '@/store/flashcardStore';
 
 const CARDS = [
   { title: 'AI Soru Çöz', subtitle: 'Metin + stub çözüm', href: '/solve', soon: false },
-  { title: 'Flash Kart', subtitle: 'FSRS tekrar', href: '/(drawer)/(tabs)/study', soon: true },
+  { title: 'Flash Kart', subtitle: 'FSRS tekrar', href: '/flashcards', soon: false },
   { title: 'Pomodoro', subtitle: 'Odaklanma', href: '/(drawer)/(tabs)/study', soon: true },
   {
     title: 'AI Plan',
@@ -20,6 +22,11 @@ const CARDS = [
  * Çalış sekmesi: soru çözme, flash kart, Pomodoro + plan (PDF Bölüm 3.2 / 4).
  */
 export default function StudyTabScreen() {
+  const seedIfEmpty = useFlashcardStore((s) => s.seedIfEmpty);
+  useEffect(() => {
+    seedIfEmpty();
+  }, [seedIfEmpty]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Çalış</Text>
@@ -36,7 +43,11 @@ export default function StudyTabScreen() {
         ) : (
           <Link key={c.title} href={c.href as any} asChild>
             <Pressable style={styles.card}>
-              <Ionicons name="calendar-outline" size={22} color={Brand.purple} />
+              <Ionicons
+                name={c.title === 'Flash Kart' ? 'albums-outline' : 'calendar-outline'}
+                size={22}
+                color={Brand.purple}
+              />
               <View style={styles.cardText}>
                 <Text style={styles.cardTitle}>{c.title}</Text>
                 <Text style={styles.cardSub}>{c.subtitle}</Text>

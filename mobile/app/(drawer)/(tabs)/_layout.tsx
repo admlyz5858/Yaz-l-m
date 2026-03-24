@@ -1,13 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { DrawerToggleButton } from '@react-navigation/drawer';
 import { Tabs } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Colors from '@/constants/Colors';
 import { Brand } from '@/constants/theme';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 import { useDashboardStore } from '@/store/dashboardStore';
+import { useFlashcardStore } from '@/store/flashcardStore';
 import { useOnboardingStore } from '@/store/onboardingStore';
 
 /**
@@ -16,7 +17,13 @@ import { useOnboardingStore } from '@/store/onboardingStore';
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const incompleteTasks = useDashboardStore((s) => s.tasks.filter((t) => !t.done).length);
+  const seedFlashcards = useFlashcardStore((s) => s.seedIfEmpty);
+  const flashDue = useFlashcardStore((s) => s.getDueCountTotal());
   const profileIncomplete = useOnboardingStore((s) => !s.draft.fullName?.trim());
+
+  useEffect(() => {
+    seedFlashcards();
+  }, [seedFlashcards]);
 
   return (
     <Tabs
@@ -40,6 +47,7 @@ export default function TabLayout() {
         name="study"
         options={{
           title: 'Çalış',
+          tabBarBadge: flashDue > 0 ? flashDue : undefined,
           tabBarIcon: ({ color }) => <Ionicons name="book-outline" size={26} color={color} />,
         }}
       />
