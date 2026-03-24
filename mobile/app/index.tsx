@@ -2,20 +2,24 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import * as ExpoSplashScreen from 'expo-splash-screen';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
 
-import { Brand, Splash } from '@/constants/theme';
+import { LadekLogo } from '@/components/brand/LadekLogo';
+import { Brand, BrandStrings, Splash } from '@/constants/theme';
 import { runBootstrap } from '@/lib/bootstrap';
 
 /**
- * Ekran 1 — Splash (PDF Bölüm 2.1): ~2.5 sn animasyon, token ve bağlantı kontrolü.
+ * Ladek ACADEMY giriş animasyonu: kitap + dijital ağaç, metin, hafif parıltı.
  */
 export default function SplashRoute() {
   const router = useRouter();
   const [bootError, setBootError] = useState<string | null>(null);
-  const logoY = useRef(new Animated.Value(-120)).current;
-  const logoOpacity = useRef(new Animated.Value(0)).current;
 
+  const bookScale = useRef(new Animated.Value(0.3)).current;
+  const bookOpacity = useRef(new Animated.Value(0)).current;
+  const treeOpacity = useRef(new Animated.Value(0)).current;
+  const titleOpacity = useRef(new Animated.Value(0)).current;
+  const subOpacity = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     let cancelled = false;
 
@@ -23,17 +27,39 @@ export default function SplashRoute() {
       try {
         await ExpoSplashScreen.hideAsync();
 
-        Animated.parallel([
-          Animated.timing(logoY, {
-            toValue: 0,
-            duration: 800,
-            useNativeDriver: true,
-          }),
-          Animated.timing(logoOpacity, {
+        Animated.sequence([
+          Animated.parallel([
+            Animated.spring(bookScale, {
+              toValue: 1,
+              friction: 6,
+              tension: 40,
+              useNativeDriver: true,
+            }),
+            Animated.timing(bookOpacity, {
+              toValue: 1,
+              duration: 500,
+              useNativeDriver: true,
+            }),
+          ]),
+          Animated.timing(treeOpacity, {
             toValue: 1,
-            duration: 600,
+            duration: 450,
+            easing: Easing.out(Easing.cubic),
             useNativeDriver: true,
           }),
+          Animated.parallel([
+            Animated.timing(titleOpacity, {
+              toValue: 1,
+              duration: 400,
+              useNativeDriver: true,
+            }),
+            Animated.timing(subOpacity, {
+              toValue: 1,
+              duration: 500,
+              delay: 120,
+              useNativeDriver: true,
+            }),
+          ]),
         ]).start();
 
         const [result] = await Promise.all([
@@ -69,18 +95,42 @@ export default function SplashRoute() {
     return () => {
       cancelled = true;
     };
-  }, [logoOpacity, logoY, router]);
+  }, [
+    bookOpacity,
+    bookScale,
+    router,
+    subOpacity,
+    titleOpacity,
+    treeOpacity,
+  ]);
 
   return (
-    <LinearGradient colors={[Brand.navy, Brand.navyMid, Brand.purple]} style={styles.gradient}>
-      <Animated.View style={[styles.logoWrap, { opacity: logoOpacity, transform: [{ translateY: logoY }] }]}>
-        <Text style={styles.logoMark}>ZA</Text>
-        <Text style={styles.logoTitle}>ZekaAkademi</Text>
-        <Text style={styles.logoSub}>Yapay zekâ destekli sınav hazırlığı</Text>
+    <LinearGradient
+      colors={[Brand.navy, Brand.navyMid, Brand.navyLight]}
+      style={styles.gradient}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}>
+      <Animated.View
+        style={[
+          styles.logoBlock,
+          {
+            opacity: bookOpacity,
+            transform: [{ scale: bookScale }],
+          },
+        ]}>
+        <View style={styles.logoInner}>
+          <Animated.View style={{ opacity: treeOpacity }}>
+            <LadekLogo size={140} />
+          </Animated.View>
+        </View>
+        <Animated.Text style={[styles.brandName, { opacity: titleOpacity }]}>{BrandStrings.appName}</Animated.Text>
+        <Animated.Text style={[styles.brandAcademy, { opacity: subOpacity }]}>ACADEMY</Animated.Text>
+        <Animated.Text style={[styles.tagline, { opacity: subOpacity }]}>{BrandStrings.tagline}</Animated.Text>
       </Animated.View>
+
       {bootError ? <Text style={styles.hint}>{bootError}</Text> : null}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Config • Token • Ağ</Text>
+        <Text style={styles.footerText}>Ladek ACADEMY</Text>
       </View>
     </LinearGradient>
   );
@@ -93,25 +143,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 24,
   },
-  logoWrap: {
+  logoBlock: {
     alignItems: 'center',
   },
-  logoMark: {
-    fontSize: 56,
+  logoInner: {
+    marginBottom: 8,
+  },
+  brandName: {
+    marginTop: 4,
+    fontSize: 36,
     fontWeight: '800',
     color: '#fff',
-    letterSpacing: 2,
+    letterSpacing: 1,
   },
-  logoTitle: {
-    marginTop: 8,
-    fontSize: 22,
+  brandAcademy: {
+    marginTop: 2,
+    fontSize: 13,
     fontWeight: '700',
-    color: '#f8fafc',
+    color: 'rgba(248,250,252,0.92)',
+    letterSpacing: 4,
   },
-  logoSub: {
-    marginTop: 8,
+  tagline: {
+    marginTop: 10,
     fontSize: 14,
-    color: 'rgba(248,250,252,0.85)',
+    color: 'rgba(103,232,249,0.9)',
     textAlign: 'center',
   },
   hint: {
@@ -126,6 +181,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.45)',
+    color: 'rgba(255,255,255,0.35)',
+    letterSpacing: 1,
   },
 });

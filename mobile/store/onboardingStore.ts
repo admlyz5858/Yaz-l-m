@@ -46,7 +46,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       resetDraft: () => set({ draft: emptyDraft(), planningPreferences: null }),
     }),
     {
-      name: 'zeka-akademi-onboarding',
+      name: 'ladek-academy-onboarding',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (s) => ({
         completed: s.completed,

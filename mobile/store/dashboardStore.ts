@@ -141,7 +141,7 @@ export const useDashboardStore = create<DashboardState>()(
       },
     }),
     {
-      name: 'zeka-akademi-dashboard',
+      name: 'ladek-academy-dashboard',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (s) => ({
         dailyGoalPercent: s.dailyGoalPercent,

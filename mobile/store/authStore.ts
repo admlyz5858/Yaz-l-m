@@ -14,7 +14,7 @@ export const useAuthStore = create<AuthState>()(
       setToken: (token) => set({ token }),
     }),
     {
-      name: 'zeka-akademi-auth',
+      name: 'ladek-academy-auth',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (s) => ({ token: s.token }),
     },

@@ -88,7 +88,7 @@ export const useQuestionBankStore = create<QuestionBankState>()(
       },
     }),
     {
-      name: 'zeka-akademi-question-progress',
+      name: 'ladek-academy-question-progress',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (s) => ({ progress: s.progress }),
     },

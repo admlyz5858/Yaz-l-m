@@ -207,7 +207,7 @@ export const usePlanningStore = create<PlanningState>()(
       },
     }),
     {
-      name: 'zeka-akademi-planning',
+      name: 'ladek-academy-planning',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (s) => ({
         weekOffset: s.weekOffset,

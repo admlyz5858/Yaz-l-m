@@ -107,7 +107,7 @@ export const useFlashcardStore = create<FlashcardState>()(
         }),
     }),
     {
-      name: 'zeka-akademi-flashcards',
+      name: 'ladek-academy-flashcards',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (s) => ({ decks: s.decks, cards: s.cards }),
     },

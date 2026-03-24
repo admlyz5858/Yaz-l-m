@@ -13,25 +13,25 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Brand } from '@/constants/theme';
+import { Brand, BrandStrings } from '@/constants/theme';
 
 const { width: WINDOW_WIDTH } = Dimensions.get('window');
 
 const PAGES = [
   {
     key: '1',
-    title: 'Sınavına 90 Günün Var',
-    subtitle: 'Her gün 45 dakika ile hedefe ulaş.',
+    title: `${BrandStrings.appName} ile hedefine odaklan`,
+    subtitle: 'Modern arayüz ve akıllı planlama ile sınav hazırlığı.',
   },
   {
     key: '2',
-    title: '1.000+ Soru Bankası + AI Çözüm',
-    subtitle: 'Kamera veya metinle sor; adım adım çözüm al.',
+    title: 'Soru bankası + akıllı çözüm',
+    subtitle: 'Metinle sor; adım adım rehberlik al.',
   },
   {
     key: '3',
-    title: 'Senin için Özelleştirilmiş Plan',
-    subtitle: 'Müfredat ve performansına göre haftalık plan.',
+    title: 'Kişiselleştirilmiş çalışma planı',
+    subtitle: 'Hedeflerine göre haftalık düzen.',
   },
 ] as const;
 
@@ -56,7 +56,11 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <LinearGradient colors={[Brand.navy, Brand.navyMid]} style={styles.gradient}>
+    <LinearGradient
+      colors={[Brand.navy, Brand.navyMid, Brand.navyLight]}
+      style={styles.gradient}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}>
       <SafeAreaView style={styles.safe}>
         <FlatList
           ref={listRef}
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.25)',
   },
   dotActive: {
-    backgroundColor: Brand.purpleLight,
+    backgroundColor: Brand.electric,
     width: 22,
   },
   nextBtn: {
@@ -157,13 +161,13 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   primaryBtn: {
-    backgroundColor: Brand.purpleLight,
+    backgroundColor: Brand.electric,
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',
   },
   primaryBtnText: {
-    color: '#0c1929',
+    color: Brand.navy,
     fontWeight: '800',
     fontSize: 17,
   },

@@ -1,5 +1,7 @@
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
+import { Brand } from '@/constants/theme';
+
+const tintColorLight = Brand.electric;
+const tintColorDark = Brand.glow;
 
 export default {
   light: {

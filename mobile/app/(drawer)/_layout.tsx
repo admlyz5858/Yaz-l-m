@@ -16,7 +16,7 @@ export default function DrawerLayout() {
         screenOptions={{
           headerShown: false,
           drawerStyle: { width: 300 },
-          drawerActiveTintColor: Brand.purple,
+          drawerActiveTintColor: Brand.electric,
           drawerInactiveTintColor: '#64748b',
         }}>
         <Drawer.Screen name="(tabs)" />

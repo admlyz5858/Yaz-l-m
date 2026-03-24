@@ -104,7 +104,7 @@ export function DrawerMenu({ onClose }: { onClose: () => void }) {
   return (
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
-        <Text style={styles.brand}>ZekaAkademi</Text>
+        <Text style={styles.brand}>Ladek ACADEMY</Text>
         <Text style={styles.sub}>Menü</Text>
       </View>
       {items.map((item) => (
