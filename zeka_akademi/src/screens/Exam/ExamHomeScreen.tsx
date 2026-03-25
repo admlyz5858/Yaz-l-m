@@ -12,7 +12,7 @@ interface ExamHomeScreenProps {
 
 const ITEMS = [
   { id: 'bank', label: 'Soru Bankası', icon: 'book-open-variant' as const, screen: 'QuestionBank' as const, ready: true },
-  { id: 'exam', label: 'Deneme Sınavı', icon: 'file-document' as const, screen: null, ready: false },
+  { id: 'exam', label: 'Deneme Sınavı', icon: 'file-document' as const, screen: 'TrialExamSelect' as const, ready: true },
   { id: 'quiz', label: 'Bilgi Yarışması', icon: 'trophy' as const, screen: null, ready: false },
 ];
 

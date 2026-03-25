@@ -227,3 +227,7 @@ export function getNextTurkishQuestionId(currentId: string): string | null {
   if (i < 0 || i >= TURKISH_QUESTION_IDS.length - 1) return null;
   return TURKISH_QUESTION_IDS[i + 1];
 }
+
+export function getTurkishQuestionsByIds(ids: string[]): TurkishQuestion[] {
+  return ids.map((id) => getTurkishQuestionById(id)).filter((q): q is TurkishQuestion => Boolean(q));
+}

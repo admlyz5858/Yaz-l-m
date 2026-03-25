@@ -23,11 +23,15 @@ Her push/PR sonrası otomatik APK derlenir:
 3. İndirilen ZIP içindeki `app-release.apk` dosyasını Android cihaza yükleyip kurun (JS paketi gömülü, Metro gerekmez)
 
 ### Tamamlanan modüller
-- ✅ **Modül 1:** Splash (2.5 sn) + Karşılama (3 sayfa)
-- ✅ **Modül 2:** Kayıt/Giriş (E-posta, KVKK, Google/Apple/Telefon, Misafir)
-- ✅ **Modül 3:** Profil Step 1, Sınav Seçimi Step 2, Seviye Tespiti Step 3, Plan Oluşturma Step 4
-- ✅ **Modül 4:** Ana panel (Dashboard), 5 sekmeli Bottom Navigation
-- ⏳ **Sıradaki:** AI Planlama, Soru Çözme, Flash Kart, Pomodoro, Deneme Sınavı
+- ✅ **Modül 1:** Splash + Karşılama (LadeK markası)
+- ✅ **Modül 2:** Kayıt/Giriş akışı (placeholder)
+- ✅ **Modül 3:** Onboarding (Profil, Sınav seçimi, Seviye testi, Plan oluşturma)
+- ✅ **Modül 4:** Ana panel (Dashboard) + alt sekmeler (Ana / Çalış / Sınav)
+- ✅ **Modül 5:** AI Plan (görüntüleme ve analiz ekranları)
+- ✅ **Modül 6:** Soru bankası + AI çözüm + soru çözme (Türkçe örnek set)
+- ✅ **Modül 7:** Flash kart + Pomodoro
+- ✅ **Modül 8:** Deneme sınavı (TYT/LGS mini, süre, sonuç özeti)
+- ⏳ **Sıradaki:** Sınav geri sayım, istatistik, mağaza ikonları
 
 ## Mimari Dokümanlar
 
