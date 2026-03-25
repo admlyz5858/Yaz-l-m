@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "updatedAt": "2026-03-23T12:00:00.000Z",
+  "source": "Örnek takvim — EXPO_PUBLIC_EXAM_CALENDAR_URL ile canlı JSON değiştirin",
+  "exams": [
+    { "key": "YKS", "label": "YKS", "dateIso": "2026-06-20T10:15:00.000Z" },
+    { "key": "LGS", "label": "LGS", "dateIso": "2026-06-01T09:00:00.000Z" },
+    { "key": "KPSS", "label": "KPSS", "dateIso": "2026-07-12T10:15:00.000Z" },
+    { "key": "ALES", "label": "ALES", "dateIso": "2026-05-10T10:15:00.000Z" },
+    { "key": "DGS", "label": "DGS", "dateIso": "2026-07-26T10:15:00.000Z" },
+    { "key": "YOS", "label": "YÖS", "dateIso": "2026-08-15T10:15:00.000Z" },
+    { "key": "MSU", "label": "MSÜ", "dateIso": "2026-06-28T10:15:00.000Z" },
+    { "key": "EKPSS", "label": "EKPSS", "dateIso": "2026-06-20T10:15:00.000Z" },
+    { "key": "TUS", "label": "TUS", "dateIso": "2026-06-20T10:15:00.000Z" },
+    { "key": "DUS", "label": "DUS", "dateIso": "2026-06-20T10:15:00.000Z" },
+    { "key": "STS", "label": "STS", "dateIso": "2026-06-20T10:15:00.000Z" },
+    { "key": "YDS", "label": "YDS", "dateIso": "2026-06-20T10:15:00.000Z" },
+    { "key": "EYDS", "label": "e-YDS", "dateIso": "2026-06-20T10:15:00.000Z" },
+    { "key": "YOKDIL", "label": "YÖKDİL", "dateIso": "2026-06-20T10:15:00.000Z" },
+    { "key": "EHL", "label": "Ehliyet", "dateIso": "2026-06-20T10:15:00.000Z" },
+    { "key": "ISG", "label": "İSG", "dateIso": "2026-06-20T10:15:00.000Z" },
+    { "key": "AGS", "label": "AGS", "dateIso": "2026-06-20T10:15:00.000Z" },
+    { "key": "YOKATLAS", "label": "YÖK Atlas", "dateIso": "2026-08-01T00:00:00.000Z" }
+  ]
+}
