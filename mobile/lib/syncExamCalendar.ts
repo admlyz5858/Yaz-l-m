@@ -1,3 +1,4 @@
+import { calendarKeyForExamId, getExamLabel } from '@/data/trExamCatalog';
 import { useDashboardStore } from '@/store/dashboardStore';
 import type { ExamType } from '@/store/onboardingStore';
 import { useOnboardingStore } from '@/store/onboardingStore';
@@ -26,6 +27,7 @@ function applyPayload(payload: RemoteExamCalendarPayload, primaryExam: ExamType)
     updatedAt: payload.updatedAt,
     version: payload.version,
     sourceLabel: payload.source,
+    displayLabel: getExamLabel(primaryExam),
   });
   return { ok: true as const };
 }
@@ -40,6 +42,9 @@ export async function syncExamCalendarIfPossible(): Promise<SyncExamCalendarResu
     return { ok: true, skipped: true };
   }
   const primary = ob.draft.examTypes[0];
+  if (!calendarKeyForExamId(primary)) {
+    return { ok: true, skipped: true };
+  }
   const url = getExamCalendarUrl();
 
   if (url) {

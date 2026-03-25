@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import { planSubjectsForExamId } from '@/data/trExamCatalog';
 import type { ExamType } from '@/store/onboardingStore';
 import type { DashboardTask, TaskType } from '@/store/dashboardStore';
 import { useDashboardStore } from '@/store/dashboardStore';
@@ -28,6 +29,14 @@ const SUBJECT_COLORS: Record<string, string> = {
   Sosyal: '#9333ea',
   Paragraf: '#0d9488',
   Genel: '#64748b',
+  Sayısal: '#2563eb',
+  'Genel Yetenek': '#7c3aed',
+  'Genel Kültür': '#c026d3',
+  'Tıp temel': '#dc2626',
+  İngilizce: '#0ea5e9',
+  'Alan bilgisi': '#059669',
+  'İSG mevzuat': '#ca8a04',
+  Trafik: '#64748b',
 };
 
 function colorForSubject(subject: string): string {
@@ -63,12 +72,7 @@ export function buildWeeklyPlanStub(params: {
   slotPrefs: string[];
 }): PlannedTask[] {
   const primary = params.examTypes[0] ?? 'YKS';
-  const subjects =
-    primary === 'LGS'
-      ? ['Türkçe', 'Matematik', 'Fen']
-      : primary === 'KPSS'
-        ? ['Genel Yetenek', 'Genel Kültür']
-        : ['Matematik', 'Türkçe', 'Fen'];
+  const subjects = planSubjectsForExamId(primary);
 
   const topics: Record<string, string> = {
     Matematik: 'Fonksiyonlar',
@@ -77,6 +81,12 @@ export function buildWeeklyPlanStub(params: {
     'Genel Yetenek': 'Sayısal mantık',
     'Genel Kültür': 'Tarih özeti',
     Genel: 'Tekrar',
+    Sayısal: 'Problem çözümü',
+    'Tıp temel': 'Temel bilimler tekrar',
+    İngilizce: 'Kelime / okuma',
+    'Alan bilgisi': 'Branş tekrarı',
+    'İSG mevzuat': 'Mevzuat özeti',
+    Trafik: 'Kurallar',
   };
 
   const tasks: PlannedTask[] = [];

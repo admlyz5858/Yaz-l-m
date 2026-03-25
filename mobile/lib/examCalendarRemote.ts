@@ -1,8 +1,8 @@
 import Constants from 'expo-constants';
 
-import type { ExamType } from '@/store/onboardingStore';
-
 import fallback from '@/data/examCalendar.fallback.json';
+import { calendarKeyForExamId } from '@/data/trExamCatalog';
+import type { ExamType } from '@/store/onboardingStore';
 
 export type RemoteExamEntry = {
   key: string;
@@ -54,34 +54,13 @@ export function getExamCalendarUrl(): string {
   return '';
 }
 
-export function mapOnboardingToCalendarKey(exam: ExamType): string | null {
-  switch (exam) {
-    case 'YKS':
-      return 'YKS';
-    case 'LGS':
-      return 'LGS';
-    case 'KPSS':
-      return 'KPSS';
-    case 'ALES':
-      return 'ALES';
-    case 'DGS':
-      return 'DGS';
-    case 'UNIVERSITY':
-      return 'YKS';
-    case 'OTHER':
-      return null;
-    default:
-      return null;
-  }
-}
-
 export function pickExamDateForUser(
   exams: RemoteExamEntry[],
   primaryExam: ExamType,
 ): RemoteExamEntry | null {
-  const k = mapOnboardingToCalendarKey(primaryExam);
+  const k = calendarKeyForExamId(primaryExam);
   if (!k) return null;
-  return exams.find((e) => e.key === k) ?? null;
+  return exams.find((e) => e.key.toUpperCase() === k.toUpperCase()) ?? null;
 }
 
 export async function fetchExamCalendarFromUrl(url: string): Promise<RemoteExamCalendarPayload> {

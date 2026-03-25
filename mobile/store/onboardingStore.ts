@@ -2,7 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-export type ExamType = 'YKS' | 'LGS' | 'KPSS' | 'ALES' | 'DGS' | 'UNIVERSITY' | 'OTHER';
+/**
+ * Katalog `trExamCatalog` kimlikleri (ÖSYM/MEB/diğer) + geriye dönük uyumluluk.
+ * Yeni eklenen her sınav `ExamCatalogItem.id` ile burada temsil edilir.
+ */
+export type ExamType = string;
 
 export type YksField = 'SAY' | 'EA' | 'SOZ' | 'DIL';
 

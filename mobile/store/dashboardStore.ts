@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import { getPrimaryExamShortLabel, planSubjectsForExamId } from '@/data/trExamCatalog';
 import type { ExamType } from '@/store/onboardingStore';
 
 export type TaskType = 'topic' | 'questions' | 'flashcard' | 'mock_exam';
@@ -39,18 +40,8 @@ type DashboardState = {
   /** JSON takviminden gelen resmi sınav tarihi */
   applyRemoteExamDate: (
     dateIso: string,
-    meta: { updatedAt: string; version: number; sourceLabel?: string },
+    meta: { updatedAt: string; version: number; sourceLabel?: string; displayLabel?: string },
   ) => void;
-};
-
-const examLabels: Record<ExamType, string> = {
-  YKS: 'YKS',
-  LGS: 'LGS',
-  KPSS: 'KPSS',
-  ALES: 'ALES',
-  DGS: 'DGS',
-  UNIVERSITY: 'Üniversite',
-  OTHER: 'Sınav',
 };
 
 function defaultExamDate(daysFromNow: number): string {
@@ -62,16 +53,8 @@ function defaultExamDate(daysFromNow: number): string {
 
 function buildSeedTasks(examTypes: ExamType[]): DashboardTask[] {
   const primary = examTypes[0] ?? 'YKS';
-  const subjectMap: Record<ExamType, string> = {
-    YKS: 'Matematik',
-    LGS: 'Türkçe',
-    KPSS: 'Genel Yetenek',
-    ALES: 'Sayısal',
-    DGS: 'Sayısal',
-    UNIVERSITY: 'Ders çalışması',
-    OTHER: 'Genel',
-  };
-  const s = subjectMap[primary] ?? 'Genel';
+  const subjects = planSubjectsForExamId(primary);
+  const s = subjects[0] ?? 'Genel';
 
   return [
     {
@@ -126,7 +109,7 @@ export const useDashboardStore = create<DashboardState>()(
       applyRemoteExamDate: (dateIso, meta) =>
         set((s) => ({
           targetExamDateIso: dateIso,
-          primaryExamLabel: s.primaryExamLabel,
+          primaryExamLabel: meta.displayLabel?.trim() ? meta.displayLabel : s.primaryExamLabel,
           examCalendarSyncedAt: meta.updatedAt,
           examCalendarVersion: meta.version,
           examCalendarSource: meta.sourceLabel ?? s.examCalendarSource,
@@ -151,11 +134,11 @@ export const useDashboardStore = create<DashboardState>()(
       seedFromOnboarding: (examTypes, _fullName) => {
         if (get().tasks.length > 0) return;
         const primary = examTypes[0];
-        const label = primary ? examLabels[primary] : 'YKS';
+        const label = primary ? getPrimaryExamShortLabel(primary) : 'YKS';
         set({
           primaryExamLabel: label,
           targetExamDateIso: defaultExamDate(127),
-          secondaryExamChip: examTypes[1] ? examLabels[examTypes[1]] : undefined,
+          secondaryExamChip: examTypes[1] ? getPrimaryExamShortLabel(examTypes[1]) : undefined,
           tasks: buildSeedTasks(examTypes.length ? examTypes : ['YKS']),
           dailyGoalPercent: 0,
         });
