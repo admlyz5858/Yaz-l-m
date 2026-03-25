@@ -1,9 +1,11 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useFocusEffect } from '@react-navigation/native';
 import { Link } from 'expo-router';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Brand } from '@/constants/theme';
+import { syncExamCalendarIfPossible } from '@/lib/syncExamCalendar';
 import {
   formatCountdown,
   getGreetingName,
@@ -36,10 +38,19 @@ export default function HomeScreen() {
   const targetExamDateIso = useDashboardStore((s) => s.targetExamDateIso);
   const secondaryExamChip = useDashboardStore((s) => s.secondaryExamChip);
   const leaderboardRankToday = useDashboardStore((s) => s.leaderboardRankToday);
+  const examCalendarSyncedAt = useDashboardStore((s) => s.examCalendarSyncedAt);
+  const examCalendarVersion = useDashboardStore((s) => s.examCalendarVersion);
 
   useEffect(() => {
     seedFromOnboarding(draft.examTypes, draft.fullName);
   }, [draft.examTypes, draft.fullName, seedFromOnboarding]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (draft.examTypes.length === 0) return;
+      void syncExamCalendarIfPossible();
+    }, [draft.examTypes]),
+  );
 
   const name = getGreetingName(draft.fullName);
   const countdown = formatCountdown(targetExamDateIso);
@@ -89,6 +100,13 @@ export default function HomeScreen() {
           <View style={styles.chip}>
             <Text style={styles.chipText}>{secondaryExamChip}</Text>
           </View>
+        ) : null}
+        {examCalendarSyncedAt ? (
+          <Text style={styles.calendarMeta}>
+            Takvim güncellendi
+            {examCalendarVersion != null ? ` · v${examCalendarVersion}` : ''} ·{' '}
+            {new Date(examCalendarSyncedAt).toLocaleDateString('tr-TR')}
+          </Text>
         ) : null}
       </View>
 
@@ -181,6 +199,7 @@ const styles = StyleSheet.create({
   countdownKicker: { fontSize: 13, color: '#64748b', marginBottom: 4 },
   countdownBig: { fontSize: 20, fontWeight: '800' },
   countdownSub: { fontSize: 13, color: '#64748b', marginTop: 8, lineHeight: 18 },
+  calendarMeta: { fontSize: 11, color: '#94a3b8', marginTop: 10, lineHeight: 16 },
   chip: {
     alignSelf: 'flex-start',
     marginTop: 10,

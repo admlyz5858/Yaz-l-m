@@ -22,6 +22,10 @@ type DashboardState = {
   /** Birincil sınav etiketi + hedef tarih (ISO) */
   primaryExamLabel: string;
   targetExamDateIso: string;
+  /** Uzaktan takvim senkronu (Bölüm 12 / Content) */
+  examCalendarSyncedAt: string | null;
+  examCalendarVersion: number | null;
+  examCalendarSource: string | null;
   /** İkincil sınav chip (opsiyonel) */
   secondaryExamChip?: string;
   tasks: DashboardTask[];
@@ -32,6 +36,11 @@ type DashboardState = {
   /** AI plan üretildiğinde görev listesini değiştirir */
   replaceTasksFromPlan: (tasks: DashboardTask[]) => void;
   seedFromOnboarding: (examTypes: ExamType[], fullName?: string) => void;
+  /** JSON takviminden gelen resmi sınav tarihi */
+  applyRemoteExamDate: (
+    dateIso: string,
+    meta: { updatedAt: string; version: number; sourceLabel?: string },
+  ) => void;
 };
 
 const examLabels: Record<ExamType, string> = {
@@ -107,9 +116,21 @@ export const useDashboardStore = create<DashboardState>()(
       streakDays: 0,
       primaryExamLabel: 'YKS',
       targetExamDateIso: defaultExamDate(127),
+      examCalendarSyncedAt: null,
+      examCalendarVersion: null,
+      examCalendarSource: null,
       secondaryExamChip: undefined,
       tasks: [],
       leaderboardRankToday: 42,
+
+      applyRemoteExamDate: (dateIso, meta) =>
+        set((s) => ({
+          targetExamDateIso: dateIso,
+          primaryExamLabel: s.primaryExamLabel,
+          examCalendarSyncedAt: meta.updatedAt,
+          examCalendarVersion: meta.version,
+          examCalendarSource: meta.sourceLabel ?? s.examCalendarSource,
+        })),
       setTaskDone: (id, done) =>
         set((s) => {
           const tasks = s.tasks.map((t) => (t.id === id ? { ...t, done } : t));
@@ -148,6 +169,9 @@ export const useDashboardStore = create<DashboardState>()(
         streakDays: s.streakDays,
         primaryExamLabel: s.primaryExamLabel,
         targetExamDateIso: s.targetExamDateIso,
+        examCalendarSyncedAt: s.examCalendarSyncedAt,
+        examCalendarVersion: s.examCalendarVersion,
+        examCalendarSource: s.examCalendarSource,
         secondaryExamChip: s.secondaryExamChip,
         tasks: s.tasks,
         leaderboardRankToday: s.leaderboardRankToday,

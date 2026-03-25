@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "updatedAt": "2026-01-01T00:00:00.000Z",
+  "source": "offline-placeholder — EXPO_PUBLIC_EXAM_CALENDAR_URL ile uzaktan değiştirin",
+  "exams": [
+    {
+      "key": "YKS",
+      "label": "YKS",
+      "dateIso": "2026-06-20T10:15:00.000Z"
+    },
+    {
+      "key": "LGS",
+      "label": "LGS",
+      "dateIso": "2026-06-01T09:00:00.000Z"
+    },
+    {
+      "key": "KPSS",
+      "label": "KPSS",
+      "dateIso": "2026-07-12T10:15:00.000Z"
+    },
+    {
+      "key": "ALES",
+      "label": "ALES",
+      "dateIso": "2026-05-10T10:15:00.000Z"
+    },
+    {
+      "key": "DGS",
+      "label": "DGS",
+      "dateIso": "2026-07-26T10:15:00.000Z"
+    }
+  ]
+}
